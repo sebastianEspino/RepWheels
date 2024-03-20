@@ -1,0 +1,83 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Cotizaciones{% endblock %}
+
+{% block contenedor %}
+      <main>
+        <div class="tit">
+          <h1>Cotizacion</h1>
+        </div>
+        <section id="coti">
+            <div id="formulario">
+                <form action="/action_page.php">
+                    <div class="datos">
+                        <div class="mb-3 mt-3">
+                        <label for="marca" class="form-label">Marca del vehiculo:</label>
+                        <input type="text" class="form-control" id="Marca" placeholder="Ejemplo: BWM" name="marca">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="placa" class="form-label">Placa del vehiculo:</label>
+                            <input type="text" class="form-control" id="Marca" placeholder="Ejemplo: WXM332" name="placa">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="mod" class="form-label">Modelo del vehiculo:</label>
+                            <input type="number" class="form-control" id="modelo" placeholder="Ejemplo:2000" name="modelo">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="linea" class="form-label">Linea del vehiculo:</label>
+                            <input type="text" class="form-control" id="linea" placeholder="Ejemplo:Captiva" name="linea">
+                        </div>
+                    </div>
+                    <div class="form-check mb-3">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="tipo">Mantenimiento
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="tipo">Sincronizacion
+                      </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" name="tipo">Reparacion
+                        </label>
+                      </div>
+                      <div class="form-check mb-3">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" name="tipo">Cambio de cluth
+                        </label>
+                      </div>
+                      <div class="form-check mb-3">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" name="tipo">Cambio de pastillas
+                        </label>
+                      </div>
+
+                      <div class="datos">
+                        <div class="mb-3 mt-3">
+                            <label for="email" class="form-label">Correo electronico:</label>
+                            <input type="email" class="form-control" id="linea" placeholder="Example@gmail.com" name="correo">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="telefono" class="form-label">Celular: </label>
+                            <input type="number" class="form-control" id="linea" placeholder="Ejemplo:3132323420" name="celular">
+                        </div>
+                    </div>
+                      
+                    <div id="descr">
+                        <div class="mb-3 mt-3">
+                            <label for="descripcion" class="form-label">Descripcion:</label>
+                            <input type="text" class="form-control" id="descr" placeholder="Describa el problema que tiene el vehiculo" name="descripcion">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <button class="btn btn-outline-danger btn-lg">Solicitar cotizacion</button>
+                        </div>
+                    </div>
+                  </form> 
+            </div>
+        </section>
+</main>
+
+{% endblock %}

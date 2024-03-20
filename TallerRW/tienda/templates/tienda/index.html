@@ -1,0 +1,186 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenedor %}
+<div id="banner">
+    <h1><ins>RepWheels</ins></h1>
+    <div id="opciones">
+        <div class="opc">
+            <h3>Adquiere tu cita</h3>
+            <button class="btn btn-outline-danger btn-lg "><a href="{% url 'registrarCitar' %}">Agendar cita</a></button>
+        </div><br>
+        <div class="opc">
+            <h3>¿Te encuentras varado?</h3>
+            <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal"
+                data-bs-target="#emergence">Emergencia</button>
+        </div>
+    </div>
+</div>
+</header>
+<main>
+    <section id="section1">
+        <div class="tit">
+            <h1>Servicios</h1>
+        </div>
+        <div id="cartas">
+            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'tienda/img/mec.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Mecanica</h5>
+                            <p class="card-text">-Mantenimiento general<br>-Reparacion de motor<br>-Suspension<br></p>
+                            <button class="btn btn-primary btn-sm">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'tienda/img/pintura.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Pintura</h5>
+                            <p class="card-text">-Pintura general<br>-Polichada<br>-Bompers<br></p>
+                            <button class="btn btn-primary btn-sm">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'tienda/img/latoneria.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Latoneria</h5>
+                            <p class="card-text">-Cambio de partes<br>-Sacamos los golpes<br>-Soldadura</p>
+                            <button class="btn btn-primary btn-sm">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'tienda/img/electricidad.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Electricidad</h5>
+                            <p class="card-text">Mantenimiento de:<br>-Alternador<br>-Arranque<br></p>
+                            <button class="btn btn-primary btn-sm">Ver más</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="section2">
+        <div class="tit">
+            <h1>Procesos automotrices</h1>
+        </div>
+        <div id="carrusel">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <img src="{% static 'tienda/img/pintura.jpg' %}" class="d-block w-100" alt="..." height="400px">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="{% static 'tienda/img/imgc2.jpg' %}" class="d-block w-100" alt="..." height="400px">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'tienda/img/imgc3.jpg' %}" class="d-block w-100" alt="..." height="400px">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section class="section3">
+        <div class="tit">
+            <h1>¿Por que elegirnos?</h1>
+        </div>
+        <div id="carta2">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/marcas.png' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Conocimiento</h5>
+                    <p class="card-text">Contamos con trabajores especializados y con un alto conocimiento en todas las
+                        marcas</p>
+                </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/tecnologia.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Tecnologia</h5>
+                    <p class="card-text">Contamos con equipos como escanner , multimetros , banco de inyectores, entre
+                        otras </p>
+                </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/valor.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Honestidad</h5>
+                    <p class="card-text">Nuestros empleados son muy honestos al momento de realizar una cotizacion y
+                        realizar un trabajo </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section3">
+        <div class="tit">
+            <h1>Calificaciones de nuestro servicios</h1>
+        </div>
+        <article id="personas">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">Esneider Garcia<br><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><br>Hace 15 dias...</p>
+                </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">Mateo Herreno<br><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><br>Hace 10 dias...</p>
+                </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">Mateo Salgado<br><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                            class="bi bi-star-fill"></i><br>Hace 10 dias...</p>
+                </div>
+            </div>
+        </article>
+    </section>
+    {% endblock %}

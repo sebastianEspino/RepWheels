@@ -1,0 +1,31 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Registrar Calificacion{% endblock %}
+
+{% block contenedor %}
+<main>
+  <form class="form1" action="{% url 'calificacionRegistrar' %}" method="post">
+    {% csrf_token %}
+    <h1 style="text-align: center;">Formulario de calificacion</h1>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputAddress2">Nombre completo:</label>
+        <input type="text" class="form-control" id="tipoServicio" value="{{ request.session.logueo.nombre }}" name="nombre">
+      </div>
+      <br>
+      <div class="form-group col-md-12">
+        <label for="inputAddress2">Cantidad estrellas</label>
+        <select class="form-select" aria-label="Default select example" name="cantidad_estrellas">
+          <option value="1"><i class="bi bi-star-fill">1</i></option>
+          <option value="2"><i class="bi bi-star-fill">2</i></option>
+          <option value="3"><i class="bi bi-star-fill">3</i></option>
+          <option value="4"><i class="bi bi-star-fill">4</i></option>
+          <option value="5"><i class="bi bi-star-fill">5</i></option>
+        </select>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Registrar</button>
+  </form>
+</main>
+{% endblock %}

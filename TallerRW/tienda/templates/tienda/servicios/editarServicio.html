@@ -1,0 +1,37 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Editar Servicio{% endblock %}
+
+{% block contenedor %}
+<main>
+  <form class="form1"  action="{% url 'servicioActualizar' %}"  method="post">
+    {% csrf_token %}
+    <h1 style="text-align: center;">Editar Servicio</h1>
+    <input type="hidden" name="id" value="{{ data.id }}">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Nombre del servicio</label>
+        <input type="Text" class="form-control" id="NombreC" placeholder="NombreC" value="{{ data.nombre }}" name="nombre">
+      </div>
+      <br>
+      <!--<div class="form-group col-md-12">
+        <label for="inputAddress2">Tipo de servicio</label>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Presione</option>
+          <option value="1">Pintora</option>
+          <option value="2">Mecanica</option>
+          <option value="3">Latoneria</option>
+        </select>
+      </div>
+      <br>
+      -->
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripcion de cotizacion</label>
+        <input type="text" class="form-control" id="descripcion" placeholder="descripcion" value="{{ data.descripcion_servicio }}" name="descripcion_servicio">
+      </div>
+      <button type="submit" class="btn btn-primary">Actualizar</button>
+    </div>
+  </form>
+</main>
+{% endblock %}

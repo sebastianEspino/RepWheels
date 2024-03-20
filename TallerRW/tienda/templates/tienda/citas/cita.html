@@ -1,0 +1,106 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Citas{% endblock %}
+
+{% block contenedor %}
+      <main>
+        <section id="scitas">
+            <article class="add">
+              <div class="tit">
+                <h1 class="card-title">Citas</h1>
+              </div>
+              <div  id="calendar" class="container"></div>
+              <br>
+              <p>Si deseas agendar un servicio, aqui lo podras realizar</p>
+                <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar cita</button>
+            </article>
+        </section>
+      </main>
+
+     <div class="modal" id="agg">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Citas</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+    
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form id="form1" >
+                <h1 style="text-align: center;">Citas</h1>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="inputEmail4">Nombre del cliente:</label>
+                    <input type="text" class="form-control" id="Cita" placeholder="Nombre">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="inputPassword4">Fecha</label>
+                    <input type="date" class="form-control" id="Fecha" placeholder="Fecha">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="inputCantidad">Hora</label>
+                    <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="inputAddress2">Tipo de servicio</label>
+                    <input type="text" class="form-control" id="tipoServicio" placeholder="servicio">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="inputAddress2">Empleado: </label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Presione</option>listarCl
+                        <option value="1">Julian</option>
+                        <option value="2">Edward</option>
+                        <option value="3">Andres</option>
+                      </select>
+                    
+                  </div>
+                </div>
+              </form>
+            </div>
+    
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Agendar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+    
+            </div>
+        </div>
+     </div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      
+       events: [
+
+            {% for reserva in data %}
+              {
+                title: "{{ reserva.tipoServicio }}",
+                star: "{{ reserva.fechaServico | date:'Y-m-d' }}"
+
+              },
+
+            {% endfor %}
+
+        ]
+      
+
+
+    });
+    calendar.render();
+  });
+
+
+
+</script>
+
+
+
+{% endblock %}

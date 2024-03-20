@@ -1,0 +1,39 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Registrar cliente{% endblock %}
+
+{% block contenedor %}
+<main>
+  <form class="form1" action="{% url 'clientesActualizar' %}" method="post">
+    {% csrf_token %}
+    <h1>Actualizar Cliente</h1>
+    <input type="hidden" name="id" value="{{ data.id }}">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Cedula</label>
+        <input type="text" class="form-control" id="Cedula" name="cedula" value="{{ data.cedula }}"placeholder="Cedula">
+      </div>
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Nombre completo</label>
+        <input type="Text" class="form-control" id="NombreC" name="nombre_completo" value="{{ data.nombre_completo }}" placeholder="NombreC">
+      </div>
+
+      <div class="form-group col-md-12">
+        <label for="inputAddress2">Correo electronico</label>
+        <input type="text" class="form-control" id="inputAddress2" name="correo" value="{{ data.correo }}"  placeholder="Correo">
+      </div>
+      <div class="form-group col-md-12">
+        <label for="inputAddress2">Telefono</label>
+        <input type="Text" class="form-control" id="inputAddress2" name="telefono" value="{{ data.telefono }}" placeholder="Telefono">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-danger"> Editar <br></button>
+
+    </div>
+  </form>
+</main>
+{% endblock %}
+
+
+

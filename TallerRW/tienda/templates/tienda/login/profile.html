@@ -1,0 +1,24 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenedor %}
+<main id="info">
+    <article id="info_p">
+        <h1 class="text-center">Informacion de perfil</h1>
+        <p>
+            Nombre : {{ request.session.logueo.nombre }} <br><br>
+            Correo : {{ request.session.logueo.correo }} <br><br>
+            Rol : {{ request.session.logueo.rol }}
+
+        </p>
+    </article>
+
+
+    
+</main>
+
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Calificaciones{% endblock %}
+
+{% block contenedor %}
+      <main>
+        <section id="funcionC">
+          <div class="tit">
+            <h1>Calificacion de nuestros servicios</h1>
+          </div>
+            <article id="personas">
+              <section class="servicios">
+                <div>
+                  <div class="product">
+                      {% if data %}
+                          {% for p in data %}
+                                  <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
+                                    <img src="{{ p.foto.url }}" class="card-img-top"  style="width:85%;" >
+                                      <div class="card-body">
+                                      <p class="card-text">{{ p.nombre }} <br> <strong> {{ p.cantidad_estrellas }} </strong> <br></p>
+                                      <p class="text"></p>    
+                                      </div>
+                                  </div>
+                          {% endfor %}
+                      {% else %}
+                          <h1>No hay productos agregados</h1>
+                      {% endif %}
+                  </div>
+              </div>
+              </section>
+            </article>
+            
+            <article class="add">
+                <p>Si deseas realizar una calificacion al servicio prestado por nosotros</p>
+                <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agregar calificacion</button>
+            </article>
+      
+        </section>
+      </main>
+     <div class="modal" id="agg">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Calificacion</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+    
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="form1" >
+                    <h1 style="text-align: center;">Formulario de calificacion</h1>
+                    <div class="form-row">
+                      <br>
+                      <div class="form-group col-md-12">
+                        <label for="inputPassword4">Nombres y apellidos</label>
+                        <input type="Text" class="form-control" id="NombreC" placeholder="Nombre completo">
+                      </div>
+                      <br>
+                      <div class="form-group col-md-12">
+                        <label for="inputAddress2">Cantidad estrellas</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1"><i class="bi bi-star-fill">1 Estrella</i></option>
+                            <option value="2"><i class="bi bi-star-fill">2 Estrellas</i></option>
+                            <option value="3"><i class="bi bi-star-fill">3 Estrellas</i></option>
+                            <option value="4"><i class="bi bi-star-fill">4 Estrellas</i></option>
+                            <option value="5"><i class="bi bi-star-fill">5 Estrellas</i></option>
+                          </select>
+                      </div>
+                    </div>
+                  </form>
+            </div>
+    
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+    
+            </div>
+        </div>
+     </div>
+</main>
+
+{% endblock %}

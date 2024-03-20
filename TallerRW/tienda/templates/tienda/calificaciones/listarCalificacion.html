@@ -1,0 +1,44 @@
+{% extends 'tienda/base1.html' %}
+{% load static %}
+
+{% block titulo %}Listar Citas{% endblock %}
+
+{% block contenedor %}
+<main>
+    <h1>Calificaiones</h1>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>id</th>
+                <th>Nombre</th>
+                <th>Estrellas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in data %}
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.nombre }}</td>
+                    <td>{{ r.cantidad_estrellas }}</td>
+                    <td>
+                        <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+</main>
+{% endblock %}

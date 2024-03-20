@@ -1,0 +1,166 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Servicios{% endblock %}
+
+{% block contenedor %}
+      <main>
+        <section style="background-color: black;">
+            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="d-flex align-items-center">
+                    <img src="imagenes/descuento.png" class="d-block mx-auto" width="80%" height="400px"
+                      alt="imagen descuentos">
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="d-flex align-items-center">
+                    <img src="imagenes/combos.jpg" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterios</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
+                <span class="carousel-control-next-icon" ariahidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+              </button>
+            </div>
+          </section>
+      
+          <section class="servicios">
+            <h1>Servicios</h1>
+            <div class="container mt-5">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica1">
+                    <img src="imagenes/servicio1.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica1" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica2">
+                    <img src="imagenes/servicio2.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica2" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica3">
+                    <img src="imagenes/servicio3.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecánica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica3" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica4">
+                    <img src="imagenes/servicio4.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica4" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica5">
+                    <img src="imagenes/servicio5.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica5" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica6">
+                    <img src="imagenes/servicio6.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica6" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica7">
+                    <img src="imagenes/servicio7.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Servicio de Mecanica</h5>
+                      <p class="card-text">Descripción breve del servicio de mecánica.</p>
+                    </div>
+                    <div id="servicioMecanica7" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Agendar Servicio</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="card mb-4" data-bs-toggle="collapse" data-bs-target="#servicioMecanica8">
+                    <img src="imagenes/servicio8.jpg" class="card-img-top" alt="Imagen de Servicio" height="200px">
+                    <div class="card-body">
+                      <h5 class="card-title">Cotizacion Personalizada</h5>
+                      <p class="card-text">Aqui puedes escoger tu cotizacion a tu gusto</p>
+                    </div>
+                    <div id="servicioMecanica8" class="collapse">
+                      <div class="card-body">
+                        <p>Detalles adicionales sobre el servicio de mecánica.</p>
+                        <button class="btn btn-success">Ir a cotizar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+              </div>
+            </div>
+      
+          </section>
+      
+        </section>
+      </main>
+{% endblock %}

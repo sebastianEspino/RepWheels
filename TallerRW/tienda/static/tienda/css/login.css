@@ -1,0 +1,65 @@
+h1{
+    text-align: center;
+    height: 60px;
+    background-color: rgb(55, 191, 240);
+}
+
+h2,h1{
+    font-style: italic;
+    letter-spacing: 3px;
+}
+
+#contenedor{
+    width: 700px;
+    height: 500px;
+    border: solid black 1px;
+    display: flex;
+
+}
+
+#cont2{
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+}
+
+#formulario{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 500px;
+}
+
+section{
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+
+#cancelarR a{
+    color: white;
+    text-decoration: none;
+}
+
+#cancelar a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+

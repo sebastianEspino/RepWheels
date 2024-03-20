@@ -1,0 +1,84 @@
+{% extends 'tienda/baseLR.html' %}
+{% load static %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block contenedor %}
+    <main>
+      <h1 class="h1">Inicio de sesion</h1>
+      <section id="principal">
+        
+        <article id="contenedor">
+            
+            <div id="formulario">
+                <h2 class="h2">RepWheels</h2>
+                <form action="{% url 'logueo' %}" method="post">
+                  {% csrf_token %}
+                    <div class="mb-3 mt-3">
+                      <label for="email" class="form-label">Correo electronico:</label>
+                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="correo">
+                    </div>
+                    <div class="mb-3">
+                      <label for="pwd" class="form-label">Contraseña:</label>
+                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="clave">
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <a data-bs-toggle="modal" data-bs-target="#old" ><ins>¿Olvidaste la contraseña?</ins></a>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="remember">Recuerdame
+                      </label>
+                    </div>
+                    <div>
+                      <button type="submit" class="btn btn-danger">Iniciar sesion</button>
+                      <button id="cancelar" type="submit" class="btn btn-primary"><a href="{% url 'index' %}">Cancelar</a></button>
+                    </div>
+                    
+                  </form> 
+
+            </div>
+            <div>
+                <img src="{% static 'tienda/img/formu.jpg' %}" alt="" width="350" height="500px">
+            </div>
+
+        </article>
+      </section>
+
+    </main>
+    <div class="modal" id="old">
+      <div class="modal-dialog">
+          <div class="modal-content">
+  
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">Recuperacion de contraseña</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+  
+          <!-- Modal body -->
+          <div class="modal-body">
+              <form id="form1" >
+                  <p style="text-align: center;">Para la recuperacion de la contraseña debes ingresar el correo registado a ese correo se enviara la nueva contraseña</p>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="inputEmail4">Correo electronico: </label>
+                      <input type="email" class="form-control"  placeholder="email">
+                    </div>
+                    <br>
+                    <button class="btn btn-danger">Recuperar</button>
+                  </div>
+                </form>
+          </div>
+  
+          <!-- Modal footer -->
+          <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+  
+          </div>
+      </div>
+   </div>
+   
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Proveedores{% endblock %}
+
+{% block contenedor %}
+<main>
+          <form class="form1" action="{% url 'proveedores_form' %}"  method="post" >
+            {% csrf_token %}
+            <h1 style="text-align: center;">Formulario de Proveedores</h1>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="inputPassword4">Nombres y apellidos</label>
+                <input type="Text" class="form-control" id="NombreC" name="nombre" placeholder="Nombres y apellidos">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputAddress2">NIT empresa</label>
+                <input type="text" class="form-control" id="inputAddress2" name="nit" placeholder="NIT">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputAddress2">Correo electronico</label>
+                <input type="text" class="form-control" id="inputAddress2" name="correo" placeholder="Correo">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputAddress2">Telefono</label>
+                <input type="Text" class="form-control" id="inputAddress2" name="tele" placeholder="Telefono">
+              </div>
+              <br>
+              <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+          </form>
+</main>
+{% endblock %}

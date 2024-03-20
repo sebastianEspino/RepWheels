@@ -1,0 +1,56 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Productos{% endblock %}
+
+{% block contenedor %}
+      <main>
+        <section style="background-color: black;">
+            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="d-flex align-items-center">
+                    <img src="{% static 'tienda/img/descuentoproducto.jpg' %}" class="d-block mx-auto" width="80%" height="400px"
+                      alt="imagen descuentos">
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="d-flex align-items-center">
+                    <img src="{% static 'tienda/img/descuentomanodeobra.jpg' %}" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterios</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
+                <span class="carousel-control-next-icon" ariahidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+              </button>
+            </div>
+          </section>
+          <section class="servicios">
+            <h1>Productos</h1>
+            <div>
+              <div class="product">
+                  {% if data %}
+                      {% for p in data %}
+                              <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
+                                <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:85%;" >
+                                  <div class="card-body">
+                                  <p class="card-text">{{ p.nombre }} <br> <strong>$ {{ p.Precio }} </strong> <br> {{ p.descripcion_producto }} </p>
+                                  <input type="number" style="width: 50px;"><br><br>
+                                  <a href="#" class="btn btn-primary">Añadir al carrito</a>    
+                                  </div>
+                              </div>
+                      {% endfor %}
+                  {% else %}
+                      <h1>No hay productos agregados</h1>
+                  {% endif %}
+              </div>
+          </div>
+          </section>
+        </section>
+      </main>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Crear Productos{% endblock %}
+
+{% block contenedor %}
+      <main>
+          <form class="form2" action="{% url 'crearProducto' %}" method="post">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Formulario de Repuestos</h1>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="inputEmail4">Nombre de Repuesto</label>
+                <input type="text" class="form-control" id="Nombre" placeholder="Nombre" name="nombre">
+              </div>
+              <br>
+              <div class="form-group col-md-12">
+                <label for="inputEmail4">Precio</label>
+                <input type="number" class="form-control" id="precio" placeholder="precio" name="precio">
+              </div>
+              <br>
+              <div class="form-group col-md-12">
+                <label for="inputCantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad">
+              </div>
+              <br>
+              <div class="form-group col-md-12">
+                <label for="inputEmail4">Descripcion del repuesto</label>
+                <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_producto">
+              </div>
+              <br>
+              <div class="form-group col-md-12">
+                <label for="fecha">Fecha de registro</label>
+                <input type="date" class="form-control" id="fecha" placeholder="Fecha de registro" name="fecha_Creacion">
+              </div>
+              <br>
+              
+              <label for="">Categoria</label>
+              <select class="form-control" name="categoria">
+              <option value="">Seleccione</option>
+              {% for q in data %}
+                  <option value="{{ q.id }}">{{ q.nombre }}</option>
+              {% endfor %}
+              </select>
+              <br>
+          
+              <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+          </form>
+      </main>
+      {% endblock %}

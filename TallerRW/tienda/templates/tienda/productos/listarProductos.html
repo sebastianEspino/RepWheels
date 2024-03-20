@@ -1,0 +1,44 @@
+{% extends 'tienda/base1.html' %}
+{% load static %}
+
+{% block titulo %}Listar Productos{% endblock %}
+
+{% block contenedor %}
+<div class="container-fluid m-3" >
+    <h1>Productos</h1>
+        <table  class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de Creación</th>
+                    <th>Categoria</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for q in data %}
+                    <tr>
+                        <td>{{ q.id }}</td>
+                        <td>{{ q.nombre }}</td>
+                        <td>{{ q.Precio }}</td>
+                        <td>{{ q.descripcion_producto }}</td>
+                        <td>{{ q.cantidad }}</td>
+                        <td>{{ q.fecha_Creacion }}</td>
+                        <td>{{ q.categoria }}</td>
+                        
+                        
+                        <td>
+                            <a class="btn btn-info" href="{% url 'editarProductos' r.id %}">Editar</a>
+                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' r.id %}')">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+{% endblock %}

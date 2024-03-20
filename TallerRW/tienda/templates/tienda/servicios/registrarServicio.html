@@ -1,0 +1,26 @@
+{% extends 'tienda/base2.html' %}
+{% load static %}
+
+{% block titulo %}Registrar Servicios{% endblock %}
+
+{% block contenedor %}
+<main>
+  <form class="form1"  action="{% url 'registroServicio' %}"  method="post">
+    {% csrf_token %}
+    <h1 style="text-align: center;">Formulario de servicio</h1>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Nombre del servicio</label>
+        <input type="Text" class="form-control" id="NombreC" placeholder="NombreC" name="nombre">
+      </div>
+      <br>
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripcion de servicio</label>
+        <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_servicio">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Registrar</button>
+    </div>
+  </form>
+</main>
+{% endblock %}
