@@ -1,0 +1,30 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenedor %}
+
+<h1>Cambio de contraseña</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div>
+        <label for="">contraseña actual: </label>
+        <input type="text" name="" id="">
+    </div>
+    <div>
+        <label for="">contraseña nueva: </label>
+        <input type="text" name="" id="">
+    </div>
+    <div>
+        <label for="">Repetir contraseña nueva: </label>
+        <input type="text" name="" id="">
+    </div>
+    
+</form>
+
+
+
+
+
+{% endblock %}

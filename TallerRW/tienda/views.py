@@ -663,3 +663,6 @@ def registerUser(request):
         messages.success(request,'Usuario creado exitosamente')
         return redirect('login')
     
+
+def change_password(request):
+    return render(request,'tienda/login/restablecer.html')
