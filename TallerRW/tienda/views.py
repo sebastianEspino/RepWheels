@@ -800,4 +800,4 @@ def showCart(request):
 
         request.session["items"] = len(carrito)
     
-    return render(request, "tienda/carrito/carrito.html", contexto)
+    return render(request,"tienda/carrito/carrito.html", contexto)
