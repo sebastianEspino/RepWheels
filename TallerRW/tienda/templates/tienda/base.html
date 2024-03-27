@@ -108,12 +108,15 @@
                                 <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
                             </ul>
                         </li>
-
+                        
                     </ul>
                     <form id='botones' class="d-flex">
                         {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
                             <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
                             <a href="{% url 'perfil' %}" class="btn btn-danger" ><i class="bi bi-person-fill"></i></a>
+                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-danger"><i class="bi bi-cart-fill"></i>
+                        
+                            </a>
                             <a class="btn btn-danger" href="{% url 'logout' %}">Cerrar</a>
                         {% else %}
                             <a class="btn btn-danger" href="{% url 'login' %}">Iniciar</a>
@@ -173,6 +176,8 @@
         <a href="#"><i class="bi bi-whatsapp"></i></a>
     </div>
 </footer>
+<script src="{% static 'tienda/js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'tienda/js/libreria.js' %}"></script>
 <script src="{% static 'tienda/js/bootstrap.bundle.min.js' %}"></script>
+
 </html>

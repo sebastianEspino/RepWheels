@@ -36,12 +36,15 @@
               <div class="product">
                   {% if data %}
                       {% for p in data %}
-                              <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
+                              <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
                                 <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:86%; height: 130px;" >
                                   <div class="card-body">
-                                  <p class="card-text">{{ p.nombre }} <br> <strong>$ {{ p.Precio }} </strong> <br> {{ p.descripcion_producto }} </p>
-                                  <input type="number" style="width: 50px;"><br><br>
-                                  <a href="#" class="btn btn-primary">Añadir al carrito</a>    
+                                    <p class="card-text">{{ p.nombre }} <br> <strong>$ {{ p.Precio }} </strong> <br> {{ p.descripcion_producto }} </p>
+                                    <form>
+                                      <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
+                                      <input type="number" name="cantidad" id="cantidad_{{ p.id }}" min="1" max="{{ p.inventario }}" value="1" style="width: 50px;" /><br><br>
+                                      <button type="button" onclick="addCart(`{% url 'addCart' %}` , {{ p.id }});"  class="btn btn-info">Add Carrito</button>
+                                  </form>
                                   </div>
                               </div>
                       {% endfor %}

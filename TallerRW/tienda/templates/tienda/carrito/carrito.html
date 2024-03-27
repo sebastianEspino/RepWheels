@@ -1,0 +1,36 @@
+<h1>Comprar {{ items }}</h1>
+
+{% if request.session.carrito %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in request.session.carrito %}
+                <tr>
+                    <td>
+                        <img src="{{ p.foto }}" alt=""><br>
+                        {{ p.nombre }} <br>Precio: $ {{ p.precio }}
+                    </td>
+                    <td>
+                        <input type="number">
+                    </td>
+                    <td class="text-end">${{ p.subtotal }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="javascript:eliminar_item_carrito(`{% url 'eliminar_item_carrito' p.id %}`);">X</a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% else }
+    <h1>No hay productos en el carro de compra</h1>
+{% endif %}

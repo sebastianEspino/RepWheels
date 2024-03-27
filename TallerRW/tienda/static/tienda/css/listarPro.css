@@ -13,6 +13,9 @@ table{
     width: 800px;
     height: 200px;
 }
+.cart-shopping{
+    background-color: black;
+}
 
 footer{
     background-color: rgb(0, 0, 0);

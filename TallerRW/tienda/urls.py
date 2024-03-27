@@ -80,6 +80,15 @@ urlpatterns = [
     path('register',views.register,name="register"),
     path('registerUser',views.registerUser,name="registerUser"),
     path('change_password',views.change_password,name='change_password'),
+    path('change',views.change,name="change"),
+    path('formEditeProfile',views.editeFormProfile,name="formEditeProfile"),
+    path('changeProfile',views.updateInfoProfile,name="changeProfile"),
+    
+    #Cart - Shopping
+
+    path("addCart",views.add_cart,name="addCart"),
+    path("showCart",views.showCart,name="showCart"),
+
 
 
     

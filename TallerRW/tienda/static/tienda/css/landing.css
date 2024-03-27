@@ -237,7 +237,7 @@ i{
     border: 1px solid black;
     border-radius: 5%;
     width: 500px;
-    height: 350px;
+    height: 450px;
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -314,13 +314,17 @@ p i{
 
 
 .servicios{
-    min-height: 600px;
+    min-height: 900px;
     border: none;
+}
+
+#cart-shopping{
+    color: black;
 }
 
 
 .product{
-    display: grid; grid-template-columns: repeat(3,350px); row-gap:100px; margin-left: 80px; align-content: center; justify-content: center;
+    display: grid; grid-template-columns: repeat(3,350px); row-gap:50px; margin-left: 80px; align-content: center; justify-content: center;
 }
 
 

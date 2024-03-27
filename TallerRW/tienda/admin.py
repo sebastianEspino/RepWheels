@@ -45,8 +45,12 @@ class Proveedores(admin.ModelAdmin):
     
 @admin.register(Usuarios)
 class Usuario(admin.ModelAdmin):
-    list_display=['id','nombre','correo','clave','rol']
+    list_display=['id','nombre','correo','clave','rol','foto','ver_foto']
     search_fields = ['nombre']
+
+    def ver_foto(self, obj):
+        return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
+
 
 @admin.register(Calificaciones)
 class Calificaciones(admin.ModelAdmin):

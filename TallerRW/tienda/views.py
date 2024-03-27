@@ -622,6 +622,8 @@ def logueo(request):
                 "correo":u.correo,
                 "rol":u.rol
             }
+            request.session["carrito"] = []
+            request.session["items"] = 0
             messages.success(request, f"Bienvenido {u.nombre}!!")
             return redirect("index")
         except Exception as e:
@@ -642,7 +644,10 @@ def logout(request):
         return redirect('index')
 
 def profile(request):
-    return render(request,'tienda/login/profile.html')
+    p = request.session.get("logueo",False)
+    q = Usuarios.objects.get(pk=p["id"])
+    contexto = {"data":q}
+    return render(request,'tienda/login/profile.html',contexto)
 
 def register(request):
     return render(request,"tienda/registro/registro.html")
@@ -666,3 +671,133 @@ def registerUser(request):
 
 def change_password(request):
     return render(request,'tienda/login/restablecer.html')
+
+def change(request):
+    
+    if request.method == "POST":
+        logueo = request.session.get("logueo",False)
+        q = Usuarios.objects.get(pk=logueo["id"])
+        a = request.POST.get("anteriorP")
+        n1 = request.POST.get("nuevaP")
+        n2 = request.POST.get("repetirP")
+
+        if a == q.clave:
+             if n1 == n2:
+                q.clave = n1
+                q.save()
+                
+                messages.success(request,"Cambio de contraseña exitoso!!!")
+        else:
+             messages.warning(request,"La clave no son iguales")
+
+    return redirect("index")
+
+
+def editeFormProfile(request):
+    q = request.session.get("logueo",False)
+    p = Usuarios.objects.get(pk=q["id"])
+
+    contexto = {"data":p}
+
+    return render(request,"tienda/login/editeProfile.html",contexto)
+
+
+def updateInfoProfile(request):
+    
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        correo = request.POST.get("email")
+        foto = request.POST.get("foto")
+
+        try:
+            q = request.session.get("logueo",False)
+            p = Usuarios.objects.get(pk=q["id"])
+
+            p.correo = correo,
+            p.foto = foto.url
+
+            p.save()
+            messages.success(request,"Proveedor actualizada correctamente!!")
+        except Exception as e:
+            messages.error(request,f'Error: {e}')
+    else:
+        messages.warning(request,f'Error:No se enviaron los datos!!')
+    return redirect('index')
+        
+
+# Cart - Shopping 
+
+
+def add_cart(request):
+    if request.method == "POST":
+        try:
+            carrito = request.session.get("carrito",False)
+            if not carrito:
+                request.session["carrito"] = []
+                request.session["items"] = 0
+                carrito = []
+
+            id_producto = request.POST.get("id")
+            cantidad = request.POST.get("cantidad")
+
+            q = Productos.objects.get(pk=id_producto)
+
+            for p in carrito:
+                if p["id"] == id_producto:
+                    if q.cantidad >= (p["cantidad"] + int(cantidad) and int(cantidad)> 0):
+                        p["cantidad"]+= int(cantidad)
+                        p["subtotal"] = p["cantidad"]*q.Precio
+                    else:
+                        messages.warning(request,"Cantidad no dispoinble!!")
+                    break
+            else:
+                if q.cantidad >= int(cantidad) and int(cantidad) > 0:
+                    carrito.append(
+                        {
+                            "id":q.id,
+                            "foto":q.foto.url,
+                            "producto":q.nombre,
+                            "precio":q.Precio,
+                            "cantidad": int(cantidad),
+                            "subtotal": int(cantidad) * q.Precio
+                        }
+                    )
+                else:
+                    messages.warning(request, "No se puede agregar, no hay suficiente inventario.")
+
+            request.session["carrito"] = carrito
+            
+            contexto = {
+				"items": len(carrito),
+				"total": sum(p["subtotal"] for p in carrito)
+			}
+            request.session["items"] = len(carrito)
+
+            return render(request, "tienda/carrito/carrito.html", contexto)
+
+        except ValueError as e:
+                messages.error(request,f"Error: {e}")
+        except Exception as e:
+            messages.error(request, f"Ocurrió un Error: {e}")
+    else:
+        messages.warning(request,"No se enviaron datos...")
+        
+def showCart(request):
+    carrito = request.session.get("carrito",False)
+    if not carrito :
+        request.session["carrito"] = []
+        request.session["items"] = 0
+        contexto = {
+
+            "items":0,
+            "total":0
+        }
+    else:
+        contexto = {
+            "items": len(carrito),
+            "total": sum(p["subtotal"] for p in carrito)
+        }
+
+        request.session["items"] = len(carrito)
+    
+    return render(request, "tienda/carrito/carrito.html", contexto)

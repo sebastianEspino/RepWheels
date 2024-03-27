@@ -65,6 +65,8 @@ class Usuarios(models.Model):
     nombre=models.CharField(max_length=254)
     correo=models.CharField(max_length=254,unique=True)
     clave=models.CharField(max_length=8,null=False)
+    foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
+
     ROLES = (
         (1, "administrador"),
         (2,"gerente"),
@@ -83,7 +85,7 @@ class Cotizaciones(models.Model):
     correo = models.CharField(max_length=254)
     empleado = models.CharField(max_length=254)
     
-   #servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='0')
+    #servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='0')
     #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, default='0')
     #empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
     def _str_(self):

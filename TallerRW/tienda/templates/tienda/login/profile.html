@@ -1,21 +1,21 @@
 {% extends 'tienda/base.html' %}
 {% load static %}
 
-{% block titulo %}Inicio{% endblock %}
+{% block titulo %}Informacion{% endblock %}
 
 {% block contenedor %}
 <main id="info">
     <article id="info_p">
         <h1 class="text-center">Informacion de perfil</h1>
+        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br>
         <p>
-            Nombre : {{ request.session.logueo.nombre }} <br><br>
-            Correo : {{ request.session.logueo.correo }} <br><br>
-            Rol : {{ request.session.logueo.rol }}
-
+            Nombre : {{ data.nombre }} <br><br>
+            Correo : {{ data.correo }} <br><br>
+            Rol : {{ data.get_rol_display }}
         </p>
         <br>
         <div>
-            <a class="btn btn-danger">Editar</a>
+            <a class="btn btn-danger" href="#">Editar</a>
                  
             <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
         </div>
