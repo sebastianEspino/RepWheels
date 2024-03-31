@@ -19,6 +19,16 @@
         <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_servicio">
       </div>
       <br>
+              
+             <label for="">Productos</label>
+              <select class="form-control" name="producto">
+              <option value="">Seleccione</option>
+              {% for p in data %}
+                  <option value="{{ p.id }}">{{ p.nombre }}</option>
+              {% endfor %}
+              </select>
+              <br>
+      
       <button type="submit" class="btn btn-primary">Registrar</button>
     </div>
   </form>

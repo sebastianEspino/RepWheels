@@ -1,10 +1,69 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import*
+from rest_framework import viewsets
+from . serializers import *
 from django.contrib import messages
+
+
+
+# API with rest framework 
+
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializers
+
+class ProveedoresViewSet(viewsets.ModelViewSet):
+    queryset = Proveedores.objects.all()
+    serializer_class = ProveedoresSerializers
+
+class ServiciosViewSet(viewsets.ModelViewSet):
+    queryset = Servicios.objects.all()
+    serializer_class = ServiciosSerializers
+
+class ProductosViewSet(viewsets.ModelViewSet):
+    queryset = Productos.objects.all()
+    serializer_class = ProductosSerializers
+
+class EmpleadoViewSet(viewsets.ModelViewSet):
+    queryset = Empleado.objects.all()
+    serializer_class = EmpleadoSerializers
+
+class ClientesViewSet(viewsets.ModelViewSet):
+    queryset = Clientes.objects.all()
+    serializer_class = ClientesSerializers
+
+class CitasViewSet(viewsets.ModelViewSet):
+    queryset = Citas.objects.all()
+    serializer_class = CitasSerializers
+
+class CalificacionesViewSet(viewsets.ModelViewSet):
+    queryset = Calificaciones.objects.all()
+    serializer_class = CalificacionesSerializers
+
+
+class UsuariosViewSet(viewsets.ModelViewSet):
+    queryset = Usuarios.objects.all()
+    serializer_class = UsuariosSerializers
+
+
+class FacturasViewSet(viewsets.ModelViewSet):
+    queryset = Facturas.objects.all()
+    serializer_class = FacturasSerializers
+
+class DetalleFacturaViewSet(viewsets.ModelViewSet):
+    queryset = DetalleFactura.objects.all()
+    serializer_class = DetalleFacturaSerializers
+
+class DetalleServicioViewSet(viewsets.ModelViewSet):
+    queryset = DetallesServicio.objects.all()
+    serializer_class = DetallesServicioSerializers
+
 
 def index(request):
     logueo = request.session.get("logueo", False)
+    q = Calificaciones.objects.all()
+    contexto = {"data":q}
     return render(request, "tienda/index.html")
 
 
@@ -35,7 +94,7 @@ def actualizarProductos(request):
 		descripcion_producto = request.POST.get("descripcion_producto")
 		cantidad = request.POST.get("cantidad")
 		fecha_Creacion = request.POST.get("fecha_Creacion")
-		#categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 		try:
 			q = Productos.objects.get(pk=id)
 			q.nombre = nombre
@@ -43,7 +102,7 @@ def actualizarProductos(request):
 			q.descripcion_producto = descripcion_producto
 			q.cantidad = cantidad
 			q.fecha_Creacion = fecha_Creacion
-			#q.categoria = categoria
+			q.categoria = categoria
 			q.save()
 			messages.success(request, "Producto actualizado correctamente!!")
 		except Exception as e:
@@ -75,7 +134,7 @@ def crearProducto(request):
 		descripcion_producto = request.POST.get("descripcion_producto")
 		cantidad = request.POST.get("cantidad")
 		fecha_Creacion = request.POST.get("fecha_Creacion")
-		#categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 		try:
 			q = Productos(
                 nombre = nombre,
@@ -83,7 +142,7 @@ def crearProducto(request):
                 descripcion_producto = descripcion_producto,
                 cantidad = cantidad,
                 fecha_Creacion = fecha_Creacion,
-                #categoria = categoria
+                categoria = categoria
 			)
 			q.save()
 			messages.success(request, "Guardado correctamente!!")
@@ -93,7 +152,7 @@ def crearProducto(request):
 
 	else:
 		messages.warning(request, "Error: No se enviaron datos...")
-		return redirect("listarProductos")
+	return redirect("listarProductos")
 
 #crud de clientes
 
@@ -311,7 +370,10 @@ def citas(request):
     return render(request, "tienda/citas/cita.html",contexto)
 
 def registrarCita(request):
-    return render(request, "tienda/citas/registrarCita.html")
+    e = Empleado.objects.all()
+    c = Cotizaciones.objects.all()
+    contexto = {"data": e ,"data1":c}
+    return render(request, "tienda/citas/registrarCita.html",contexto)
 
 def listarCita(request):
     q = Citas.objects.all()
@@ -319,22 +381,24 @@ def listarCita(request):
     return render(request, "tienda/citas/listarCita.html", contexto)
 
 def citaRegistrar(request):
+   
     if request.method == "POST":
+        logueo = request.session.get("logueo",False)
+        usuario = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
         tipo_servicio = request.POST.get('tipoServicio')
         hora = request.POST.get('hora')
-        empleado = request.POST.get('empleado')
-
-        #id_cliente = request.POST.get("id_cliente")
-        #id_empleado = request.POST.get("id_empleado")
+        cliente = usuario
+        cotizacion = Cotizaciones.objects.get(pk=request.POST.get("Cotizacion"))
+        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
 
         cita = Citas(
             fechaServicio=fecha_servicio,
-            tipoServicio=tipo_servicio,
-            empleado = empleado,
-            hora = hora
-            #idCliente_id=id_cliente,
-            #idEmpleado_id=id_empleado,
+            hora = hora,
+            cliente = cliente,
+            cotizacion = cotizacion,
+            empleado = empleado
+            
         )
         cita.save()
 
@@ -343,27 +407,29 @@ def citaRegistrar(request):
 
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
-    contexto = {"data": q}
+    e = Empleado.objects.all()
+    c = Cotizaciones.objects.all()
+    contexto = {"data": q,"data1":e,"data2":c}
     return render(request, "tienda/citas/editarCita.html", contexto)
 
 def citaActualizar(request):
     if request.method == "POST":
+        logueo = request.session.get("logueo",False)
+        usuario = Usuarios.objects.get(pk=logueo["id"])
         id = request.POST.get("id")
         fecha_servicio = request.POST.get("fechaServicio")
-        tipo_servicio = request.POST.get("tipoServicio"),
-        hora = request.POST.get('hora'),
-        empleado = request.POST.get('empleado')
-       # id_cliente = request.POST.get("id_cliente")
-       # id_empleado = request.POST.get("id_empleado")
-
+        cliente = usuario
+        hora = request.POST.get('hora')
+        cotizacion = Cotizaciones.objects.get(pk=request.POST.get("Cotizacion"))
+        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
         try:
             q = Citas.objects.get(pk=id)
             q.fechaServicio = fecha_servicio
-            q.tipoServicio = tipo_servicio
+            q.cliente = usuario
             q.hora = hora
             q.empleado = empleado
-            #cita.idCliente_id = id_cliente
-            #cita.idEmpleado_id = id_empleado
+            q.cotizacion = cotizacion
+            
             q.save()
 
             messages.success(request, "Cita actualizada correctamente!!")
@@ -478,11 +544,15 @@ def listarCalificacion(request):
 
 def calificacionRegistrar(request):
     if request.method == "POST":
-        nombre = request.POST.get("nombre")
+        logueo = request.session.get("logueo",False)
+        usuario =  Usuarios.objects.get(pk=logueo["id"])
+        nombre = usuario
+        servicio = request.POST.get("servicio")
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
 
         calificacion = Calificaciones(
-            nombre=nombre,
+            cliente=nombre,
+            servicio = servicio,
             cantidad_estrellas=cantidad_estrellas,
         )
         calificacion.save()
@@ -498,15 +568,19 @@ def calificacion_formulario_editar(request, id):
 def calificacionActualizar(request):
     if request.method == "POST":
         id = request.POST.get("id")
-        nombre = request.POST.get("nombre")
+        logueo = request.session.get("logueo",False)
+        usuario =  Usuarios.objects.get(pk=logueo["id"])
+        nombre = usuario
+        servicio = request.POST.get("servicio")
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
-        #id_cliente = request.POST.get("id_cliente")
+        
 
         try:
             calificacion = Calificaciones.objects.get(pk=id)
-            calificacion.nombre = nombre
+            calificacion.cliente = usuario
+            calificacion.servicio = servicio
             calificacion.cantidad_estrellas = cantidad_estrellas
-            #calificacion.idCliente_id = id_cliente
+
             calificacion.save()
 
             messages.success(request, "Calificación actualizada correctamente!!")
@@ -539,8 +613,10 @@ def servicio(request):
 
 
 def registrarServicio(request):
-    
-    return render(request,'tienda/servicios/registrarServicio.html')
+    p = Productos.objects.all()
+    contexto = {"data":p}
+    return render(request,'tienda/servicios/registrarServicio.html',contexto)
+
 
 def listarServicio(request):
     q = Servicios.objects.all()
@@ -551,9 +627,11 @@ def registroServicio(request):
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         descripcion_servicio = request.POST.get("descripcion_servicio")
+        producto = Productos.objects.get(pk=request.POST.get("producto"))
         servicios = Servicios(
             nombre=nombre,
-            descripcion_servicio=descripcion_servicio
+            descripcion_servicio=descripcion_servicio,
+            productos = producto
         )
         servicios.save()
 
@@ -576,7 +654,9 @@ def servicioEliminar(request,id):
 
 def servicio_form_editar(request,id):
     s = Servicios.objects.get(pk=id)
-    context = {"data": s}
+    p = Productos.objects.all()
+
+    context = {"data": s,"data1": p}
     return render(request,'tienda/servicios/editarServicio.html',context)
 
 def servicioActualizar(request):
@@ -584,11 +664,13 @@ def servicioActualizar(request):
         id = request.POST.get('id')
         nombre = request.POST.get('nombre')
         descripcion_servicio = request.POST.get('descripcion_servicio')
+        productos = Productos.objects.get(pk=request.POST.get("producto"))
 
         try:
             servicio = Servicios.objects.get(pk=id)
             servicio.nombre = nombre
             servicio.descripcion_servicio = descripcion_servicio
+            servicio.productos = productos
             servicio.save()
 
             messages.success(request, "Servicio actualizada correctamente!!")

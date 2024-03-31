@@ -18,14 +18,28 @@
       <label for="inputCantidad">Hora</label>
       <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" value="{{ data.hora }}">
     </div>
-    <div class="form-group col-md-12">
-      <label for="inputAddress2">Tipo de servicio</label>
-      <input type="text" class="form-control" id="tipoServicio" name="tipoServicio" placeholder="servicio" value="{{ data.tipoServicio }}">
-    </div>
     <br>
       <div class="form-group col-md-12">
-        <label for="inputAddress2">Empleado</label>
-        <input type="text" class="form-control" id="tipoServicio" name="empleado" placeholder="empleado" value="{{ data.empleado }}">
+        <label for="">Cotizacion</label>
+              <select class="form-control" name="Cotizacion">
+              <option value="">Seleccione</option>
+              {% for c in data2 %}
+                  <option value="{{ c.id }}" {% if data.cotizacion.id == c.id %}selected{% endif %}>{{ c.descripcion }}</option>
+              {% endfor %}
+              </select>
+              
+      </div>
+      <br>
+      <div class="form-group col-md-12">
+        <label for="">Empleado</label>
+              <select class="form-control" name="empleado">
+              <option value="">Seleccione</option>
+              {% for e in data1 %}
+              
+                <option value="{{ e.id }}" {% if data.empleado.id == e.id %}selected{% endif %}>{{ e.nombre_completo }}</option>
+              
+              {% endfor %}
+              </select>
       </div>
     <br>
     <button type="submit" class="btn btn-success">Actualizar</button>

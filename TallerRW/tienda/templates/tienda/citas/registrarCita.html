@@ -17,26 +17,28 @@
         <label for="inputCantidad">Hora</label>
         <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
       </div>
-      <div class="form-group col-md-12">
-        <label for="inputAddress2">Tipo de servicio</label>
-        <input type="text" class="form-control" id="tipoServicio" placeholder="servicio" name="tipoServicio">
-      </div>
-      <!--
-      <div class="form-group col-md-12">
-        <label for="inputAddress2">Empleado: </label>
-        <select class="form-select" aria-label="Default select example" name="empleado">
-          <option selected>Presione</option>
-          <option value="1">Julian</option>
-          <option value="2">Edward</option>
-          <option value="3">Andres</option>
-        </select>
-      </div>
-      -->
       <br>
       <div class="form-group col-md-12">
-        <label for="inputAddress2">Empleado</label>
-        <input type="text" class="form-control" id="tipoServicio" name="empleado" placeholder="empleado">
+        <label for="">Cotizacion</label>
+              <select class="form-control" name="Cotizacion">
+              <option value="">Seleccione</option>
+              {% for c in data1 %}
+                  <option value="{{ c.id }}">{{ c.descripcion }}</option>
+              {% endfor %}
+              </select>
+              
       </div>
+      <br>
+      <div class="form-group col-md-12">
+        <label for="">Empleado</label>
+              <select class="form-control" name="empleado">
+              <option value="">Seleccione</option>
+              {% for e in data %}
+                  <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
+              {% endfor %}
+              </select>
+      </div>
+      <br>
       <button type="submit" class="btn btn-success">Agendar</button>
     </div>
   </form>

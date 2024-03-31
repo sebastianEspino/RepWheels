@@ -21,7 +21,7 @@ class Productos(models.Model):
     descripcion_producto = models.TextField()
     cantidad=models.IntegerField()
     fecha_Creacion=models.DateField()
-    #categoria=models.ForeignKey(Categoria,on_delete=models.DO_NOTHING,blank=False,null=True)
+    categoria=models.ForeignKey(Categoria,on_delete=models.DO_NOTHING,blank=False,null=True)
     foto = models.ImageField(upload_to="fotos_productos/", default="fotos_productos/default.png")
     
     def __str__(self):
@@ -30,7 +30,7 @@ class Productos(models.Model):
 class Servicios(models.Model):
     nombre=models.CharField(max_length=254)
     descripcion_servicio = models.TextField()
-    #productos = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='0')
+    productos = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,blank=False,null=True)
     def __str__(self):
         return self.nombre
 
@@ -42,7 +42,7 @@ class Empleado(models.Model):
     fecha_contratacion=models.DateField()
     cargo=models.CharField(max_length=254)
     def __str__(self):
-        return self.nombre
+        return self.nombre_completo
 
 class DetallesServicio(models.Model):
     fecha = models.DateField()
@@ -92,8 +92,9 @@ class Cotizaciones(models.Model):
         return self.servicio
     
 class Calificaciones(models.Model):
-    nombre = models.CharField(max_length=254,blank=False,null=True,default='0')
-    #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING)
+    #nombre = models.CharField(max_length=254,blank=False,null=True,default='0')
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
+    servicio = models.CharField(max_length=254,null=True)
     Estrellas= (
         (1, "1"),
         (2,"2"),
@@ -108,19 +109,17 @@ class Calificaciones(models.Model):
     
 
 class Citas(models.Model):
-    fechaServicio = models.DateTimeField(null=True)
+    fechaServicio = models.DateField(null=True)
     hora = models.TimeField(null=True)
-    tipoServicio = models.CharField(max_length=254, null=True)
-    empleado = models.CharField(max_length=254)
-    #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING,default='0')
-    #cotizacion = models.ForeignKey(Cotizaciones,on_delete=models.DO_NOTHING,default='0')
-    #empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING,default='0')
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
+    cotizacion = models.ForeignKey(Cotizaciones,on_delete=models.DO_NOTHING,blank=False,null=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING,blank=False,null=True)
 
     def __str__(self):
         return f'{self.fechaServicio}'
 
 class Facturas(models.Model):
-    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING,default='1')
+    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING,blank=False,null=True)
     fecha = models.DateField()
     def __str__(self):
         return self.cliente

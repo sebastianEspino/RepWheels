@@ -12,6 +12,7 @@
           <th>idServicio</th>
           <th>Nombre del servicio</th>
           <th>Descripcion</th>
+          <th>Productos</th>
           <th>Acciones</th>
       </tr>
   </thead>
@@ -21,6 +22,7 @@
               <td>{{ r.id }}</td>
               <td>{{ r.nombre }}</td>
               <td>{{ r.descripcion_servicio }}</td>
+              <td>{{ r.productos }}</td>
               <td>
                   <a class="btn btn-info" href="{% url 'servicioEditar' r.id %}">Editar</a>
                   <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')">Eliminar</a>   

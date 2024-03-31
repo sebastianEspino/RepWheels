@@ -54,10 +54,10 @@ class Usuario(admin.ModelAdmin):
 
 @admin.register(Calificaciones)
 class Calificaciones(admin.ModelAdmin):
-    list_display=['id','nombre','cantidad_estrellas']
+    list_display=['id','cliente','cantidad_estrellas']
     search_fields = ['cantidad_estrellas']
 
 @admin.register(Citas)
 class Citas(admin.ModelAdmin):
-     list_display=['id','fechaServicio','hora','tipoServicio']
+     list_display=['id','fechaServicio','hora']
      search_fields = ['tipoServicio']

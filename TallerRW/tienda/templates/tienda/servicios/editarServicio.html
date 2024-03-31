@@ -15,21 +15,22 @@
         <input type="Text" class="form-control" id="NombreC" placeholder="NombreC" value="{{ data.nombre }}" name="nombre">
       </div>
       <br>
-      <!--<div class="form-group col-md-12">
-        <label for="inputAddress2">Tipo de servicio</label>
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Presione</option>
-          <option value="1">Pintora</option>
-          <option value="2">Mecanica</option>
-          <option value="3">Latoneria</option>
-        </select>
-      </div>
-      <br>
-      -->
       <div class="mb-3">
         <label for="descripcion" class="form-label">Descripcion de cotizacion</label>
         <input type="text" class="form-control" id="descripcion" placeholder="descripcion" value="{{ data.descripcion_servicio }}" name="descripcion_servicio">
       </div>
+      <br>
+              
+             <label for="">Productos</label>
+              <select class="form-control" name="producto">
+              <option value="">Seleccione</option>
+              {% for p in data1 %}
+                  <option value="{{ p.id }}" {% if data.productos.id == p.id %}selected{% endif %}>{{ p.nombre }}</option>
+
+              {% endfor %}
+              </select>
+              <br>
+      
       <button type="submit" class="btn btn-primary">Actualizar</button>
     </div>
   </form>

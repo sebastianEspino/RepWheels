@@ -12,10 +12,10 @@
                 <th>id</th>
                 <th>Fecha</th>
                 <th>Hora</th>
-                <th>Tipo de servicio</th>
+                <th>Cliente</th>
+                <th>Cotizacion</th>
                 <th>Empleado</th>
                 <th>Acciones</th>
-                
             </tr>
         </thead>
         <tbody>
@@ -24,7 +24,8 @@
                     <td>{{ r.id }}</td>
                     <td>{{ r.fechaServicio }}</td>
                     <td>{{ r.hora }}</td>
-                    <td>{{ r.tipoServicio }}</td>
+                    <td>{{ r.cliente }}</td>
+                    <td>{{ r.cotizacion }}</td>
                     <td>{{ r.empleado }}</td>
                     <td>
                         <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Editar</a>

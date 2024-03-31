@@ -32,8 +32,8 @@
                         
                         
                         <td>
-                            <a class="btn btn-info" href="{% url 'editarProductos' r.id %}">Editar</a>
-                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' r.id %}')">Eliminar</a>
+                            <a class="btn btn-info" href="{% url 'editarProductos' q.id %}">Editar</a>
+                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')">Eliminar</a>
                         </td>
                     </tr>
                 {% endfor %}
