@@ -30,42 +30,48 @@
     
             <!-- Modal body -->
             <div class="modal-body">
-              <form id="form1" >
-                <h1 style="text-align: center;">Citas</h1>
+              <form class="form1" action="{% url 'citaRegistrar' %}" method="post">
+                {% csrf_token %}
+                <h1 style="text-align: center;">Formulario de cita</h1>
                 <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="inputEmail4">Nombre del cliente:</label>
-                    <input type="text" class="form-control" id="Cita" placeholder="Nombre">
-                  </div>
+                  <input type="number" value="2" name="type_f" hidden>
                   <div class="form-group col-md-12">
                     <label for="inputPassword4">Fecha</label>
-                    <input type="date" class="form-control" id="Fecha" placeholder="Fecha">
+                    <input type="date" class="form-control" id="Fecha"  placeholder="Fecha" name ="fechaServicio">
                   </div>
                   <div class="form-group col-md-12">
                     <label for="inputCantidad">Hora</label>
-                    <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora">
+                    <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
                   </div>
+                  <br>
                   <div class="form-group col-md-12">
-                    <label for="inputAddress2">Tipo de servicio</label>
-                    <input type="text" class="form-control" id="tipoServicio" placeholder="servicio">
+                    <label for="">Cotizacion</label>
+                          <select class="form-control" name="Cotizacion">
+                          <option value="">Seleccione</option>
+                          {% for c in data1 %}
+                              <option value="{{ c.id }}">{{ c.descripcion }}</option>
+                          {% endfor %}
+                          </select>
+                          
                   </div>
+                  <br>
                   <div class="form-group col-md-12">
-                    <label for="inputAddress2">Empleado: </label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Presione</option>listarCl
-                        <option value="1">Julian</option>
-                        <option value="2">Edward</option>
-                        <option value="3">Andres</option>
-                      </select>
-                    
+                    <label for="">Empleado</label>
+                          <select class="form-control" name="empleado">
+                          <option value="">Seleccione</option>
+                          {% for e in data %}
+                              <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
+                          {% endfor %}
+                          </select>
                   </div>
+                  <br>
+                  <button type="submit" class="btn btn-primary">Agendar</button>
                 </div>
-              </form>
+              </form> 
             </div>
     
             <!-- Modal footer -->
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Agendar</button>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
             </div>
     
@@ -80,9 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
       
        events: [
 
-            {% for reserva in data %}
+            {% for reserva in data2 %}
               {
-                title: "{{ reserva.tipoServicio }}",
+                title: "{{ reserva.cliente }}",
                 star: "{{ reserva.fechaServico | date:'Y-m-d' }}"
 
               },

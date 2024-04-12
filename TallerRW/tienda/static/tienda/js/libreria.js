@@ -5,7 +5,7 @@ function eliminar(url){
 }
 
 function addCart(url,id_producto){
-    csrf_token = $("[name='csrfmiddlewaretoken']")[0];
+    csrf_token = $("[name='csrfmiddlewaretoken']")[0].value;
     id = $(`#id_${id_producto}`).val()
     cantidad = $(`#cantidad_${id_producto}`).val()
     items_carrito = $("#items_carrito")

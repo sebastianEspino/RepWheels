@@ -105,6 +105,10 @@ urlpatterns = [
 
     path("addCart",views.add_cart,name="addCart"),
     path("showCart",views.showCart,name="showCart"),
+    path("borrarU/<int:id>",views.removeOne,name="borrarU"),
+    path("borrarT",views.removeEvething,name="borrarT"),
+    path("pago",views.payment,name="pago"),
+    
 
 
 

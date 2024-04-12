@@ -119,16 +119,15 @@ class Citas(models.Model):
         return f'{self.fechaServicio}'
 
 class Facturas(models.Model):
-    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING,blank=False,null=True)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now=True)
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     def __str__(self):
         return self.cliente
 
 class DetalleFactura(models.Model):
-    productos = models.CharField(max_length=254)
-    categoria = models.CharField(max_length=254)
-    cantidad = models.IntegerField(null=True)
     factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
+    productos = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,blank=True,null=False)
+    cantidad = models.IntegerField(null=True)
     total = models.IntegerField()
 
     def __str__(self):

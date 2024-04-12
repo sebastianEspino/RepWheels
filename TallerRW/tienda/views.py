@@ -366,7 +366,9 @@ def proveedores_delete(request,id):
 
 def citas(request):
     q = Citas.objects.all()
-    contexto = {"data":q}
+    e = Empleado.objects.all()
+    c = Cotizaciones.objects.all()
+    contexto = {"data": e ,"data1":c,"data2":q}
     return render(request, "tienda/citas/cita.html",contexto)
 
 def registrarCita(request):
@@ -383,6 +385,7 @@ def listarCita(request):
 def citaRegistrar(request):
    
     if request.method == "POST":
+        opcion = request.POST.get("type_f")
         logueo = request.session.get("logueo",False)
         usuario = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
@@ -403,6 +406,7 @@ def citaRegistrar(request):
         cita.save()
 
         messages.success(request, "Cita guardada correctamente!!")
+       
         return redirect("listarCita")
 
 def cita_formulario_editar(request, id):
@@ -452,9 +456,6 @@ def citaEliminar(request, id):
     except Exception as e:
         messages.error(request, f'Error: {e}')
     return redirect('listarCita')
-
-
-
 
 
 
@@ -883,3 +884,91 @@ def showCart(request):
         request.session["items"] = len(carrito)
     
     return render(request,"tienda/carrito/carrito.html", contexto)
+
+
+
+def removeOne(request,id):
+    
+    carrito = request.session.get("carrito", False)
+
+    if carrito != False:
+         
+        for  i,item in enumerate(carrito):
+            print(i)
+            if item["id"] == id:
+                carrito.pop(i)
+                break
+            else:
+                messages.warning(request,"No se encontro el producto en el carrito de compras!!")
+    
+    request.session["items"] = len(carrito)
+    request.session["carrito"] = carrito
+    return redirect("showCart")
+
+
+def removeEvething(request):
+    try:
+        del request.session['carrito']
+        messages.success(request,'Carrito vaciado correctamente!!!')
+        return redirect('productos')
+    except Exception as e:
+        messages.warning(request,'Error!')
+        return redirect('inicio')
+    
+
+def payment(request):
+    q = request.session.get("logueo",False)
+    carrito = request.session.get("carrito",False)
+    try:
+        u = Usuarios.objects.get(pk=q["id"])
+        carrito = request.session.get("carrito",False)
+        venta = Facturas(
+            cliente = u
+        
+        )
+        venta.save()
+
+        for i, enum in carrito:
+            try:
+                p = Productos.objects.get(pk=enum["id"])
+            except p.DoesNotExist:
+                carrito.pop(i)
+                request.session["carrito"] = carrito    
+                request.session["items"] = len(carrito)
+			
+                raise Exception('El producto no existe...!!')
+            if int(enum["cantidad"]) > p.cantidad:
+                raise Exception(f"La cantidad del producto '{enum['producto']}' supera el inventario")
+            
+
+            df = DetalleFactura(
+                 
+                factura = venta,
+                productos = enum["nombre"],
+                cantidad = enum["cantidad"],
+                total = enum["Precio"]
+
+            )
+            cantidad_new = p.cantidad - enum["cantidad"]
+            p.cantidad = cantidad_new
+            p.save()
+            df.save()
+
+            del request.session["carrito"]
+            request.session["items"] = 0
+
+        messages.success(request,"La venta se creo correctamente !!")
+    except:
+        messages.warning(request,"Error al momento de crear la venta !!")
+
+    return redirect("productos")
+
+
+
+     
+
+    
+        
+            
+                  
+         
