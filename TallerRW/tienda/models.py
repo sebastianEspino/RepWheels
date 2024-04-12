@@ -100,10 +100,11 @@ class Calificaciones(models.Model):
         (2,"2"),
         (3,"3"),
         (4,"4"),
-        (4,"5"),
+        (5,"5"),
          
     )
     cantidad_estrellas = models.IntegerField(choices=Estrellas,default=5)
+    foto = models.ImageField
     def __str__(self):
         return self.nombre
     

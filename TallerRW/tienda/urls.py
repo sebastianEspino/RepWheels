@@ -70,6 +70,7 @@ urlpatterns = [
     path("calificacionListar", views.listarCalificacion, name="calificacionListar"),
     path("calificacionActualizar", views.calificacionActualizar, name="calificacionActualizar"),
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
+    path("agregar_calificacion_form/",views.agregar_calificacion_form, name="agregar_calificacion_form"),
 
     #crud de cotizaciones
     path('cotizaciones',views.cotizaciones,name='cotizaciones'),
@@ -108,8 +109,8 @@ urlpatterns = [
 
 
 
-    
- 
+    # editar perfil
+    path("editar_perfil/", views.editar_perfil,name="editar_perfil")
     
     
     

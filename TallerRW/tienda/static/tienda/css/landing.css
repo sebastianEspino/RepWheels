@@ -314,7 +314,7 @@ p i{
 
 
 .servicios{
-    min-height: 900px;
+    height: 100%;
     border: none;
 }
 
@@ -324,7 +324,7 @@ p i{
 
 
 .product{
-    display: grid; grid-template-columns: repeat(3,350px); row-gap:50px; margin-left: 80px; align-content: center; justify-content: center;
+    display: grid; grid-template-columns: repeat(4,350px); row-gap:50px; margin-left: 80px; align-content: center; justify-content: center;
 }
 
 
@@ -339,3 +339,50 @@ p i{
 
 
 
+/* estrellas  */
+
+
+#form_calificaciones {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+  
+  #form_calificaciones p {
+    text-align: center;
+  }
+  
+  #form_calificaciones label {
+    font-size: 20px;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  label {
+    color: grey;
+  }
+  
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  
+  label:hover,
+  label:hover ~ label {
+    color: orange;
+  }
+  
+  input[type="radio"]:checked ~ label {
+    color: orange;
+  }
+
+
+  .form_ed{
+    display: flex;
+
+    flex-direction: column;
+    width: 450px;
+    height: 450px;
+  }

@@ -92,3 +92,19 @@ function showCart(url){
     });
 }
 
+/* estrellas */
+
+function stars(){
+
+servicio = document.querySelector(".NombreC")
+cantidad_estrellas = document.querySelectorAll(".star")
+console.log(cantidad_estrellas)
+cantidad = document.querySelector("#cantidad")
+for(var i = 0; i < cantidad_estrellas.length; i++){
+    if (cantidad_estrellas[i].checked) {
+        cantidad.value = parseInt(cantidad_estrellas[i].value)
+        break
+    }
+}
+
+}

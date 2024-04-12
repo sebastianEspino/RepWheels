@@ -1,0 +1,51 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+
+{% block titulo %}editar perfil{% endblock %}
+
+{% block contenedor %}
+<!--
+<main id="info">
+    <article id="info_p">
+        <form>
+            <label><strong>Nombre:</strong></label>
+            <input type="text" value="{{ usuario.nombre }}">
+            <label><strong>Correo:</strong></label>
+            <input type="text" value="{{ usuario.correo }}">
+            <label><strong>Foto Actual:</strong></label>
+            <img src="{{ usuario.foto.url }}" alt="">
+            <label>Editar foto:</label>
+            <input type="file">
+       
+    </article>
+
+</main>
+-->
+<main id="info">
+    <article id="info_p">
+        <h1 class="text-center">Editar perfil</h1>
+        <strong>Foto Actual</strong>
+        <img src="{{ usuario.foto.url }}" alt="" height="100px" width="200px"><br>
+        <form>
+            <label><strong>Nombre:</strong></label><br>
+            <input type="text" value="{{ usuario.nombre }}"><br>
+            <label><strong>Correo:</strong></label>
+            <br>
+            <input type="text" value="{{ usuario.correo }}">
+            <br>
+            <label>Editar foto:</label><br>
+            <input type="file">
+            <br>
+            <br>
+            <div>
+                <a href="{% url 'change_password' %}" class="btn btn-danger">Cambiar contraseña</a>
+            </div>
+        </form>
+    </article>
+
+</main>
+
+
+
+{% endblock %}

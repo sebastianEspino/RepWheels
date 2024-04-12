@@ -529,8 +529,10 @@ def cotizacionActualizar(request):
 #CRUD calificaiones 
 
 def calificaciones(request):
+    logueo = request.session.get("logueo",False)
+    u = Usuarios.objects.filter(pk=logueo["id"])
     q = Calificaciones.objects.all()
-    contexto = {"data":q}
+    contexto = {"data":q,"usu":u}
     return render(request, "tienda/calificaciones/calificacion.html",contexto)
 
 
@@ -883,3 +885,35 @@ def showCart(request):
         request.session["items"] = len(carrito)
     
     return render(request,"tienda/carrito/carrito.html", contexto)
+
+def agregar_calificacion_form(request):
+    logueo = request.session.get("logueo",False)
+    u = Usuarios.objects.get(pk=logueo["id"])
+   
+    
+    if request.method == "POST":
+        try:
+           
+            servicio = request.POST.get("servicio")
+            estrellas = int(request.POST.get("estrellas"))
+            q = Calificaciones(
+                 cliente=u,
+                 servicio = servicio,
+                 cantidad_estrellas = estrellas
+            )
+            print("eee",estrellas)
+            q.save()
+            messages.success(request,"Realizado.....")
+            return redirect('calificaciones')
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('calificaciones')
+        
+def editar_perfil(request):
+     logueo = request.session.get("logueo",False)
+     u = Usuarios.objects.get(pk=logueo["id"])
+     context = {"usuario":u}
+     return render(request, "tienda/login/editar_perfil.html",context)
+
+def editar_perfil_form():
+     pass
