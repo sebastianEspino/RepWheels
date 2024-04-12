@@ -32,7 +32,17 @@ footer{
     height: 260px;
     color: rgb(255, 255, 255);
     border:1px solid black ;
+    position: fixed;
+    bottom: 0;
+    
 }
+
+footer h3,h1{
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 3px;
+}
+
 #super{
     margin-top: 50px;
     display: flex;
@@ -53,11 +63,7 @@ footer{
     letter-spacing: 3px;
 }
 
-footer h3,h1{
-    text-align: center;
-    font-style: italic;
-    letter-spacing: 3px;
-}
+
 
 #infer h3{
     font-style: italic;
