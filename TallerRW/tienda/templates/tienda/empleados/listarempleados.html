@@ -4,8 +4,8 @@
 {% block titulo %}Empleados{% endblock %}
 
 {% block contenedor %}
-<main>
-    <h1 style="padding: 90px;">Empleados</h1>
+<div class="container-fluid m-3" style="padding:90px;">
+    <h1>Empleados</h1>
     <table  class="table table-bordered">
         <thead class="table-dark">
             <tr>
@@ -15,7 +15,6 @@
                 <th>correo</th>
                 <th>cargo</th>
                 <th>Operaciones</th>
-                
             </tr>
         </thead>
         <tbody>
@@ -34,7 +33,6 @@
             {% endfor %}
         </tbody>
     </table>
-
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -44,5 +42,5 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
-</main>
+</div>
 {% endblock %}

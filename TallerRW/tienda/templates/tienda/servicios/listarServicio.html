@@ -4,42 +4,43 @@
 {% block titulo %}Listar Servicio{% endblock %}
 
 {% block contenedor %}
-<main>
-<h1 class="h1">Lista de Servicios</h1>
-<table class="table table-bordered">
-  <thead class="table-dark">
-      <tr>
-          <th>idServicio</th>
-          <th>Nombre del servicio</th>
-          <th>Descripcion</th>
-          <th>Productos</th>
-          <th>Acciones</th>
-      </tr>
-  </thead>
-  <tbody>
-      {% for r in data %}
-          <tr>
-              <td>{{ r.id }}</td>
-              <td>{{ r.nombre }}</td>
-              <td>{{ r.descripcion_servicio }}</td>
-              <td>{{ r.productos }}</td>
-              <td>
-                  <a class="btn btn-info" href="{% url 'servicioEditar' r.id %}">Editar</a>
-                  <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')">Eliminar</a>   
-              </td>
-          </tr>
-      {% endfor %}
-  </tbody>
-</table>
+<div class="container-fluid m-3" style="padding:90px;">
+    <h1 class="h1">Lista de Servicios</h1>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>idServicio</th>
+                <th>Nombre del servicio</th>
+                <th>Descripcion</th>
+                <th>Productos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in data %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.nombre }}</td>
+                <td>{{ r.descripcion_servicio }}</td>
+                <td>{{ r.productos }}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'servicioEditar' r.id %}">Editar</a>
+                    <a class="btn btn-danger"
+                        href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
-</main>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
 {% endblock %}

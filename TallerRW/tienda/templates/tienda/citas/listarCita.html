@@ -4,8 +4,8 @@
 {% block titulo %}Listar Citas{% endblock %}
 
 {% block contenedor %}
-<main>
-<h1>Citas</h1>
+<div class="container-fluid m-3" style="padding:90px;">
+    <h1>Citas</h1>
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
@@ -20,18 +20,18 @@
         </thead>
         <tbody>
             {% for r in data %}
-                <tr>
-                    <td>{{ r.id }}</td>
-                    <td>{{ r.fechaServicio }}</td>
-                    <td>{{ r.hora }}</td>
-                    <td>{{ r.cliente }}</td>
-                    <td>{{ r.cotizacion }}</td>
-                    <td>{{ r.empleado }}</td>
-                    <td>
-                        <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Editar</a>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'citaEliminar' r.id %}')">Eliminar</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.fechaServicio }}</td>
+                <td>{{ r.hora }}</td>
+                <td>{{ r.cliente }}</td>
+                <td>{{ r.cotizacion }}</td>
+                <td>{{ r.empleado }}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Editar</a>
+                    <a class="btn btn-danger" href="javascript:eliminar('{% url 'citaEliminar' r.id %}')">Eliminar</a>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -45,5 +45,5 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
-</main>
+</div>
 {% endblock %}

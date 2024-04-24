@@ -4,36 +4,36 @@
 {% block titulo %}Crear empleado{% endblock %}
 
 {% block contenedor %}
-      <main>
-        <h1 class="h1">Lista de Cotizaciones</h1>
-        <table class="table table-bordered">
-            <thead class="table-dark">
-              <tr>
-                <th>ID Cotizacion</th>
-                <th>Tipo de servicio</th>
-                <th>Descripcion</th>
-                <th>Correo</th>
-                <th>Empleado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for r in data %}
-                  <tr>
-                      <td>{{ r.id }}</td>
-                      <td>{{ r.tipos }}</td>
-                      <td>{{ r.descripcion }}</td>
-                      <td>{{ r.correo }}</td>
-                      <td>{{ r.empleado }}</td>
-                      
-                      <td>
-                        <a class="btn btn-info" href="{% url 'cotizacionEditar' r.id %}">Editar</button>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'cotizacionEliminar' r.id %}')">Eliminar</a>
-                      </td>
-                  </tr>
-              {% endfor %}
-              
-            </tbody>
-          </table>
-      </main>
-      {% endblock %}
+<div style="padding:90px;">
+  <h1>Lista de Cotizaciones</h1>
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID Cotizacion</th>
+        <th>Tipo de servicio</th>
+        <th>Descripcion</th>
+        <th>Correo</th>
+        <th>Empleado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in data %}
+      <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.tipos }}</td>
+        <td>{{ r.descripcion }}</td>
+        <td>{{ r.correo }}</td>
+        <td>{{ r.empleado }}</td>
+
+        <td>
+          <a class="btn btn-info" href="{% url 'cotizacionEditar' r.id %}">Editar</button>
+            <a class="btn btn-danger" href="javascript:eliminar('{% url 'cotizacionEliminar' r.id %}')">Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}
