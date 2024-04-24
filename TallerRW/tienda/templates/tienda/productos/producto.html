@@ -5,33 +5,33 @@
 
 {% block contenedor %}
       <main>
-        <section style="background-color: black;">
-            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
+        <section style="margin-top: 80px;border: none;">
+            <div id="carouselServicios" class="carousel slide" >
               <div class="carousel-inner">
                 <div class="carousel-item active">
                   <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentoproducto.jpg' %}" class="d-block mx-auto" width="80%" height="400px"
+                    <img src="{% static 'tienda/img/descuentoproducto.jpg' %}" class="d-block mx-auto" width="50%" height="400px"
                       alt="imagen descuentos">
                   </div>
                 </div>
                 <div class="carousel-item">
                   <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentomanodeobra.jpg' %}" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
+                    <img src="{% static 'tienda/img/descuentomanodeobra.jpg' %}" class="d-block mx-auto" width="50%" height="400px" alt="imagen combos">
                   </div>
                 </div>
               </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
+              <button class="carousel-control-prev flechas" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterios</span>
               </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
+              <button class="carousel-control-next flechas" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
                 <span class="carousel-control-next-icon" ariahidden="true"></span>
                 <span class="visually-hidden">Siguiente</span>
               </button>
             </div>
           </section>
           <section class="servicios">
-            <h1>Productos</h1>
+            <h1 style="margin-top: 20px;">Productos</h1>
             <div>
               <div class="product">
                   {% if data %}

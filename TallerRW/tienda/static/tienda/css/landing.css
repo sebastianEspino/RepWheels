@@ -89,10 +89,9 @@ li{
 }
 
 .tit{
-    padding: 2px,2px,2px,2px;
+    padding: 2px,2px,2px,2px;   
     width: 100%;
     height: 45px;
-    background-color: #BDBFAA;
     color: black;
     font-style: italic;
     letter-spacing: 2px;
@@ -229,7 +228,7 @@ i{
     flex-direction: row;
     justify-content:center;
     gap:50px; 
-    margin-top: 20px;
+    padding: 30px;
 }
 
 #funcionC{
@@ -253,7 +252,7 @@ i{
 #info{
     display: flex;
     justify-content: center;
-    padding: 30px;
+    padding: 90px;
 }
 
 
@@ -266,8 +265,9 @@ i{
 
 
 #scitas{
-    height:800px;
+    height:870px;
     color: black;
+    padding-top: 80px;
 }
 
 .botones a{
@@ -318,8 +318,9 @@ p i{
 }
 
 
+
 .servicios{
-    min-height: 900px;
+    height: 100%;
     border: none;
 }
 
@@ -330,8 +331,13 @@ p i{
 
 .product{
     display: grid; grid-template-columns: repeat(3,350px); row-gap:50px; margin-left: 80px; align-content: center; justify-content: center;
+    padding: 80px   ;
 }
 
+.flechas{
+    margin-left: 150px;
+    margin-right: 150px;
+}
 
 #calendar{
     margin-top: 20px;
