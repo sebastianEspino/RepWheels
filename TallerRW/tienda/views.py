@@ -61,7 +61,7 @@ class DetalleServicioViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
-    logueo = request.session.get("logueo", False)
+ 
     q = Calificaciones.objects.all()
     contexto = {"data":q}
     return render(request, "tienda/index.html")

@@ -1,10 +1,10 @@
-function eliminar(url){
+function eliminar(url) {
     if (confirm("¿Está seguro?")) {
         location.href = url;
     }
 }
 
-function addCart(url,id_producto){
+function addCart(url, id_producto) {
     csrf_token = $("[name='csrfmiddlewaretoken']")[0];
     id = $(`#id_${id_producto}`).val()
     cantidad = $(`#cantidad_${id_producto}`).val()
@@ -23,38 +23,38 @@ function addCart(url,id_producto){
     $.ajax({
         url: url,
         type: "POST",
-        data: {"csrfmiddlewaretoken": csrf_token, "id": id, "cantidad": cantidad}
+        data: { "csrfmiddlewaretoken": csrf_token, "id": id, "cantidad": cantidad }
     })
-    .done(function(respuesta){
+        .done(function (respuesta) {
 
-        if (respuesta != "Error"){
+            if (respuesta != "Error") {
 
-            loader.removeClass("d-block");
-            loader.addClass("d-none");
-            // Pintar respuesta en offCanvas
-            contenido.html(respuesta);
+                loader.removeClass("d-block");
+                loader.addClass("d-none");
+                // Pintar respuesta en offCanvas
+                contenido.html(respuesta);
 
-            //Buscar items en html resultante
-            let position_ini = respuesta.search(" ");
-            let position_final = respuesta.search("</h1>");
-            let result = respuesta.substring(position_ini+2, position_final-1);
-            items_carrito.html(result);
-        }
-        else{
-            location.href="/productos";
-        }
-    })
-    .fail(function(respuesta){
-        location.href="/citas";
-    });
+                //Buscar items en html resultante
+                let position_ini = respuesta.search(" ");
+                let position_final = respuesta.search("</h1>");
+                let result = respuesta.substring(position_ini + 2, position_final - 1);
+                items_carrito.html(result);
+            }
+            else {
+                location.href = "/productos";
+            }
+        })
+        .fail(function (respuesta) {
+            location.href = "/citas";
+        });
 
     console.log("Comprado !!!")
 }
 
 
 
-function showCart(url){
-    
+function showCart(url) {
+
     contenido = $("#respuesta_carrito")
     loader = $("#loader")
 
@@ -67,44 +67,47 @@ function showCart(url){
     $.ajax({
         url: url
     })
-    .done(function(respuesta){
+        .done(function (respuesta) {
 
-        if (respuesta != "Error"){
-            /*setTimeout(()=>{
+            if (respuesta != "Error") {
+                /*setTimeout(()=>{
+                    loader.removeClass("d-block");
+                    loader.addClass("d-none");
+                    // Pintar respuesta en offCanvas
+                    contenido.html(respuesta);
+                }, 3000);*/
+
                 loader.removeClass("d-block");
                 loader.addClass("d-none");
                 // Pintar respuesta en offCanvas
                 contenido.html(respuesta);
-            }, 3000);*/
 
-            loader.removeClass("d-block");
-            loader.addClass("d-none");
-            // Pintar respuesta en offCanvas
-            contenido.html(respuesta);
-
-        }
-        else{
-            location.href="/productos";
-        }
-    })
-    .fail(function(respuesta){
-        location.href="/productos";
-    });
+            }
+            else {
+                location.href = "/productos";
+            }
+        })
+        .fail(function (respuesta) {
+            location.href = "/productos";
+        });
 }
 
 /* estrellas */
 
-function stars(){
+function stars() {
 
-servicio = document.querySelector(".NombreC")
-cantidad_estrellas = document.querySelectorAll(".star")
-console.log(cantidad_estrellas)
-cantidad = document.querySelector("#cantidad")
-for(var i = 0; i < cantidad_estrellas.length; i++){
-    if (cantidad_estrellas[i].checked) {
-        cantidad.value = parseInt(cantidad_estrellas[i].value)
-        break
+    servicio = document.querySelector(".NombreC")
+    cantidad_estrellas = document.querySelectorAll('input[name="grupo_e"]')
+    console.log(cantidad_estrellas)
+    cantidad = document.querySelector("#cantidad")
+    for (var i = 0; i < cantidad_estrellas.length; i++) {
+        console.log(cantidad_estrellas[i].value)
+        if (cantidad_estrellas[i].checked) {
+            cantidad.value = parseInt(cantidad_estrellas[i].value)
+            break
+        }
     }
-}
 
 }
+
+
