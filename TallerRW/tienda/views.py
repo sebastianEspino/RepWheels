@@ -726,9 +726,11 @@ def logout(request):
 def profile(request):
     p = request.session.get("logueo",False)
     q = Usuarios.objects.get(pk=p["id"])
-    c = Clientes.objects.get(correo=q.correo)
-    
-    contexto = {"data":q,"data1":c}
+    if q.rol == 4:
+        c = Clientes.objects.get(correo=q.correo)
+        contexto = {"data":q,"data1":c}
+    else:
+        contexto = {"data":q}
     return render(request,'tienda/login/profile.html',contexto)
 
 def completeInformation(request):
