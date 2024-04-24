@@ -1,6 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -33,8 +34,9 @@
                                 <li><a class="dropdown-item" href="{% url 'crearProductoform' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarProductos' %}">Listar</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'productos' %}">Productos</a></li>
-                                
+                                <li><a class="dropdown-item" href="{% url 'productos' %}">Productos</a>
+                                </li>
+
                             </ul>
                         </li>
 
@@ -108,37 +110,39 @@
                                 <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
                             </ul>
                         </li>
-                        
+
                     </ul>
                     <form id='botones' class="d-flex">
-                        {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
-                            <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
-                            <a href="{% url 'perfil' %}" class="btn btn-danger" ><i class="bi bi-person-fill"></i></a>
-                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-danger"><i class="bi bi-cart-fill"></i>
-                        
+                        {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %} <a
+                            class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
+                            <a href="{% url 'perfil' %}" class="btn btn-danger"><i class="bi bi-person-fill"></i></a>
+                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-danger"><i
+                                    class="bi bi-cart-fill"></i>
+
                             </a>
                             <a class="btn btn-danger" href="{% url 'logout' %}">Cerrar</a>
-                        {% else %}
+                            {% else %}
                             <a class="btn btn-danger" href="{% url 'login' %}">Iniciar</a>
                             <a class="btn btn-danger" href="{% url 'register' %}">Registrarse</a>
-                        {% endif %}
-                        
+                            {% endif %}
+
                     </form>
                 </div>
             </div>
         </nav>
     </header>
     {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     {% endif %}
 
     <div>
-        
+
         {% block contenedor %}
         {% endblock %}
     </div>

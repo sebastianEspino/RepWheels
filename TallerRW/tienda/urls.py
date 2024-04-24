@@ -18,7 +18,7 @@ router.register(r'DetalleServicio',views.DetalleServicioViewSet)
 
 
 urlpatterns = [
-    path('',views.index, name = "index"),
+    path('',views.index, name = "index", ),
     path('api/1.0/', include(router.urls)),
     #crud de productos
     path('productos',views.productos,name='productos'),

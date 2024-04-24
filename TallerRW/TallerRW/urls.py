@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('RepWheels/',include('tienda.urls')),
-    
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
