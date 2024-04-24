@@ -92,3 +92,53 @@ function showCart(url){
     });
 }
 
+
+function stars(){
+
+    servicio = document.querySelector(".NombreC")
+    cantidad_estrellas = document.querySelectorAll(".star")
+    console.log(cantidad_estrellas)
+    cantidad = document.querySelector("#cantidad")
+    for(var i = 0; i < cantidad_estrellas.length; i++){
+        if (cantidad_estrellas[i].checked) {
+            cantidad.value = parseInt(cantidad_estrellas[i].value)
+            break
+        }
+    }
+    
+}
+
+function update_totales_carrito(url,id){
+    
+    contenido = $("#respuesta_carrito")
+    loader = $("#loader")
+    cantidad = $("#cantidad_carrito_"+id)
+    items_carrito = $("#items_carrito")
+    
+
+    loader.removeClass("d-block");
+    loader.addClass("d-none");
+
+    $.ajax({
+        url: url,
+        type:"GET",
+        data:{"cantidad":cantidad.val()}
+
+    })
+    .done(function(respuesta){
+
+        if (respuesta != "Error"){
+
+            loader.removeClass("d-block");
+            loader.addClass("d-none");
+            // Pintar respuesta en offCanvas
+            contenido.html(respuesta);
+        }
+        else{
+            location.href="/productos";
+        }
+    })
+    .fail(function(respuesta){
+        location.href="/RepWheels/productos";
+    });
+}

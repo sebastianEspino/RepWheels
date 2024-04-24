@@ -100,6 +100,7 @@ urlpatterns = [
     path('change',views.change,name="change"),
     path('formEditeProfile',views.editeFormProfile,name="formEditeProfile"),
     path('changeProfile',views.updateInfoProfile,name="changeProfile"),
+    path("informacion",views.completeInformation,name="informacion"),
     
     #Cart - Shopping
 
@@ -108,6 +109,8 @@ urlpatterns = [
     path("borrarU/<int:id>",views.removeOne,name="borrarU"),
     path("borrarT",views.removeEvething,name="borrarT"),
     path("pago",views.payment,name="pago"),
+    path("agregar_calificacion_form/",views.agregar_calificacion_form, name="agregar_calificacion_form"),
+    path("editeShop/<int:id>",views.update_totales_carrito,name="editeShop"),
     
 
 

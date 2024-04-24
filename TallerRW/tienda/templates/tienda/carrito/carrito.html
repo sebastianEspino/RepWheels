@@ -18,16 +18,19 @@
                     </td>
                     <td>
                         <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
-                        <input type="number" name="cantidad" id="cantidad_carrito_{{ p.id }}" min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" size="3"/>
+                        <input type="number" oninput="update_totales_carrito(`{% url 'editeShop' p.id %}`, {{ p.id }});" name="cantidad" id="cantidad_carrito_{{ p.id }}" min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" size="3"/>
                     </td>
                     <td class="text-end">${{ p.subtotal }}</td>
                     <td>
                         <a class="btn btn-danger" href="{% url 'borrarU' p.id %}" >x</a>
                     </td>
 
-                </tr>
-                
+                </tr>    
             {% endfor %}
+            <tr>
+                <td colspan="3">TOTAL</td>
+                <td class="text-end">${{ total }}</td>
+            </tr>
         </tbody>
         
     </table>

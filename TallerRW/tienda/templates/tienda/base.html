@@ -110,7 +110,7 @@
                         </li>
                         
                     </ul>
-                    <form id='botones' class="d-flex">
+                    <div id='botones' class="d-flex">
                         {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
                             <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
                             <a href="{% url 'perfil' %}" class="btn btn-danger" ><i class="bi bi-person-fill"></i></a>
@@ -123,7 +123,7 @@
                             <a class="btn btn-danger" href="{% url 'register' %}">Registrarse</a>
                         {% endif %}
                         
-                    </form>
+                        </div>
                 </div>
             </div>
         </nav>
@@ -178,6 +178,7 @@
         </div>
         <div>
             <form class="d-flex">
+                {% csrf_token %}
                 <input class="form-control me-2" type="text" placeholder="Buscar">
                 <button class="btn btn-outline-danger me-2" type="button">Buscar</button>
             </form>

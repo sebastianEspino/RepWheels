@@ -53,10 +53,11 @@ class DetallesServicio(models.Model):
 
 class Clientes(models.Model):
     nombre_completo=models.CharField(max_length=254)
-    cedula=models.IntegerField(unique=True)
+    cedula=models.IntegerField(blank=False,null=False,default=0)
     correo=models.CharField(max_length=254,unique=True)
-    telefono=models.IntegerField(unique=True)
+    telefono=models.IntegerField(blank=False,null=False,default=0)
     direccion=models.CharField(max_length=254)
+    n = models.IntegerField(blank=False,null=False,default=0)
     def __str__(self):
         return self.nombre_completo
 
@@ -89,7 +90,7 @@ class Cotizaciones(models.Model):
     #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, default='0')
     #empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
     def _str_(self):
-        return self.servicio
+        return self.tipos
     
 class Calificaciones(models.Model):
     #nombre = models.CharField(max_length=254,blank=False,null=True,default='0')

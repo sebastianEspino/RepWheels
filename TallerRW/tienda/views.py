@@ -685,9 +685,6 @@ def servicioActualizar(request):
     return redirect('listarServicio')
 
 
-        
-
-
 #Login
 
 def login(request):
@@ -729,8 +726,34 @@ def logout(request):
 def profile(request):
     p = request.session.get("logueo",False)
     q = Usuarios.objects.get(pk=p["id"])
-    contexto = {"data":q}
+    c = Clientes.objects.get(correo=q.correo)
+    
+    contexto = {"data":q,"data1":c}
     return render(request,'tienda/login/profile.html',contexto)
+
+def completeInformation(request):
+    p = request.session.get("logueo",False)
+    q = Usuarios.objects.get(pk=p["id"])
+    
+    if request.method == "POST":
+        n = request.POST.get("info")
+        cedula = request.POST.get("cedula")
+        telefono = request.POST.get("telefono")
+        direccion = request.POST.get("direccion")
+
+        cliente = Clientes.objects.get(correo=q.correo)
+        cliente.cedula = cedula
+        cliente.telefono = telefono
+        cliente.direccion = direccion
+        cliente.n = n
+        cliente.save()
+        
+
+        cliente.save()
+        messages.success(request,"La informacion se cuardo correctamente")
+
+    return redirect("perfil")
+          
 
 def register(request):
     return render(request,"tienda/registro/registro.html")
@@ -745,6 +768,17 @@ def registerUser(request):
             correo = email,
             clave = clave
         )
+
+        cliente = Clientes(
+            nombre_completo = name,
+            correo = email,
+            cedula = 0,
+            telefono = 0,
+            direccion = "desconocida"
+
+             
+        )
+        cliente.save()
 
         user.save()
 
@@ -843,6 +877,7 @@ def add_cart(request):
                             "precio":q.Precio,
                             "cantidad": int(cantidad),
                             "subtotal": int(cantidad) * q.Precio
+                            
                         }
                     )
                 else:
@@ -921,17 +956,15 @@ def payment(request):
     carrito = request.session.get("carrito",False)
     try:
         u = Usuarios.objects.get(pk=q["id"])
-        carrito = request.session.get("carrito",False)
         venta = Facturas(
             cliente = u
-        
         )
         venta.save()
 
-        for i, enum in carrito:
+        for i, enum in enumerate(carrito):
             try:
                 p = Productos.objects.get(pk=enum["id"])
-            except p.DoesNotExist:
+            except Productos.DoesNotExist:
                 carrito.pop(i)
                 request.session["carrito"] = carrito    
                 request.session["items"] = len(carrito)
@@ -944,9 +977,9 @@ def payment(request):
             df = DetalleFactura(
                  
                 factura = venta,
-                productos = enum["nombre"],
+                productos = enum["producto"],
                 cantidad = enum["cantidad"],
-                total = enum["Precio"]
+                total = enum["subtotal"]
 
             )
             cantidad_new = p.cantidad - enum["cantidad"]
@@ -964,7 +997,45 @@ def payment(request):
     return redirect("productos")
 
 
+def update_totales_carrito(request,id):
+	try:
+		carro = request.session['carrito']
+		cantidad = request.GET.get('cantidad')
+		for i in carro:
+			if i["id"] == id:
+				i["cantidad"] = int(cantidad)
+				i["subtotal"] = int(cantidad) * i["precio"]
+				
+		
+		request.session['items'] = len(carro)
+		return redirect("showCart")
+	except Exception as e:
+		messages.warning(request,"No se pudo eliminar el producto")
+	return redirect("showCart")
 
+
+def agregar_calificacion_form(request):
+    logueo = request.session.get("logueo",False)
+    u = Usuarios.objects.get(pk=logueo["id"])
+   
+    
+    if request.method == "POST":
+        try:
+           
+            servicio = request.POST.get("servicio")
+            estrellas = int(request.POST.get("estrellas"))
+            q = Calificaciones(
+                 cliente=u,
+                 servicio = servicio,
+                 cantidad_estrellas = estrellas
+            )
+            print("eee",estrellas)
+            q.save()
+            messages.success(request,"Realizado.....")
+            return redirect('calificaciones')
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('calificaciones')
      
 
     

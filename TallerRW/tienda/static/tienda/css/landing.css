@@ -228,7 +228,7 @@ i{
 }
 
 #funcionC{
-    height: 800px;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -335,6 +335,50 @@ p i{
     background-color: rgb(97, 95, 95);
 }
 
+#form_calificaciones {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+  
+  #form_calificaciones p {
+    text-align: center;
+  }
+  
+  #form_calificaciones label {
+    font-size: 20px;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  label {
+    color: grey;
+  }
+  
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  
+  label:hover,
+  label:hover ~ label {
+    color: orange;
+  }
+  
+  input[type="radio"]:checked ~ label {
+    color: orange;
+  }
+
+
+  .form_ed{
+    display: flex;
+
+    flex-direction: column;
+    width: 450px;
+    height: 450px;
+  }
 
 
 
