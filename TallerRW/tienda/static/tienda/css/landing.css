@@ -240,11 +240,11 @@ i{
 #info_p{
     border: 1px solid black;
     border-radius: 5%;
-    width: 500px;
+    width: 600px;
     height: 450px;
     display: flex;
-    flex-direction: column;
-    padding: 10px;
+    flex-direction: row;
+    padding: 30px;
     align-items: center;
 
 }
@@ -252,7 +252,7 @@ i{
 #info{
     display: flex;
     justify-content: center;
-    padding: 90px;
+    padding: 2%;
 }
 
 

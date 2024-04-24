@@ -4,24 +4,38 @@
 {% block titulo %}Informacion{% endblock %}
 
 {% block contenedor %}
-<main id="info">
+<h1 class="text-center" style="padding-top: 5%;">Informacion de perfil</h1>
+<div id="info">
     <article id="info_p">
-        <h1 class="text-center">Informacion de perfil</h1>
-        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br>
-        <p>
-            Nombre : {{ data.nombre }} <br><br>
-            Correo : {{ data.correo }} <br><br>
-            Rol : {{ data.get_rol_display }}
-        </p>
-        <br>
-        <div>
-            <a class="btn btn-danger" href="#">Editar</a>
-                 
-            <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
-        </div>
+        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br><br>
+            <form action="#" method="post">
+                <p style="margin-top: 60px;">
+                    <strong style="margin-right: 8px;">Nombre :</strong> {{ data.nombre }} <br>
+                    <strong style="margin-right: 16px;">Correo :</strong> {{ data.correo }}
+                </p> 
+                {% csrf_token %}
+                <input type="number" value="1" name="info" hidden>
+                <label style="margin-right: 19px; margin-bottom: 6px;" for=""><strong>Cedula:</strong></label>
+                <input type="number" name="cedula"><br>
+                <label style="margin-right: 4px; margin-bottom: 6px;" for=""><strong>Telefono:</strong></label>
+                <input type="number" name="telefono"><br>
+                <label style="margin-bottom: 6px;" for=""><strong>Direccion:</strong></label>
+                <input type="text" name="direccion"><br>
+                <button style="margin-top: 20px;" class="btn btn-danger ">Enviar</button>
+                <div>
+                    <a style="margin-top: 100px;" class="btn btn-danger " href="#">Editar</a>
+                         
+                    <a style="margin-top: 100px;" href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+                </div>
+            
+            </form>
+    
+        <br><br>
     </article>
 
-</main>
+    
+
+</div>
 
 
 
