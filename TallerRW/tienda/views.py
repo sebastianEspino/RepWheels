@@ -4,7 +4,7 @@ from .models import*
 from rest_framework import viewsets
 from . serializers import *
 from django.contrib import messages
-
+from django.contrib.auth import logout as django_logout
 
 
 # API with rest framework 
@@ -65,6 +65,12 @@ def index(request):
     q = Calificaciones.objects.all()
     contexto = {"data":q}
     return render(request, "tienda/index.html")
+
+
+
+
+
+
 
 
 # crud de  productos.
@@ -692,38 +698,56 @@ def servicioActualizar(request):
 def login(request):
     return render(request,'tienda/login/login.html')
 
+from django.contrib import messages
+from django.shortcuts import redirect
+from .models import Usuarios  # Asegúrate de importar tu modelo Usuarios
+
 def logueo(request):
     if request.method == "POST":
         email = request.POST.get('correo')
         pss = request.POST.get('clave')
+        
         try:
-            u = Usuarios.objects.get(correo=email,clave=pss)
-            request.session["logueo"]={
-                "id":u.id,
-                "nombre":u.nombre,
-                "correo":u.correo,
-                "rol":u.rol
+            u = Usuarios.objects.get(correo=email, clave=pss)
+            request.session["logueo"] = {
+                "id": u.id,
+                "nombre": u.nombre,
+                "correo": u.correo,
+                "rol": u.rol
             }
             request.session["carrito"] = []
             request.session["items"] = 0
+
             messages.success(request, f"Bienvenido {u.nombre}!!")
+
+            # Verificar si el usuario inició sesión con Google
+            social_accounts = request.user.socialaccount_set.all()
+            for social_account in social_accounts:
+                if social_account.provider == 'google':
+                    return redirect('index')
+
             return redirect("index")
-        except Exception as e:
+        except Usuarios.DoesNotExist:
             messages.error(request, "Error: Usuario o contraseña incorrectos...")
             return redirect("login")
-        
     else:
-        messages.warning(request,"Error: No se enviaron los datos")
+        messages.warning(request, "Error: No se enviaron los datos")
         return redirect('login')
+
+
 
 def logout(request):
     try:
         del request.session['logueo']
+        django_logout(request)
         messages.success(request,'Cerrado correctamente!!!')
         return redirect('login')
     except Exception as e:
         messages.warning(request,'Error!')
         return redirect('index')
+
+
+
 
 def profile(request):
     p = request.session.get("logueo",False)

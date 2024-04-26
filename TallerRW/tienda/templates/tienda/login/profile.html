@@ -8,16 +8,25 @@
     <article id="info_p">
         <h1 class="text-center">Informacion de perfil</h1>
         <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br>
+        {% if user.is_authenticated %}
+        <p>
+            Nombre : {{ user }} <br><br>
+            Correo : {{ user.email }} <br><br>
+            Rol : {{ data.get_rol_display }}
+        </p>
+        {% else %}
         <p>
             Nombre : {{ data.nombre }} <br><br>
             Correo : {{ data.correo }} <br><br>
             Rol : {{ data.get_rol_display }}
+
         </p>
+        {% endif %}
         <br>
         <div>
             <a class="btn btn-danger" href="#">Editar</a>
-                 
-            <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+
+            <a href="{% url 'change_password' %}" class="btn btn-danger">Cambiar contraseña</a>
         </div>
     </article>
 
