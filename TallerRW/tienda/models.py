@@ -79,18 +79,16 @@ class Usuarios(models.Model):
         return self.nombre
     
 class Cotizaciones(models.Model):
-    tipos = models.CharField(max_length=254)
-    descripcion = models.TextField(blank=True)
-    #vehiculo = models.CharField(max_length=254)
-    #modelo = models.IntegerField(default=1900)
-    correo = models.CharField(max_length=254)
-    empleado = models.CharField(max_length=254)
-    
-    #servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='0')
-    #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, default='0')
-    #empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
+    vehiculo = models.CharField(max_length=254,blank=False,null=True)
+    modelo = models.IntegerField(default=1900)
+    placa = models.CharField(max_length=6,blank=False, null=True)  
+    kilometraje = models.IntegerField(default=1236456)
+    linea = models.CharField(max_length=254,blank=False,null=True)
+    servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='Mantenimiento')
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING, blank=False,null=True)
+    empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
     def _str_(self):
-        return self.tipos
+        return self.servicio
     
 class Calificaciones(models.Model):
     #nombre = models.CharField(max_length=254,blank=False,null=True,default='0')

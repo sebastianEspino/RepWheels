@@ -1,12 +1,12 @@
 main{
     display: flex;
     justify-content: center;
-    height: 650px;
+    height: 720px;
 }
 
 .form1{
     margin-top: 40px ;
-    height: 540px;
+    height: 600px;
     width: 800px;
     display: flex;
     flex-direction: column;
@@ -19,6 +19,10 @@ main{
 
 .cart-shopping{
     background-color: black;
+}
+
+.datos{
+    display: grid; grid-template-columns: repeat(2,250px); gap:30px;  
 }
 
 footer{

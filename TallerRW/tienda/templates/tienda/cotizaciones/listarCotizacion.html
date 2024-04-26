@@ -9,23 +9,28 @@
         <table class="table table-bordered">
             <thead class="table-dark">
               <tr>
-                <th>ID Cotizacion</th>
-                <th>Tipo de servicio</th>
-                <th>Descripcion</th>
-                <th>Correo</th>
+                <th>ID</th>
+                <th>Vehiculo</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+                <th>Kilometraje</th>
+                <th>Linea</th>
+                <th>Servicio</th>
+                <th>Cliente</th>
                 <th>Empleado</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {% for r in data %}
                   <tr>
                       <td>{{ r.id }}</td>
-                      <td>{{ r.tipos }}</td>
-                      <td>{{ r.descripcion }}</td>
-                      <td>{{ r.correo }}</td>
+                      <td>{{ r.modelo }}</td>
+                      <td>{{ r.placa }}</td>
+                      <td>{{ r.kilometraje }}</td>
+                      <td>{{ r.linea }}</td>
+                      <td>{{ r.servicio }}</td>
+                      <td>{{ r.cliente }}</td>
                       <td>{{ r.empleado }}</td>
-                      
                       <td>
                         <a class="btn btn-info" href="{% url 'cotizacionEditar' r.id %}">Editar</button>
                         <a class="btn btn-danger" href="javascript:eliminar('{% url 'cotizacionEliminar' r.id %}')">Eliminar</a>

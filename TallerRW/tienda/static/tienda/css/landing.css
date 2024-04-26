@@ -293,11 +293,14 @@ p i{
 }
 
 .datos{
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap:50px;
+    display: grid; grid-template-columns: repeat(2,250px); gap:30px;  
 }
 
+#cotizar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #descr{
     height: 90px;

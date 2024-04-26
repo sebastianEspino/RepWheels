@@ -463,11 +463,17 @@ def citaEliminar(request, id):
 #CRUD cotizaciones
 
 def cotizaciones(request):
-    return render(request, "tienda/cotizaciones/cotizacion.html")
+    e = Empleado.objects.all()
+    s = Servicios.objects.all()
+    contexto = {"empleados":e, "servicios":s}
+    return render(request, "tienda/cotizaciones/cotizacion.html",contexto)
 
 
 def registrarCotizacion(request):
-    return render(request,'tienda/cotizaciones/registrarCotizacion.html')
+    e = Empleado.objects.all()
+    s = Servicios.objects.all()
+    contexto = {"empleados":e, "servicios":s}
+    return render(request,'tienda/cotizaciones/registrarCotizacion.html',contexto)
 
 
 def listarCotizacion(request):
@@ -476,21 +482,32 @@ def listarCotizacion(request):
     return render(request, "tienda/cotizaciones/listarCotizacion.html", context)
 
 def cotizacionRegistrar(request):
+     
 	if request.method == "POST":
-            tipo = request.POST.get("opcion")
-            descripcion = request.POST.get("d")
-            correo = request.POST.get("correo")
-            emple = request.POST.get("emple")
+            l = request.session.get("logueo",False)
+            u = Usuarios.objects.get(pk=l["id"])
+            marca = request.POST.get("vehiculo")
+            placa = request.POST.get("placa")
+            modelo = request.POST.get("modelo")
+            kilometraje = request.POST.get("km")
+            linea = request.POST.get("linea")
+            empleado = request.POST.get("empleado")
+            servicio = request.POST.get("servicio")
+            
+            
             q = Cotizaciones(
-                tipos=tipo,
-                descripcion =  descripcion,
-                correo = correo,
-                empleado = emple
-                
-        
+                vehiculo = marca,
+                modelo = modelo,
+                placa = placa,
+                kilometraje = kilometraje,
+                linea = linea,
+                empleado = empleado,
+                servicio = servicio,
+                cliente = u             
             )
             q.save()
             messages.success(request, "Guardado correctamente!!")
+            
             return redirect("listarCotizacion")
         
 def cotizacionEliminar(request,id):

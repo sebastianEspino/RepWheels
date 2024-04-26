@@ -10,7 +10,7 @@ class Categoria(admin.ModelAdmin):
 
 @admin.register(Cotizaciones)
 class Cotizaciones(admin.ModelAdmin):
-    list_display = ['id','tipos','descripcion','correo','empleado']
+    list_display = ['id','modelo','placa','kilometraje','linea','servicio','cliente','empleado']
     search_fields = ['empleado']
     
 @admin.register(Productos)
