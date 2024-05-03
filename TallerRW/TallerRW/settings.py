@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tienda',
     'rest_framework',
+    'rest_framework.authtoken',
+    
     
     
 ]
@@ -129,3 +131,16 @@ MEDIA_ROOT = BASE_DIR / 'tienda/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "tienda.Usuarios"
+AUTH_PROFILE_MODULE = "tienda.Usuarios"
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+

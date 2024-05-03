@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from .authentication import CustomUserManager
 
 # Create your models here.
 class Categoria(models.Model):
@@ -62,10 +64,13 @@ class Clientes(models.Model):
         return self.nombre_completo
 
 
-class Usuarios(models.Model):
+
+
+class Usuarios(AbstractUser):
+    username = None
     nombre=models.CharField(max_length=254)
-    correo=models.CharField(max_length=254,unique=True)
-    clave=models.CharField(max_length=8,null=False)
+    email=models.EmailField(max_length=254,unique=True)
+    password=models.CharField(max_length=8,null=False)
     foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
 
     ROLES = (
@@ -75,6 +80,11 @@ class Usuarios(models.Model):
         (4,"cliente"), 
     )
     rol=models.IntegerField(choices=ROLES,default=4)
+    token_recuperar = models.CharField(max_length=254, default="", blank=True, null=True)
+	# Custom model authentication: paso 6
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["nombre"]
+    objects = CustomUserManager()
     def __str__(self):
         return self.nombre
     
@@ -131,3 +141,14 @@ class DetalleFactura(models.Model):
 
     def __str__(self):
         return self.factura
+    
+
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

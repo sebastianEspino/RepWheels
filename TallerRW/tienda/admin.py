@@ -45,7 +45,7 @@ class Proveedores(admin.ModelAdmin):
     
 @admin.register(Usuarios)
 class Usuario(admin.ModelAdmin):
-    list_display=['id','nombre','correo','clave','rol','foto','ver_foto']
+    list_display=['id','nombre','email','password','rol','foto','ver_foto']
     search_fields = ['nombre']
 
     def ver_foto(self, obj):

@@ -1,6 +1,7 @@
 from django.urls import path,include
 from rest_framework import routers
 from . import views
+from rest_framework.authtoken import views as especial
 
 router = routers.DefaultRouter()
 
@@ -15,11 +16,17 @@ router.register(r'Usuarios',views.UsuariosViewSet)
 router.register(r'Facturas',views.FacturasViewSet)
 router.register(r'DetalleFactura',views.DetalleFacturaViewSet)
 router.register(r'DetalleServicio',views.DetalleServicioViewSet)
+router.register(r'Cotizaciones',views.CotizacionesViewSet)
+router.register(r'Categorias',views.CategoriaViewSet)
 
 
 urlpatterns = [
+    path("api/1.0/", include(router.urls)),
+    path('api/1.0/token-auth/', especial.obtain_auth_token),
+	path('api/1.0/api-auth/', include('rest_framework.urls')),
+
     path('',views.index, name = "index"),
-    path('api/1.0/', include(router.urls)),
+
     #crud de productos
     path('productos',views.productos,name='productos'),
     path('listarProductos',views.listarProductos, name= "listarProductos"),
@@ -113,12 +120,7 @@ urlpatterns = [
     path("editeShop/<int:id>",views.update_totales_carrito,name="editeShop"),
     
 
-
-
-    
- 
-    
-    
     
     
 ]
+

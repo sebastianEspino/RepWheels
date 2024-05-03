@@ -4,6 +4,10 @@ from .models import*
 from rest_framework import viewsets
 from . serializers import *
 from django.contrib import messages
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
 
 
 
@@ -43,6 +47,7 @@ class CalificacionesViewSet(viewsets.ModelViewSet):
 
 
 class UsuariosViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Usuarios.objects.all()
     serializer_class = UsuariosSerializers
 
@@ -58,6 +63,15 @@ class DetalleFacturaViewSet(viewsets.ModelViewSet):
 class DetalleServicioViewSet(viewsets.ModelViewSet):
     queryset = DetallesServicio.objects.all()
     serializer_class = DetallesServicioSerializers
+
+class CotizacionesViewSet(viewsets.ModelViewSet):
+    queryset = Cotizaciones.objects.all()
+    serializer_class = CotizacionesSerializers
+
+
+class CategoriasViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializers
 
 
 def index(request):
