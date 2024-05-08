@@ -20,7 +20,6 @@ class Producto(admin.ModelAdmin):
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
-
     
 @admin.register(Servicios)
 class Servicio(admin.ModelAdmin):

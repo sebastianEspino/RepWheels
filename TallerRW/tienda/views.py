@@ -726,11 +726,11 @@ def logueo(request):
         email = request.POST.get('correo')
         pss = request.POST.get('clave')
         try:
-            u = Usuarios.objects.get(correo=email,clave=pss)
+            u = Usuarios.objects.get(email=email,password=pss)
             request.session["logueo"]={
                 "id":u.id,
                 "nombre":u.nombre,
-                "correo":u.correo,
+                "correo":u.email,
                 "rol":u.rol
             }
             request.session["carrito"] = []
@@ -738,7 +738,7 @@ def logueo(request):
             messages.success(request, f"Bienvenido {u.nombre}!!")
             return redirect("index")
         except Exception as e:
-            messages.error(request, "Error: Usuario o contraseña incorrectos...")
+            messages.error(request, f"Error: Usuario o contraseña incorrectos...{e}")
             return redirect("login")
         
     else:
