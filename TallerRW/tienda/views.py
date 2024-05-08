@@ -798,8 +798,8 @@ def registerUser(request):
         clave = request.POST.get('pswd')
         user = Usuarios(
             nombre = name,
-            correo = email,
-            clave = clave
+            email = email,
+            password = clave
         )
 
         cliente = Clientes(
