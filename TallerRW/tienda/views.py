@@ -796,27 +796,19 @@ def registerUser(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         clave = request.POST.get('pswd')
-        user = Usuarios(
-            nombre = name,
-            email = email,
-            password = clave
-        )
-
-        cliente = Clientes(
-            nombre_completo = name,
-            correo = email,
-            cedula = 0,
-            telefono = 0,
-            direccion = "desconocida"
-
+        try:
+            user = Usuarios(
+                nombre = name,
+                email = email,
+                password = clave
+            )             
+            user.save()
+            messages.success(request,'Usuario creado exitosamente')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, f"Error:{e}")
+            return redirect('register')
              
-        )
-        cliente.save()
-
-        user.save()
-
-        messages.success(request,'Usuario creado exitosamente')
-        return redirect('login')
     
 
 def change_password(request):
