@@ -399,7 +399,6 @@ def listarCita(request):
 def citaRegistrar(request):
    
     if request.method == "POST":
-        opcion = request.POST.get("type_f")
         logueo = request.session.get("logueo",False)
         usuario = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
@@ -505,8 +504,8 @@ def cotizacionRegistrar(request):
             modelo = request.POST.get("modelo")
             kilometraje = request.POST.get("km")
             linea = request.POST.get("linea")
-            empleado = request.POST.get("empleado")
-            servicio = request.POST.get("servicio")
+            empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             
             
             q = Cotizaciones(
@@ -738,7 +737,7 @@ def logueo(request):
             messages.success(request, f"Bienvenido {u.nombre}!!")
             return redirect("index")
         except Exception as e:
-            messages.error(request, f"Error: Usuario o contraseña incorrectos...{e}")
+            messages.error(request, "Error: Usuario o contraseña incorrectos...")
             return redirect("login")
         
     else:
@@ -758,7 +757,7 @@ def profile(request):
     p = request.session.get("logueo",False)
     q = Usuarios.objects.get(pk=p["id"])
     if q.rol == 4:
-        c = Clientes.objects.get(correo=q.correo)
+        c = Clientes.objects.get(correo=q.email)
         contexto = {"data":q,"data1":c}
     else:
         contexto = {"data":q}
@@ -774,7 +773,7 @@ def completeInformation(request):
         telefono = request.POST.get("telefono")
         direccion = request.POST.get("direccion")
 
-        cliente = Clientes.objects.get(correo=q.correo)
+        cliente = Clientes.objects.get(correo=q.email)
         cliente.cedula = cedula
         cliente.telefono = telefono
         cliente.direccion = direccion
@@ -796,19 +795,31 @@ def registerUser(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         clave = request.POST.get('pswd')
-        try:
+        if len(clave) >=  8:
             user = Usuarios(
                 nombre = name,
                 email = email,
                 password = clave
-            )             
+            )
+
+            cliente = Clientes(
+                nombre_completo = name,
+                correo = email,
+                cedula = 0,
+                telefono = 0,
+                direccion = "desconocida"
+
+                
+            )
+            cliente.save()
+
             user.save()
             messages.success(request,'Usuario creado exitosamente')
             return redirect('login')
-        except Exception as e:
-            messages.error(request, f"Error:{e}")
+        else:
+            messages.warning(request,'La contraseña no tiene 8 caracteres') 
             return redirect('register')
-             
+    return redirect('register')
     
 
 def change_password(request):
@@ -1064,7 +1075,3 @@ def agregar_calificacion_form(request):
      
 
     
-        
-            
-                  
-         
