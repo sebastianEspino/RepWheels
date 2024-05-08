@@ -22,7 +22,7 @@ class ServiciosSerializers(serializers.ModelSerializer):
 class ProductosSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Productos
-        fields = ['id','nombre','Precio','descripcion_producto','cantidad','categoria','foto']
+        fields = ['id','nombre','Precio','descripcion_producto','cantidad','proveedor','categoria','foto']
 
 class EmpleadoSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -46,6 +46,11 @@ class CalificacionesSerializers(serializers.HyperlinkedModelSerializer):
         fields = ['id','cliente','cantidad_estrellas']
 
 
+class CotizacionesSerializers(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Cotizaciones
+        fields = ['id','vehiculo','modelo','placa','kilometraje','linea','servicio','cliente','empleado']
+    
 
 class UsuariosSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -67,5 +72,3 @@ class DetalleFacturaSerializers(serializers.HyperlinkedModelSerializer):
     class Meta: 
         model = DetalleFactura
         fields = ['id','productos','categoria','cantidad','factura']
-
-

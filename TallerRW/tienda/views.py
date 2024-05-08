@@ -59,6 +59,14 @@ class DetalleServicioViewSet(viewsets.ModelViewSet):
     queryset = DetallesServicio.objects.all()
     serializer_class = DetallesServicioSerializers
 
+class CotizacionesViewSet(viewsets.ModelViewSet):
+    queryset = Cotizaciones.objects.all()
+    serializer_class = CotizacionesSerializers
+
+class CategoriasViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializers
+
 
 def index(request):
     logueo = request.session.get("logueo", False)
