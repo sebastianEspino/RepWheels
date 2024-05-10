@@ -3,9 +3,8 @@ function eliminar(url){
         location.href = url;
     }
 }
-
 function addCart(url,id_producto){
-    csrf_token = $("[name='csrfmiddlewaretoken']")[0];
+    csrf_token = $("[name='csrfmiddlewaretoken']")[0].value;
     id = $(`#id_${id_producto}`).val()
     cantidad = $(`#cantidad_${id_producto}`).val()
     items_carrito = $("#items_carrito")
@@ -90,5 +89,22 @@ function showCart(url){
     .fail(function(respuesta){
         location.href="/productos";
     });
+}
+
+
+function stars() {
+
+    servicio = document.querySelector(".NombreC")
+    cantidad_estrellas = document.querySelectorAll('input[name="grupo_e"]')
+    console.log(cantidad_estrellas)
+    cantidad = document.querySelector("#cantidad")
+    for (var i = 0; i < cantidad_estrellas.length; i++) {
+        console.log(cantidad_estrellas[i].value)
+        if (cantidad_estrellas[i].checked) {
+            cantidad.value = parseInt(cantidad_estrellas[i].value)
+            break
+        }
+    }
+
 }
 

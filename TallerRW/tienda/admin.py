@@ -10,7 +10,7 @@ class Categoria(admin.ModelAdmin):
 
 @admin.register(Cotizaciones)
 class Cotizaciones(admin.ModelAdmin):
-    list_display = ['id','tipos','descripcion','correo','empleado']
+    list_display = ['id','modelo','placa','kilometraje','linea','servicio','cliente','empleado']
     search_fields = ['empleado']
     
 @admin.register(Productos)
@@ -34,7 +34,7 @@ class Empleado(admin.ModelAdmin):
     
 @admin.register(Clientes)
 class Cliente(admin.ModelAdmin):
-    list_display = ['id','nombre_completo','cedula','correo','telefono','direccion']
+    list_display = ['id','nombre_completo','cedula','correo','direccion']
     search_fields = ['nombre_completo']
     
     
@@ -47,6 +47,7 @@ class Proveedores(admin.ModelAdmin):
 class Usuario(admin.ModelAdmin):
     list_display=['id','nombre','correo','clave','rol','foto','ver_foto']
     search_fields = ['nombre']
+    list_editable = ["rol"]
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
@@ -61,3 +62,13 @@ class Calificaciones(admin.ModelAdmin):
 class Citas(admin.ModelAdmin):
      list_display=['id','fechaServicio','hora']
      search_fields = ['tipoServicio']
+
+@admin.register(Facturas)
+class Facturas(admin.ModelAdmin):
+    list_display = ["id","cliente","fecha"]
+
+
+@admin.register(DetalleFactura)
+class DetalleFacturas(admin.ModelAdmin):
+    list_display = ["id","productos","factura","cantidad","total"]
+

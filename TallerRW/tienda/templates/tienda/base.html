@@ -16,10 +16,10 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="trasnnav" >
+            <div class="container" >
                 <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'tienda/img/Logo.png' %}" alt=""
-                        width="50px" height="50px"></a>
+                        width="51px" height="50px"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -27,7 +27,7 @@
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Productos</a>
+                                data-bs-toggle="dropdown" style="color: black;">Productos</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'crearProductoform' %}">Registrar</a></li>
@@ -41,23 +41,23 @@
                         {% if request.session.logueo.rol == 1 %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Clientes</a>
-                            <ul class="dropdown-menu">
+                                data-bs-toggle="dropdown" style="color: black;">Clientes</a>
+                            <ul class="dropdown-menu" style="color: black;">
                                 <li><a class="dropdown-item" href="{% url 'registrarCliente' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarCliente' %}">Listar</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Empleados</a>
-                            <ul class="dropdown-menu">
+                                data-bs-toggle="dropdown" style="color: black;">Empleados</a>
+                            <ul class="dropdown-menu" style="color: black;">
                                 <li><a class="dropdown-item" href="{% url 'nuevoempleados' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'empleado' %}">Listar</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Proveedores</a>
+                                data-bs-toggle="dropdown" style="color: black;">Proveedores</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{% url 'registrarProveedores' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarProveedores' %}">Listar</a></li>
@@ -66,7 +66,7 @@
                         {% endif %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Calificaciones</a>
+                                data-bs-toggle="dropdown" style="color: black;">Calificaciones</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'registrarCalificacion' %}">Registrar</a></li>
@@ -77,7 +77,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Citas</a>
+                                data-bs-toggle="dropdown" style="color: black;">Citas</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
@@ -88,7 +88,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Cotizaciones</a>
+                                data-bs-toggle="dropdown" style="color: black;">Cotizaciones</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'registrarCotizacion' %}">Registrar</a></li>
@@ -99,7 +99,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Servicios</a>
+                                data-bs-toggle="dropdown" style="color: black;">Servicios</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'registrarServicio' %}">Registrar</a></li>
@@ -113,14 +113,25 @@
                     <form id='botones' class="d-flex">
                         {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
                             <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
-                            <a href="{% url 'perfil' %}" class="btn btn-danger" ><i class="bi bi-person-fill"></i></a>
-                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-danger"><i class="bi bi-cart-fill"></i>
-                        
-                            </a>
-                            <a class="btn btn-danger" href="{% url 'logout' %}">Cerrar</a>
+                            <a class="btn btn-outline-danger" href="{% url 'logout' %}"><i class="bi bi-door-open-fill" style="color: black;"></i></a>
+                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-outline-danger"><i class="bi bi-cart-fill" style="color: black;"></i></a>
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle btn btn-outline-danger"  href="#" role="button"
+                                        data-bs-toggle="dropdown"><i class="bi bi-list" style="color: black;"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'perfil' %}">Perfil</a></li>
+                                        {% if request.session.logueo.rol ==  3 %}
+                                    
+                                        <li><a class="dropdown-item" style="color: black;" href="#">Cotizaciones</a></li>
+                                        {% endif %}                                        
+                                    </ul>
+                                </li>
+                            </ul>
                         {% else %}
-                            <a class="btn btn-danger" href="{% url 'login' %}">Iniciar</a>
-                            <a class="btn btn-danger" href="{% url 'register' %}">Registrarse</a>
+                            <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'login' %}">Iniciar Sesion</a>
+                            <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'register' %}">Registrarse</a>
+                      
                         {% endif %}
                         
                     </form>
@@ -130,14 +141,14 @@
     </header>
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
+            <div style="margin-top: 80px; margin-bottom: 4px;" class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
     {% endif %}
 
-    <div>
+    <div >
         
         {% block contenedor %}
         {% endblock %}
@@ -155,41 +166,41 @@
         </div>
     </div>
 
-
+    <footer >
+        <div id="super">
+            <div>
+                <h1 class="h1">RepWheels</h1>
+            </div>
+            <div>
+                <h3>Contactenos</h3>
+                <p>Celular: 312 434567<br>Telefono: 345 692 12<br>Direccion: Calle 45-25</p>
+            </div>
+            <div>
+                <h3>Servicios</h3>
+                <ul>
+                    <li>Mecanica</li>
+                    <li>Pintura</li>
+                    <li>Latoneria</li>
+                    <li>Electricidad</li>
+                </ul>
+            </div>
+            <div>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="text" placeholder="Buscar">
+                    <button class="btn btn-outline-danger me-2" type="button">Buscar</button>
+                </form>
+            </div>
+        </div>
+        <div id="infer" class="fixed-bottom">
+            <h3>Redes Sociales</h3>
+            <a href="#"><i class="bi bi-twitter"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-whatsapp"></i></a>
+        </div>
+    </footer>
 
 </body>
-<footer>
-    <div id="super">
-        <div>
-            <h1 class="h1">RepWheels</h1>
-        </div>
-        <div>
-            <h3>Contactenos</h3>
-            <p>Celular: 312 434567<br>Telefono: 345 692 12<br>Direccion: Calle 45-25</p>
-        </div>
-        <div>
-            <h3>Servicios</h3>
-            <ul>
-                <li>Mecanica</li>
-                <li>Pintura</li>
-                <li>Latoneria</li>
-                <li>Electricidad</li>
-            </ul>
-        </div>
-        <div>
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Buscar">
-                <button class="btn btn-outline-danger me-2" type="button">Buscar</button>
-            </form>
-        </div>
-    </div>
-    <div id="infer">
-        <h3>Redes Sociales</h3>
-        <a href="#"><i class="bi bi-twitter"></i></a>
-        <a href="#"><i class="bi bi-facebook"></i></a>
-        <a href="#"><i class="bi bi-whatsapp"></i></a>
-    </div>
-</footer>
+
 <script src="{% static 'tienda/js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'tienda/js/libreria.js' %}"></script>
 <script src="{% static 'tienda/js/bootstrap.bundle.min.js' %}"></script>

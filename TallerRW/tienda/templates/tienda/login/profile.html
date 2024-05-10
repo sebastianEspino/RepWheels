@@ -4,18 +4,39 @@
 {% block titulo %}Informacion{% endblock %}
 
 {% block contenedor %}
-<main id="info">
+<h1 class="text-center" style="padding-top: 5%;">Informacion de perfil</h1>
+<div id="info">
     <article id="info_p">
-        <h1 class="text-center">Informacion de perfil</h1>
-        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br>
+        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br><br>
         <p>
-            Nombre : {{ data.nombre }} <br><br>
-            Correo : {{ data.correo }} <br><br>
-            Rol : {{ data.get_rol_display }}
+            Nombre : {{ data.nombre }} <br>
+            Correo : {{ data.correo }} <br>
         </p>
-        <br>
+        {% if request.session.rol != 4 %}
+            {% if data1.n == 0 %}
+                <form action="{% url 'changeProfile' %}" method="post">
+                    {% csrf_token %}
+                    <input type="number" value="1" name="info" hidden>
+                    <label for="">Cedula:</label>
+                    <input type="number" name="cedula"><br>
+                    <label for="">Telefono</label>
+                    <input type="number" name="telefono"><br>
+                    <label for="">Direccion</label>
+                    <input type="text" name="direccion"><br>
+                    <button>Enviar</button>
+                </form>
+            {% elif data1.n == 1 %}
+            <p>
+                Cedula : {{ data1.cedula }} <br>
+                Telefono : {{ data1.telefono }} <br>
+                Direccion : {{ data1.direccion }} <br>
+            </p>
+            {% endif %}
+        {% endif %}
+        <br><br>
+
         <div>
-            <a class="btn btn-danger" href="#">Editar</a>
+            <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
                  
             <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
         </div>

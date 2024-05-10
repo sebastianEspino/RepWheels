@@ -9,7 +9,7 @@
     <div id="opciones">
         <div class="opc">
             <h3>Adquiere tu cita</h3>
-            <button class="btn btn-outline-danger btn-lg "><a href="{% url 'registrarCitar' %}">Agendar cita</a></button>
+            <button class="btn btn-outline-danger btn-lg "><a href="{% url 'citas' %}">Agendar cita</a></button>
         </div><br>
         <div class="opc">
             <h3>¿Te encuentras varado?</h3>
@@ -157,30 +157,42 @@
             <h1>Calificaciones de nuestro servicios</h1>
         </div>
         <article id="personas">
-            <div class="card" style="width: 18rem;">
-                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Esneider Garcia<br><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><br>Hace 15 dias...</p>
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Mateo Herreno<br><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><br>Hace 10 dias...</p>
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <img src="{% static 'tienda/img/avatar.jpg' %}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Mateo Salgado<br><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><br>Hace 10 dias...</p>
-                </div>
-            </div>
-        </article>
+            {% if data %}
+            {% for e in data %}
+                {% if forloop.counter > 0 and forloop.counter <= 3 %}
+                    <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
+                        <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
+        
+                        <div class="card-body">
+                        <strong>Calificaciones: </strong>
+                        <form id="form_calificaciones">
+        
+                            <p class="clasificacion">
+                            <input type="radio" name="estrellas" class="star" value="5" {% if e.cantidad_estrellas == 5 %}checked="true"{% endif%}>
+                            <label for="radio1">★</label>
+                            <input type="radio" name="estrellas" class="star" value="4" {% if e.cantidad_estrellas == 4 %}checked="true"{% endif%}>
+                            <label for="radio2">★</label>
+                            <input type="radio" name="estrellas" class="star" value="3" {% if e.cantidad_estrellas == 3 %}checked="true"{% endif%}>
+                            <label for="radio3">★</label>
+                            <input type="radio" name="estrellas" class="star" value="2" {% if e.cantidad_estrellas == 2 %}checked="true"{% endif%}>
+                            <label class="st">★</label>
+                            <input type="radio" name="estrellas" class="star" value="1" {% if e.cantidad_estrellas == 1 %}checked="true"{% endif%}>
+                            <label for="radio5">★</label>
+                            </p>
+                        </form>
+                        <p class="card-text">{{ e.nombre }} </p>
+                        <p class="text"><strong>Hecho por:</strong> {{ e.cliente }}</p>
+                        <p class="text"><strong>Servicio:</strong>{{ e.servicio }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %} 
+            {% else %}
+                    <h2>No hay calificaciones</h2>
+            {% endif %}           
+        </article><br>
+        <div class="text-center mb-4">
+            <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
+        </div>
     </section>
     {% endblock %}

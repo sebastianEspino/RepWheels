@@ -1,36 +1,39 @@
-<h1>Comprar {{ items }}</h1>
-
 {% if request.session.carrito %}
+    <h1>Comprar {{ items }}</h1>
     <table class="table">
         <thead>
             <tr>
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Subtotal</th>
+
             </tr>
         </thead>
         <tbody>
             {% for p in request.session.carrito %}
                 <tr>
                     <td>
-                        <img src="{{ p.foto }}" alt=""><br>
+                        <img src="{{ p.foto }}" width="25%" alt=""><br>
                         {{ p.nombre }} <br>Precio: $ {{ p.precio }}
                     </td>
                     <td>
-                        <input type="number">
+                        <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
+                        <input type="number" name="cantidad" id="cantidad_carrito_{{ p.id }}"  min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" style="width: 45px;"/>
                     </td>
                     <td class="text-end">${{ p.subtotal }}</td>
-                    <td>
-                        <a class="btn btn-danger" href="javascript:eliminar_item_carrito(`{% url 'eliminar_item_carrito' p.id %}`);">X</a>
-                    </td>
+                    <td><a href="{% url 'eliminarProductos' p.id %}" class="btn btn-danger">x</a></td>
 
                 </tr>
+                
             {% endfor %}
+            
         </tbody>
     </table>
+    <a href="{% url 'vaciarCarrito' %}" class="btn btn-danger">Vaciar</a>
+    <a href="{% url 'pagar' %}" class="btn btn-success">Pagar</a>
+    
 
 
-
-{% else }
+{% else %}
     <h1>No hay productos en el carro de compra</h1>
 {% endif %}

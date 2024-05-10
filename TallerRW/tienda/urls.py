@@ -70,6 +70,8 @@ urlpatterns = [
     path("calificacionListar", views.listarCalificacion, name="calificacionListar"),
     path("calificacionActualizar", views.calificacionActualizar, name="calificacionActualizar"),
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
+    path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
+
 
     #crud de cotizaciones
     path('cotizaciones',views.cotizaciones,name='cotizaciones'),
@@ -100,11 +102,19 @@ urlpatterns = [
     path('change',views.change,name="change"),
     path('formEditeProfile',views.editeFormProfile,name="formEditeProfile"),
     path('changeProfile',views.updateInfoProfile,name="changeProfile"),
+    path('form_update',views.formPassword,name="form_update"),
+    path("recuperacionCorreo",views.emailToPassword,name="recuperacionCorreo"),
+    path("completarInformacion",views.completeInformation,name="completarInformacion"),
     
     #Cart - Shopping
 
     path("addCart",views.add_cart,name="addCart"),
     path("showCart",views.showCart,name="showCart"),
+    path("eliminarProductos/<int:id>",views.removeOne,name="eliminarProductos"),
+    path("vaciarCarrito",views.removeEvething,name="vaciarCarrito"),
+    path("pagar",views.payment,name="pagar"),
+
+    path('create_PDF',views.create_PDF,name='create_PDF'),
 
 
 

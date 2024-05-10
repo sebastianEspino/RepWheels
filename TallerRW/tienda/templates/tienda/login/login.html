@@ -16,14 +16,14 @@
                   {% csrf_token %}
                     <div class="mb-3 mt-3">
                       <label for="email" class="form-label">Correo electronico:</label>
-                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="correo">
+                      <input type="email" class="form-control" autofocus="" required="" id="email" placeholder="Enter email" name="correo">
                     </div>
                     <div class="mb-3">
                       <label for="pwd" class="form-label">Contraseña:</label>
-                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="clave">
+                      <input type="password" class="form-control" autofocus="" required="" id="pwd" placeholder="Enter password" name="clave">
                     </div>
                     <div class="mb-3 mt-3">
-                        <a data-bs-toggle="modal" data-bs-target="#old" ><ins>¿Olvidaste la contraseña?</ins></a>
+                        <a href="{% url 'form_update' %}" data-bs-toggle="modal" data-bs-target="#old" ><ins>¿Olvidaste la contraseña?</ins></a>
                     </div>
                     
                     <div class="form-check mb-3">

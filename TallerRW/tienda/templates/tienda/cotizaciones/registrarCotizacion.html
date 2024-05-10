@@ -5,30 +5,52 @@
 
 {% block contenedor %}
       <main>
-          <form class="form1"  action="{% url 'cotizacionRegistrar' %}" method='post' >
-            {% csrf_token %}
-            <h1 style="text-align: center;">Formulario de cotizacion</h1>
-            <div class="form-row">
-
-              <div class="form-group col-md-12">
-                <label for="inputAddress2">Tipo de servicio</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Correo" name='opcion'>
+        <form class="form1"  action="{% url 'cotizacionRegistrar' %}" method='post'>
+          {% csrf_token %}
+          <h1 style="text-align: center;">Formulario de cotizacion</h1>
+          <div class="datos">
+              <div class="mb-3 mt-3">
+                <label for="marca" class="form-label">Marca del vehiculo:</label>
+                <input type="text" class="form-control" id="vehiculo" placeholder="Ejemplo: Mazda" name="vehiculo">
               </div>
-              <br>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Descripcion de la cotizacion</label>
-                <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name='d'>
-              <div class="form-group col-md-12">
-                <label for="inputAddress2">Correo electronico</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Correo" name='correo'>
+              <div class="mb-3 mt-3">
+                <label for="placa" class="form-label">Placa del vehiculo:</label>
+                <input type="text" class="form-control" id="placa" placeholder="Ejemplo: WXM332" name="placa">
               </div>
-              <div class="form-group col-md-12">
-                <label for="inputAddress2">Empleado encargado: </label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Empleado" name='emple'>
+              <div class="mb-3 mt-3">
+                <label for="mod" class="form-label">Modelo del vehiculo:</label>
+                <input type="number" class="form-control" id="modelo" placeholder="Ejemplo:2000" name="modelo">
               </div>
-              <br>
-              <button type="submit" class="btn btn-primary">Registrar</button>
-            </div>
-          </form>
+              <div class="mb-3 mt-3">
+                <label for="linea" class="form-label">Kilometraje del vehiculo:</label>
+                <input type="text" class="form-control" id="km" placeholder="Ejemplo:Captiva" name="km">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="marca" class="form-label">Linea del vehiculo:</label>
+                <input type="text" class="form-control" id="linea" placeholder="Ejemplo: Mazda 3" name="linea">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="">Empleado</label>
+                <select class="form-control" name="empleado">
+                    <option value="">Seleccione</option>
+                    {% for e in empleados %}
+                        <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="">Servicios</label>
+                <select class="form-control" name="servicio">
+                    <option value="">Seleccione</option>
+                    {% for i in servicios %}
+                        <option value="{{ i.id }}">{{ i.nombre }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+          </div>
+          <br>
+          <button id="cotizar" class="btn btn-danger">Cotizar</button>
+        </form>
+          
       </main>
       {% endblock %}

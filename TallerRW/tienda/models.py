@@ -53,10 +53,11 @@ class DetallesServicio(models.Model):
 
 class Clientes(models.Model):
     nombre_completo=models.CharField(max_length=254)
-    cedula=models.IntegerField(unique=True)
+    cedula=models.IntegerField(blank=True,null=False)
     correo=models.CharField(max_length=254,unique=True)
-    telefono=models.IntegerField(unique=True)
+    telefono=models.IntegerField(blank=False,null =True)
     direccion=models.CharField(max_length=254)
+    n = models.IntegerField(null=False, blank=True,default=0)
     def __str__(self):
         return self.nombre_completo
 
@@ -66,9 +67,10 @@ class Usuarios(models.Model):
     correo=models.CharField(max_length=254,unique=True)
     clave=models.CharField(max_length=8,null=False)
     foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
+    token_recuperar = models.CharField(max_length=254,blank=False,null=True)
 
     ROLES = (
-        (1, "administrador"),
+        (1,"administrador"),
         (2,"gerente"),
         (3,"empleado"),
         (4,"cliente"), 
@@ -78,16 +80,14 @@ class Usuarios(models.Model):
         return self.nombre
     
 class Cotizaciones(models.Model):
-    tipos = models.CharField(max_length=254)
-    descripcion = models.TextField(blank=True)
-    #vehiculo = models.CharField(max_length=254)
-    #modelo = models.IntegerField(default=1900)
-    correo = models.CharField(max_length=254)
-    empleado = models.CharField(max_length=254)
-    
-    #servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='0')
-    #cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, default='0')
-    #empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
+    vehiculo = models.CharField(max_length=254,blank=False,null=True)
+    modelo = models.IntegerField(default=1900)
+    placa = models.CharField(max_length=6,blank=False, null=True)  
+    kilometraje = models.IntegerField(default=1236456)
+    linea = models.CharField(max_length=254,blank=False,null=True)
+    servicio=models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank= False, null= True)
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING, blank=False,null=True)
+    empleado = models.ForeignKey(Empleado,on_delete=models.DO_NOTHING)
     def _str_(self):
         return self.servicio
     
@@ -95,6 +95,7 @@ class Calificaciones(models.Model):
     #nombre = models.CharField(max_length=254,blank=False,null=True,default='0')
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicio = models.CharField(max_length=254,null=True)
+    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/default.png")
     Estrellas= (
         (1, "1"),
         (2,"2"),
@@ -105,7 +106,7 @@ class Calificaciones(models.Model):
     )
     cantidad_estrellas = models.IntegerField(choices=Estrellas,default=5)
     def __str__(self):
-        return self.nombre
+        return self.servicio
     
 
 class Citas(models.Model):
@@ -119,14 +120,13 @@ class Citas(models.Model):
         return f'{self.fechaServicio}'
 
 class Facturas(models.Model):
-    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING,blank=False,null=True)
-    fecha = models.DateField()
+    cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
+    fecha = models.DateField(auto_now=True)
     def __str__(self):
         return self.cliente
 
 class DetalleFactura(models.Model):
     productos = models.CharField(max_length=254)
-    categoria = models.CharField(max_length=254)
     cantidad = models.IntegerField(null=True)
     factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
     total = models.IntegerField()
