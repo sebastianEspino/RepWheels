@@ -120,7 +120,7 @@ urlpatterns = [
     path("editeShop/<int:id>",views.update_totales_carrito,name="editeShop"),
     
 
-    
+    #comment        
     
 ]
 
