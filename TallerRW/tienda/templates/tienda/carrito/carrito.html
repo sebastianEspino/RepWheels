@@ -18,11 +18,10 @@
                     </td>
                     <td>
                         <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
-                        <input type="number" name="cantidad" id="cantidad_carrito_{{ p.id }}"  min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" style="width: 45px;"/>
+                        <input oninput="updateAmountCar(`{% url 'actualizarCarrito' p.id %}`, {{ p.id }});" type="number" name="cantidad" id="cantidad_carrito_{{ p.id }}"  min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" style="width: 45px;"/>
                     </td>
                     <td class="text-end">${{ p.subtotal }}</td>
-                    <td><a href="{% url 'eliminarProductos' p.id %}" class="btn btn-danger">x</a></td>
-
+                    <td><a href="javascript:removeone(`{% url 'eliminarProductoCarrito' p.id %}`)" class="btn btn-danger">x</a></td>
                 </tr>
                 
             {% endfor %}

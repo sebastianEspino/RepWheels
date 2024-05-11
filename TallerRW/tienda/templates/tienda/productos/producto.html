@@ -33,8 +33,9 @@
           <section class="servicios">
             <h1>Productos</h1>
             <div>
+              {% if data %}
               <div class="product">
-                  {% if data %}
+                  
                       {% for p in data %}
                               <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
                                 <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:86%; height: 130px;" >
@@ -49,10 +50,10 @@
                                   </div>
                               </div>
                       {% endfor %}
-                  {% else %}
-                      <h1>No hay productos agregados</h1>
-                  {% endif %}
               </div>
+              {% else %}
+                  <h1>No hay productos agregados</h1>
+              {% endif %}
           </div>
           </section>
         </section>

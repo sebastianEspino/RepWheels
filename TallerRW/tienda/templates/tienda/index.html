@@ -24,64 +24,30 @@
         <div class="tit">
             <h1>Servicios</h1>
         </div>
-        <div id="cartas">
-            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{% static 'tienda/img/mec.jpg' %}" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Mecanica</h5>
-                            <p class="card-text">-Mantenimiento general<br>-Reparacion de motor<br>-Suspension<br></p>
-                            <button class="btn btn-primary btn-sm">Ver más</button>
+        <article class="tarjetas">
+                {% for i in servicios %}
+                    
+                        <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
+                            <div class="col-md-4">
+                                <img src="{{ i.foto.url }}" class="img-fluid rounded-start" alt="{{ i.nombre }}" style="width:100%; height: 130px;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ i.nombre }}</h5>
+                                    <p class="card-text">{{ i.descripcion_servicio }}</p>
+                                    <button class="btn btn-primary btn-sm">Ver más</button>
+                                </div>  
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{% static 'tienda/img/pintura.jpg' %}" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Pintura</h5>
-                            <p class="card-text">-Pintura general<br>-Polichada<br>-Bompers<br></p>
-                            <button class="btn btn-primary btn-sm">Ver más</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{% static 'tienda/img/latoneria.jpg' %}" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Latoneria</h5>
-                            <p class="card-text">-Cambio de partes<br>-Sacamos los golpes<br>-Soldadura</p>
-                            <button class="btn btn-primary btn-sm">Ver más</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id='dcarta' class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{% static 'tienda/img/electricidad.jpg' %}" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Electricidad</h5>
-                            <p class="card-text">Mantenimiento de:<br>-Alternador<br>-Arranque<br></p>
-                            <button class="btn btn-primary btn-sm">Ver más</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        
+                
+                {% endfor %}
+            
+        </article>
+        <div class="text-center mb-4">
+            <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>
         </div>
+        
     </section>
     <section id="section2">
         <div class="tit">
@@ -156,13 +122,12 @@
         <div class="tit">
             <h1>Calificaciones de nuestro servicios</h1>
         </div>
-        <article id="personas">
+        <article class="tarjetas">
             {% if data %}
             {% for e in data %}
                 {% if forloop.counter > 0 and forloop.counter <= 3 %}
                     <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
-                        <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
-        
+                       
                         <div class="card-body">
                         <strong>Calificaciones: </strong>
                         <form id="form_calificaciones">

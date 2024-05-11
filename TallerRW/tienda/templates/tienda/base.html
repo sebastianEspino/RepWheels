@@ -121,8 +121,9 @@
                                         data-bs-toggle="dropdown"><i class="bi bi-list" style="color: black;"></i></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" style="color: black;" href="{% url 'perfil' %}">Perfil</a></li>
+                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'add_car' %}">Mis vehiculos</a></li>
                                         {% if request.session.logueo.rol ==  3 %}
-                                    
+                        
                                         <li><a class="dropdown-item" style="color: black;" href="#">Cotizaciones</a></li>
                                         {% endif %}                                        
                                     </ul>

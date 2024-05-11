@@ -30,7 +30,8 @@ class Productos(models.Model):
 class Servicios(models.Model):
     nombre=models.CharField(max_length=254)
     descripcion_servicio = models.TextField()
-    productos = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,blank=False,null=True)
+    foto = models.ImageField(upload_to="fotos_servicios/", default="fotos_servicios/servicio.jpg")
+    precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
 
@@ -62,6 +63,15 @@ class Clientes(models.Model):
         return self.nombre_completo
 
 
+
+class Vehiculos(models.Model): 
+    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, blank=False,null=True)
+    vehiculo = models.CharField(max_length=254,blank=False,null=True)
+    modelo = models.IntegerField(default=1900)
+    placa = models.CharField(max_length=6,blank=False, null=True)  
+    kilometraje = models.IntegerField(default=1236456,blank=True,null=True)
+    linea = models.CharField(max_length=254,blank=False,null=True)
+
 class Usuarios(models.Model):
     nombre=models.CharField(max_length=254)
     correo=models.CharField(max_length=254,unique=True)
@@ -92,7 +102,6 @@ class Cotizaciones(models.Model):
         return self.servicio
     
 class Calificaciones(models.Model):
-    #nombre = models.CharField(max_length=254,blank=False,null=True,default='0')
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicio = models.CharField(max_length=254,null=True)
     foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/default.png")
@@ -113,7 +122,7 @@ class Citas(models.Model):
     fechaServicio = models.DateField(null=True)
     hora = models.TimeField(null=True)
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
-    cotizacion = models.ForeignKey(Cotizaciones,on_delete=models.DO_NOTHING,blank=False,null=True)
+    servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=False)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING,blank=False,null=True)
 
     def __str__(self):

@@ -7,14 +7,14 @@
 <h1 class="text-center" style="padding-top: 5%;">Informacion de perfil</h1>
 <div id="info">
     <article id="info_p">
-        <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br><br>
+       <!-- <img src="{{ data.foto }}" alt="" height="100px" width="200px"><br><br> !-->
         <p>
             Nombre : {{ data.nombre }} <br>
             Correo : {{ data.correo }} <br>
         </p>
         {% if request.session.rol != 4 %}
             {% if data1.n == 0 %}
-                <form action="{% url 'changeProfile' %}" method="post">
+                <form action="{% url 'completarInformacion' %}" method="post">
                     {% csrf_token %}
                     <input type="number" value="1" name="info" hidden>
                     <label for="">Cedula:</label>
@@ -23,7 +23,7 @@
                     <input type="number" name="telefono"><br>
                     <label for="">Direccion</label>
                     <input type="text" name="direccion"><br>
-                    <button>Enviar</button>
+                    <button class="btn btn-danger">Enviar</button>
                 </form>
             {% elif data1.n == 1 %}
             <p>

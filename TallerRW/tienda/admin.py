@@ -24,8 +24,12 @@ class Producto(admin.ModelAdmin):
     
 @admin.register(Servicios)
 class Servicio(admin.ModelAdmin):
-    list_display = ['id','nombre','descripcion_servicio']
+    list_display = ['id','nombre','descripcion_servicio','foto','precio','ver_foto']
     search_fields = ['nombre']
+
+    def ver_foto(self, obj):
+        return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
+
     
 @admin.register(Empleado)
 class Empleado(admin.ModelAdmin):
@@ -36,7 +40,9 @@ class Empleado(admin.ModelAdmin):
 class Cliente(admin.ModelAdmin):
     list_display = ['id','nombre_completo','cedula','correo','direccion']
     search_fields = ['nombre_completo']
-    
+
+class Vehiculos(admin.ModelAdmin):
+    list_display = ['id','vehiculo']
     
 @admin.register(Proveedores)
 class Proveedores(admin.ModelAdmin):
@@ -72,3 +78,7 @@ class Facturas(admin.ModelAdmin):
 class DetalleFacturas(admin.ModelAdmin):
     list_display = ["id","productos","factura","cantidad","total"]
 
+
+@admin.register(DetallesServicio)
+class DetalleServicios(admin.ModelAdmin):
+    list_display = ["id","fecha","servicio","producto"]

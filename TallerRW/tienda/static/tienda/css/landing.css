@@ -11,7 +11,7 @@ section{
     
 }
 #section1{
-    height: 600px;
+    height: 575px;
     display: flex;
     flex-direction: column;
     
@@ -222,7 +222,7 @@ i{
     height: 140px;
 }
 
-#personas{
+.tarjetas{
     
     display: flex;
     flex-direction: row;

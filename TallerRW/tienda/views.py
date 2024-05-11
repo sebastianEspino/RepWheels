@@ -66,7 +66,8 @@ class DetalleServicioViewSet(viewsets.ModelViewSet):
 def index(request):
     logueo = request.session.get("logueo", False)
     q = Calificaciones.objects.all()
-    contexto = {"data":q}
+    s = Servicios.objects.all()
+    contexto = {"data":q,"servicios":s}
     return render(request, "tienda/index.html",contexto)
 
 
@@ -369,7 +370,7 @@ def proveedores_delete(request,id):
 
 def citas(request):
     q = Citas.objects.all()
-    c = Cotizaciones.objects.all()
+    c = Servicios.objects.all()
     e = Empleado.objects.all()   
     
     contexto = {"data": q,"data1": c , "data2":e}
@@ -377,7 +378,7 @@ def citas(request):
 
 def registrarCita(request):
     e = Empleado.objects.all()
-    c = Cotizaciones.objects.all()
+    c = Servicios.objects.all()
     contexto = {"data": e ,"data1":c}
     return render(request, "tienda/citas/registrarCita.html",contexto)
 
@@ -387,29 +388,27 @@ def listarCita(request):
     return render(request, "tienda/citas/listarCita.html", contexto)
 
 def citaRegistrar(request):
-   
+
     if request.method == "POST":
         logueo = request.session.get("logueo",False)
-        usuario = Usuarios.objects.get(pk=logueo["id"])
+        u = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
-        tipo_servicio = request.POST.get('tipoServicio')
         hora = request.POST.get('hora')
-        cliente = usuario
-        cotizacion = Cotizaciones.objects.get(pk=request.POST.get("Cotizacion"))
+        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
 
         cita = Citas(
             fechaServicio=fecha_servicio,
             hora = hora,
-            cliente = cliente,
-            cotizacion = cotizacion,
+            cliente = u,
+            servicio = servicio ,
             empleado = empleado
             
         )
         cita.save()
 
         messages.success(request, "Cita guardada correctamente!!")
-        if usuario.rol == 1:
+        if u.rol == 1:
             return redirect("listarCita")
         else:
            return redirect("citas")  
@@ -417,7 +416,7 @@ def citaRegistrar(request):
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
     e = Empleado.objects.all()
-    c = Cotizaciones.objects.all()
+    c = Servicios.objects.all()
     contexto = {"data": q,"data1":e,"data2":c}
     return render(request, "tienda/citas/editarCita.html", contexto)
 
@@ -429,7 +428,7 @@ def citaActualizar(request):
         fecha_servicio = request.POST.get("fechaServicio")
         cliente = usuario
         hora = request.POST.get('hora')
-        cotizacion = Cotizaciones.objects.get(pk=request.POST.get("Cotizacion"))
+        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
         try:
             q = Citas.objects.get(pk=id)
@@ -437,7 +436,7 @@ def citaActualizar(request):
             q.cliente = usuario
             q.hora = hora
             q.empleado = empleado
-            q.cotizacion = cotizacion
+            q.servicio = servicio
             
             q.save()
 
@@ -666,7 +665,9 @@ def calificacion_eliminar(request, id):
 #Crud Servicio
 
 def servicio(request):
-    return render(request, "tienda/servicios/servicio.html")
+    q = Servicios.objects.all()
+    context = {"data":q}
+    return render(request, "tienda/servicios/servicio.html",context)
 
 
 def registrarServicio(request):
@@ -816,8 +817,7 @@ def completeInformation(request):
         
 
         messages.success(request,"La informacion se cuardo correctamente")
-
-    return redirect("perfil")
+        return redirect("perfil")
           
 
 def register(request):
@@ -848,7 +848,41 @@ def registerUser(request):
         user.save()
 
         messages.success(request,'Usuario creado exitosamente')
-        return redirect('login')    
+        return redirect('login')
+
+def add_car(request):
+     return render(request,'tienda/login/vehiculos.html')
+
+def add_car_profile(request):
+    l = request.session.get('logueo',False)
+    u = Usuarios.objects.get(pk=l["id"])
+    cliente = Clientes.objects.get(correo = u.correo)
+    if request.method == 'POST':
+        vehiculo = request.POST.get("vehiculo")
+        modelo = request.POST.get("modelo")
+        placa = request.POST.get("placa")
+        kilometraje = request.POST.get("km")
+        linea = request.POST.get("linea")
+
+
+        vehiculos = Vehiculos(
+             cliente = cliente, 
+             vehiculo = vehiculo,
+             modelo = modelo,
+             placa = placa,
+             kilometraje = kilometraje,
+             linea = linea
+
+        )
+
+        vehiculos.save()
+
+        messages.success(request,'Vehiculo agregado correctamente')
+        return redirect('perfil')
+    else:
+        messages.warning(request,'Error')
+        return redirect('perfil')
+    
 
 def change_password(request):
     return render(request,'tienda/login/restablecer.html')
@@ -885,19 +919,20 @@ def editeFormProfile(request):
 def updateInfoProfile(request):
     
     if request.method == 'POST':
-        correo = request.POST.get("email")
+        email = request.POST.get("email")
         foto = request.FILES.get("foto_new")
-       
-
-        print(f"'{correo}'")
+    
         try:
             q = request.session.get("logueo",False)
             p = Usuarios.objects.get(pk=q["id"])
+            c = Clientes.objects.get(correo = p.correo)
 
-            p.email = correo
+            c.correo = email
+            p.correo = email
             p.foto = foto
 
             p.save()
+            c.save()
             messages.success(request,"Proveedor actualizada correctamente!!")
         except Exception as e:
             messages.error(request,f'Error: {e}')
@@ -1051,6 +1086,25 @@ def removeEvething(request):
     except Exception as e:
         messages.warning(request,'Error!')
         return redirect('inicio')
+    
+def updateAmountCar(request):
+     carrito = request.session.get("carrito",False)
+     cantidad = request.POST.get("cantidad")
+
+     if carrito != False:
+          for i, n in enumerate(carrito):
+               if n["id"] == id:
+                    n["cantidad"] = int(cantidad)
+                    n["subtotal"] = int(cantidad) * n["precio"]
+
+                    break
+          else:
+               messages.warning(request, "No se encontró el producto en el carrito.")
+
+     request.session["carrito"] = carrito
+     return redirect("showCart")
+
+               
 
 @transaction.atomic
 def payment(request):

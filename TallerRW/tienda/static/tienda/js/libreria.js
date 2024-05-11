@@ -90,6 +90,71 @@ function showCart(url){
         location.href="/productos";
     });
 }
+function removeone(url){
+    contenido = $("#respuesta_carrito")
+    items_carrito = $("#items_carrito")
+    loader = $("#loader")
+
+    loader.removeClass("d-none");
+    loader.addClass("d-block");
+
+    $.ajax({
+        url: url
+    })
+    .done(function(respuesta){
+
+        if (respuesta != "Error"){
+
+            loader.removeClass("d-block");
+            loader.addClass("d-none");
+            // Pintar respuesta en offCanvas
+            contenido.html(respuesta);
+
+            //Buscar items en html resultante
+            let position_ini = respuesta.search(" ");
+            let position_final = respuesta.search("</h1>");
+            let result = respuesta.substring(position_ini+2, position_final-1);
+            items_carrito.html(result);
+        }
+        else{
+            location.href="/productos";
+        }
+    })
+    .fail(function(respuesta){
+        location.href="/productos";
+    });
+}
+
+function updateAmountCar(url, id){
+    contenido = $("#respuesta_carrito")
+    loader = $("#loader")
+    cantidad = $("#cantidad_carrito_"+id)
+
+    loader.removeClass("d-none");
+    loader.addClass("d-block");
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: {"cantidad": cantidad.val()}
+    })
+    .done(function(respuesta){
+
+        if (respuesta != "Error"){
+
+            loader.removeClass("d-block");
+            loader.addClass("d-none");
+            // Pintar respuesta en offCanvas
+            contenido.html(respuesta);
+        }
+        else{
+            location.href="/productos";
+        }
+    })
+    .fail(function(respuesta){
+        location.href="/productos";
+    });
+}
 
 
 function stars() {

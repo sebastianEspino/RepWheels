@@ -45,11 +45,11 @@
                   </div>
                   <br>
                   <div class="form-group col-md-12">
-                    <label for="">Cotizacion</label>
-                          <select class="form-control" name="Cotizacion">
+                    <label for="">Servicio</label>
+                          <select class="form-control" name="servicio">
                           <option value="">Seleccione</option>
                           {% for c in data1 %}
-                              <option value="{{ c.id }}">{{ c.descripcion }}</option>
+                              <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
                           {% endfor %}
                           </select>
                           
@@ -90,10 +90,16 @@
                {
                    title: "{{ eve.cliente }}",
                    start:"{{ eve.fechaServicio | date:'Y-m-d' }}",
-                   
+                   servicio: "{{ eve.servicio }}"                   
                },
            {% endfor %}
-           ]
+           ],
+           eventMouseEnter: function(info) {
+                info.el.style.cursor = 'pointer';
+            },
+            eventClick: function(info) {
+                alert('Cliente: ' + info.event.title + '\n' + 'Fecha: ' + info.event.start + '\n' + 'SERVICIO: ' + info.event.extendedProps.servicio);
+            }
        });
      
        calendar.render();

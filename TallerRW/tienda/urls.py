@@ -105,13 +105,17 @@ urlpatterns = [
     path('form_update',views.formPassword,name="form_update"),
     path("recuperacionCorreo",views.emailToPassword,name="recuperacionCorreo"),
     path("completarInformacion",views.completeInformation,name="completarInformacion"),
+    path("add_car_profile",views.add_car_profile,name="add_car_profile"),
+    path("add_car",views.add_car,name="add_car"),
     
     #Cart - Shopping
 
     path("addCart",views.add_cart,name="addCart"),
     path("showCart",views.showCart,name="showCart"),
-    path("eliminarProductos/<int:id>",views.removeOne,name="eliminarProductos"),
+    path("eliminarProductoCarrito/<int:id>",views.removeOne,name="eliminarProductoCarrito"),
     path("vaciarCarrito",views.removeEvething,name="vaciarCarrito"),
+    path("actualizarCarrito/<int:id>",views.updateAmountCar,name="actualizarCarrito"),
+    
     path("pagar",views.payment,name="pagar"),
 
     path('create_PDF',views.create_PDF,name='create_PDF'),
