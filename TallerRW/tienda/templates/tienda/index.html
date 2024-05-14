@@ -127,7 +127,7 @@
             {% for e in data %}
                 {% if forloop.counter > 0 and forloop.counter <= 3 %}
                     <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
-                       
+                        <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
                         <div class="card-body">
                         <strong>Calificaciones: </strong>
                         <form id="form_calificaciones">

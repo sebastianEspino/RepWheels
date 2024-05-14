@@ -572,6 +572,7 @@ def calificaciones(request):
 def agregar_calificacion_form(request):
     logueo = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=logueo["id"])
+
     if request.method == "POST":
         try:
             servicio = request.POST.get("servicio")
@@ -851,7 +852,14 @@ def registerUser(request):
         return redirect('login')
 
 def add_car(request):
-     return render(request,'tienda/login/vehiculos.html')
+     l = request.session.get("logueo",False)
+     u = Usuarios.objects.get(pk=l["id"])
+     cliente = Clientes.objects.get(correo = u.correo)
+     q = Vehiculos.objects.filter(cliente=cliente.id)
+     contexto = {
+        "data": q
+     }
+     return render(request,'tienda/login/vehiculos.html',contexto)
 
 def add_car_profile(request):
     l = request.session.get('logueo',False)

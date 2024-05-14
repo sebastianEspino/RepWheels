@@ -61,7 +61,7 @@ class Usuario(admin.ModelAdmin):
 
 @admin.register(Calificaciones)
 class Calificaciones(admin.ModelAdmin):
-    list_display=['id','cliente','cantidad_estrellas']
+    list_display=['id','cliente','cantidad_estrellas','servicio','foto']
     search_fields = ['cantidad_estrellas']
 
 @admin.register(Citas)

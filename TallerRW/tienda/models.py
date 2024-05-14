@@ -104,7 +104,7 @@ class Cotizaciones(models.Model):
 class Calificaciones(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicio = models.CharField(max_length=254,null=True)
-    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/default.png")
+    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/user.png")
     Estrellas= (
         (1, "1"),
         (2,"2"),

@@ -4,34 +4,114 @@
 {% block titulo %}Crear empleado{% endblock %}
 
 {% block contenedor %}
-      <main>
-        <form class="form1"  action="{% url 'add_car_profile' %}" method='post'>
-          {% csrf_token %}
-          <h1 style="text-align: center;">Añadir vehiculo</h1>
-          <div class="datos">
-              <div class="mb-3 mt-3">
-                <label for="marca" class="form-label">Marca del vehiculo:</label>
-                <input type="text" class="form-control" id="vehiculo" placeholder="Ejemplo: Mazda" name="vehiculo">
-              </div>
-              <div class="mb-3 mt-3">
-                <label for="placa" class="form-label">Placa del vehiculo:</label>
-                <input type="text" class="form-control" id="placa" placeholder="Ejemplo: WXM332" name="placa">
-              </div>
-              <div class="mb-3 mt-3">
-                <label for="mod" class="form-label">Modelo del vehiculo:</label>
-                <input type="number" class="form-control" id="modelo" placeholder="Ejemplo:2000" name="modelo">
-              </div>
-              <div class="mb-3 mt-3">
-                <label for="linea" class="form-label">Kilometraje del vehiculo:</label>
-                <input type="text" class="form-control" id="km" placeholder="Ejemplo:Captiva" name="km">
-              </div>
-              <div class="mb-3 mt-3">
-                <label for="marca" class="form-label">Linea del vehiculo:</label>
-                <input type="text" class="form-control" id="linea" placeholder="Ejemplo: Mazda 3" name="linea">
-              </div>
+
+
+<div class="container-fluid m-3" style="padding: 90px;">
+  <h1>Mis vehiculos</h1>
+  <table class="table table-bordered">
+      <thead class="table-dark">
+          <tr>
+              <th>Vehiculo</th>
+              <th>Modelo</th>
+              <th>Placa</th>
+              <th>Kilometraje</th>
+              <th>Linea</th>
+              <th>Acciones</th>
               
-          <br>
-          <button id="cotizar" class="btn btn-danger">Añadir</button>
+          </tr>
+      </thead>
+      <tbody>
+          {% for r in data %}
+          <tr>
+              <td>{{ r.vehiculo }}</td>
+              <td>{{ r.modelo }}</td>
+              <td>{{ r.placa }}</td>
+              <td>{{ r.kilometraje }}</td>
+              <td>{{ r.linea }}</td>
+              
+              <td>
+                  <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                  <a class="btn btn-danger"
+                      href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')">Eliminar</a>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  <nav aria-label="Page navigation example">
+      <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+  </nav>
+  <section class="d-flex justify-content-center">
+    <article class="add" >
+    
+      <p>Si deseas agregar tu vehiculo, aqui lo podras realizar</p>
+      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar cita</button>
+    </article>
+  </section>
+
+  <div class="modal" id="agg">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Mis vehiculos</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form   action="{% url 'add_car_profile' %}" method='post'>
+            {% csrf_token %}
+            <h1 style="text-align: center;">Añadir vehiculo</h1>
+            <div class="datos">
+                <div class="mb-3 mt-3">
+                  <label for="marca" class="form-label">Marca del vehiculo:</label>
+                  <input type="text" class="form-control" id="vehiculo" placeholder="Ejemplo: Mazda" name="vehiculo">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="placa" class="form-label">Placa del vehiculo:</label>
+                  <input type="text" class="form-control" id="placa" placeholder="Ejemplo: WXM332" name="placa">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="mod" class="form-label">Modelo del vehiculo:</label>
+                  <input type="number" class="form-control" id="modelo" placeholder="Ejemplo:2000" name="modelo">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="linea" class="form-label">Kilometraje del vehiculo:</label>
+                  <input type="text" class="form-control" id="km" placeholder="Ejemplo:Captiva" name="km">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="marca" class="form-label">Linea del vehiculo:</label>
+                  <input type="text" class="form-control" id="linea" placeholder="Ejemplo: Mazda 3" name="linea">
+                </div>
+                
+            <br>
+             <button id="cotizar" class="btn btn-danger">Añadir</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+
+        </div>
+    </div>
+ </div>
+
+</div>
+
+      <main>
+        
         </form>
           
       </main>

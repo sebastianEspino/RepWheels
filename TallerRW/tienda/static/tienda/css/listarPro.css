@@ -17,6 +17,19 @@ table{
     background-color: black;
 }
 
+nav li a:hover{
+    background-color: grey;
+    border-radius: 30PX;
+
+}
+
+#trasnnav{
+    background-color: rgba(245, 245, 245, 0.8);
+}
+
+i{
+    color: white;
+}
 
 footer{
     background-color: rgb(0, 0, 0);
