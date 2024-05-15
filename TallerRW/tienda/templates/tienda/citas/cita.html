@@ -80,7 +80,84 @@
         </div>
      </div>
 
+
+
+
+
+
+
+     <div class="modal " id="infor">
+      <div class="modal-dialog">
+          <div class="modal-content">
+  
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">Citas</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+  
+          <!-- Modal body -->
+          <div class="modal-body gg">
+            <table class="table table-striped">
+             
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Hora</th>
+                  <th>Cliente</th>
+                  <th>Empleado</th>
+                </tr>
+              </thead>
+              <tbody class="details">
+               
+              </tbody>
+            </table>
+          </div>
+  
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            
+          <button  type="button" class="btn btn-danger cerrarModal" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+  
+          </div>
+      </div>
+   </div>
+
+
 <script>
+    d = document.querySelector('.details')
+    
+    async function abrirmodal(id){
+      $('#infor').modal('show'); 
+      url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
+      data = await url.json()
+      console.log(data)
+      console.log("id " + id)
+
+      url_servicio = await fetch(data.servicio)
+      data_servicio =  await url_servicio.json()
+      
+
+      url_cliente = await fetch(data.cliente)
+      data_cliente =  await url_cliente.json()
+
+      url_empleado = await fetch(data.empleado)
+      data_empleado =  await url_empleado.json()
+      
+
+      d.innerHTML = `
+                <tr>
+                  <th>${data_servicio.nombre}</th>
+                  <td>${data.hora}</td>
+                  <td>${data_cliente.nombre}</td>
+                  <td>${data_empleado.nombre_completo}</td>
+                </tr>
+      `
+    }
+   
+   
+  
     document.addEventListener('DOMContentLoaded', function(){
        
        var calendarUI = document.getElementById('calendar');
@@ -88,18 +165,21 @@
            events:[
            {% for eve in data %}
                {
+                   id:"{{ eve.id }}",
                    title: "{{ eve.cliente }}",
                    start:"{{ eve.fechaServicio | date:'Y-m-d' }}",
                    servicio: "{{ eve.servicio }}"                   
                },
-           {% endfor %}
+               {% endfor %}
            ],
            eventMouseEnter: function(info) {
                 info.el.style.cursor = 'pointer';
             },
             eventClick: function(info) {
-                alert('Cliente: ' + info.event.title + '\n' + 'Fecha: ' + info.event.start + '\n' + 'SERVICIO: ' + info.event.extendedProps.servicio);
+                abrirmodal(info.event.id)
+
             }
+            
        });
      
        calendar.render();

@@ -400,3 +400,7 @@ input[type="radio"]:checked~label {
 .modal-body {
     height: 450px;
 }
+
+.gg{
+    height:200px
+}

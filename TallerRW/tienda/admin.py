@@ -66,7 +66,7 @@ class Calificaciones(admin.ModelAdmin):
 
 @admin.register(Citas)
 class Citas(admin.ModelAdmin):
-     list_display=['id','fechaServicio','hora']
+     list_display=['id','fechaServicio','hora','cliente','servicio','empleado']
      search_fields = ['tipoServicio']
 
 @admin.register(Facturas)

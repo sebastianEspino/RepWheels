@@ -17,7 +17,7 @@ class ProveedoresSerializers(serializers.ModelSerializer):
 class ServiciosSerializers(serializers.ModelSerializer):
     class Meta:
         model = Servicios
-        fields = ['id','nombre','descripcion_servicio','productos']
+        fields = ['id','nombre','descripcion_servicio','precio']
 
 class ProductosSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -38,8 +38,7 @@ class ClientesSerializers(serializers.HyperlinkedModelSerializer):
 class CitasSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Citas
-        fields = ['id','fechaServicio','hora','cotizacion','cliente','empleado']
-
+        fields = '__all__'
 class CalificacionesSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Calificaciones
