@@ -5,48 +5,48 @@
 
 {% block contenedor %}
       <main>
+        
         <section style="background-color: black;">
-            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="d-flex align-items-center">
-                    <img src="imagenes/descuento.png" class="d-block mx-auto" width="80%" height="400px"
-                      alt="imagen descuentos">
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="d-flex align-items-center">
-                    <img src="imagenes/combos.jpg" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
-                  </div>
+          <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="d-flex align-items-center">
+                  <img src="imagenes/descuento.png" class="d-block mx-auto" width="80%" height="400px"
+                    alt="imagen descuentos">
                 </div>
               </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterios</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
-                <span class="carousel-control-next-icon" ariahidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-              </button>
+              <div class="carousel-item">
+                <div class="d-flex align-items-center">
+                  <img src="imagenes/combos.jpg" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
+                </div>
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterios</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
+              <span class="carousel-control-next-icon" ariahidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+          </div>
           </section>
+        
 
-      
           <section class="servicios">
             <h1>Servicios</h1>
             <div>
               <div class="product">
                   {% if data %}
                       {% for p in data %}
-                              <div class="card align-items-center text-center p-10 " data-bs-toggle="collapse" data-bs-target=f"#{{ forloop.counter }}" style="width: 18rem; padding: 10px;">
+                              <div class="card align-items-center text-center p-10 " data-bs-toggle="collapse" data-bs-target="#{{ p.nombre }}" style="width: 18rem; padding: 10px;">
                                 <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:86%; height: 130px;" >
 
                                 <div class="card-body">
                                   <h5 class="card-title">{{ p.nombre }}</h5>
                                   <p class="card-text"><br> <strong>Precio: {{ p.precio }}</strong></p>
-                                  <p>{{ forloop.counter }}</p>
                                 </div>
-                                <div id="{{ forloop.counter }}" class="collapse">
+                                <div id="{{ p.nombre }}" class="collapse">
                                   <div class="card-body">
                                     <p class="card-text">{{ p.descripcion_servicio }} </p>
                                     <a href="#" class="btn btn-danger">Detalles de Servicio</a><br><br>

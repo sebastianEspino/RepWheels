@@ -15,7 +15,9 @@
                     <th>Cliente</th>
                     <th>Servicio</th>
                     <th>Empleado</th>
+                    
                     <th>Acciones</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -27,10 +29,17 @@
                         <td>{{ r.cliente }}</td>
                         <td>{{ r.servicio }}</td>
                         <td>{{ r.empleado }}</td>
-                        <td>
-                            <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Editar</a>
-                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'citaEliminar' r.id %}')">Eliminar</a>
-                        </td>
+                        {% if request.session.logueo.rol == 3 %}
+                            <td>
+                                <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Terminada</a>
+                                <a class="btn btn-danger" href="javascript:cancelar('{% url 'cancelarCita' r.id %}')">Cancelar</a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <a class="btn btn-info" href="{% url 'cita_formulario_editar' r.id %}">Editar</a>
+                                <a class="btn btn-danger" href="javascript:eliminar('{% url 'citaEliminar' r.id %}')">Eliminar</a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

@@ -3,6 +3,14 @@ function eliminar(url){
         location.href = url;
     }
 }
+
+
+function cancelar(url){
+    if (confirm("¿Está seguro de cancelar la cita?")) {
+        location.href = url;
+    }
+}
+
 function addCart(url,id_producto){
     csrf_token = $("[name='csrfmiddlewaretoken']")[0].value;
     id = $(`#id_${id_producto}`).val()

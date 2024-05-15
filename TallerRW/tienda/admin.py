@@ -51,7 +51,7 @@ class Proveedores(admin.ModelAdmin):
     
 @admin.register(Usuarios)
 class Usuario(admin.ModelAdmin):
-    list_display=['id','nombre','correo','clave','rol','foto','ver_foto']
+    list_display=['id','nombre','correo','clave','rol','foto']
     search_fields = ['nombre']
     list_editable = ["rol"]
 
@@ -66,7 +66,7 @@ class Calificaciones(admin.ModelAdmin):
 
 @admin.register(Citas)
 class Citas(admin.ModelAdmin):
-     list_display=['id','fechaServicio','hora']
+     list_display=['id','fechaServicio','hora','estado_cita']
      search_fields = ['tipoServicio']
 
 @admin.register(Facturas)

@@ -383,12 +383,16 @@ def registrarCita(request):
     return render(request, "tienda/citas/registrarCita.html",contexto)
 
 def listarCita(request):
-    q = Citas.objects.all()
+    logueo = request.session.get("logueo",False)
+    u = Usuarios.objects.get(pk=logueo["id"])
+    if u.rol != 3:
+        q = Citas.objects.all()
+    else:
+        q = Citas.objects.filter(empleado = logueo["id"])
     contexto = {"data": q}
     return render(request, "tienda/citas/listarCita.html", contexto)
 
 def citaRegistrar(request):
-
     if request.method == "POST":
         logueo = request.session.get("logueo",False)
         u = Usuarios.objects.get(pk=logueo["id"])
@@ -419,6 +423,13 @@ def cita_formulario_editar(request, id):
     c = Servicios.objects.all()
     contexto = {"data": q,"data1":e,"data2":c}
     return render(request, "tienda/citas/editarCita.html", contexto)
+
+def cancelarCita(request,id):
+    q = Citas.objects.get(id = id )
+    q.estado_cita = 3
+
+    return redirect("listarCita")
+
 
 def citaActualizar(request):
     if request.method == "POST":
@@ -460,11 +471,6 @@ def citaEliminar(request, id):
     except Exception as e:
         messages.error(request, f'Error: {e}')
     return redirect('listarCita')
-
-
-
-
-
 
 
 #CRUD cotizaciones
@@ -566,7 +572,8 @@ def cotizacionActualizar(request):
 
 def calificaciones(request):
     q = Calificaciones.objects.all()
-    contexto = {"data":q}
+    s = Servicios.objects.all()
+    contexto = {"data":q,"servicios": s}
     return render(request, "tienda/calificaciones/calificacion.html",contexto)
 
 def agregar_calificacion_form(request):
@@ -575,7 +582,7 @@ def agregar_calificacion_form(request):
 
     if request.method == "POST":
         try:
-            servicio = request.POST.get("servicio")
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             estrellas = int(request.POST.get("estrellas"))
             q = Calificaciones(
                  cliente=u, 
@@ -834,9 +841,9 @@ def registerUser(request):
             correo = email,
             clave = hash_password(clave)
         )
-
+        user.save()
         cliente = Clientes(
-            nombre_completo = name,
+            nombre_completo = user,
             correo = email,
             cedula = 0,
             telefono = 0,
@@ -846,7 +853,7 @@ def registerUser(request):
         )
         cliente.save()
 
-        user.save()
+        
 
         messages.success(request,'Usuario creado exitosamente')
         return redirect('login')

@@ -81,9 +81,11 @@
      </div>
 
 <script>
+  
     document.addEventListener('DOMContentLoaded', function(){
        
        var calendarUI = document.getElementById('calendar');
+       calendarUI.style.color = "black";
        var calendar = new FullCalendar.Calendar(calendarUI,{
            events:[
            {% for eve in data %}
@@ -99,6 +101,7 @@
             },
             eventClick: function(info) {
                 alert('Cliente: ' + info.event.title + '\n' + 'Fecha: ' + info.event.start + '\n' + 'SERVICIO: ' + info.event.extendedProps.servicio);
+                openModal()
             }
        });
      

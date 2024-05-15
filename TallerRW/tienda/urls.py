@@ -61,6 +61,7 @@ urlpatterns = [
     path("citaEliminar/<int:id>", views.citaEliminar, name="citaEliminar"),
     path("cita_formulario_editar/<int:id>", views.cita_formulario_editar, name="cita_formulario_editar"),
     path("citaActualizar", views.citaActualizar, name="citaActualizar"),
+    path("cancelarCita/<int:id>",views.cancelarCita,name="cancelarCita"),
     
     #CRUD calificaciones
     path('calificaciones',views.calificaciones,name='calificaciones'),
