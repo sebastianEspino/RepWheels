@@ -53,7 +53,7 @@ urlpatterns = [
     path("proveedores_actualizar/", views.proveedores_actualizar, name="proveedores_actualizar"),
     path("deleteProveedores/<int:id>", views.proveedores_delete, name="deleteProveedores"),
     
-    #CRUD citas
+    #CRUD citas 
     path('citas',views.citas,name='citas'),
     path("registrarCita", views.registrarCita, name="registrarCitar"),
     path("listarCita", views.listarCita, name="listarCita"),

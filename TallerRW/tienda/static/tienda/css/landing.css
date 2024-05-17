@@ -348,10 +348,6 @@ p i{
     margin-top: 20px;
     width: 900px;
     height: 600px;
-<<<<<<< HEAD
-    
-=======
->>>>>>> main
 }
 
 
@@ -407,17 +403,17 @@ input[type="radio"]:checked~label {
     height: 450px;
 }
 
-<<<<<<< HEAD
+
 .gg{
-    height:200px
+    height:335px
 }
 
 .fc-daygrid-day a{
     color: black;
 }
 
-=======
+
 .fc-daygrid-day a{
     color: black;
 }
->>>>>>> main
+

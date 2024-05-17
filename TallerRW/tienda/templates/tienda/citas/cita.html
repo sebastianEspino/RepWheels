@@ -4,188 +4,226 @@
 {% block titulo %}Citas{% endblock %}
 
 {% block contenedor %}
-      <main>
-        <section id="scitas">
-            <article class="add">
-              <div class="tit">
-                <h1 class="card-title">Citas</h1>
-              </div>
-              <div  id="calendar" class="container fc-daygrid-day">
-
-              </div>
-              
-              <br>
-              <p>Si deseas agendar un servicio, aqui lo podras realizar</p>
-                <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar cita</button>
-            </article>
-        </section>
-      </main>
-
-     <div class="modal" id="agg">
-        <div class="modal-dialog">
-            <div class="modal-content">
-    
-            <!-- Modal Header -->
-            <div class="modal-header">
-            <h4 class="modal-title">Citas</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-    
-            <!-- Modal body -->
-            <div class="modal-body">
-              <form class="form1" action="{% url 'citaRegistrar' %}" method="post">
-                {% csrf_token %}
-                <h1 style="text-align: center;">Formulario de cita</h1>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="inputPassword4">Fecha</label>
-                    <input type="date" class="form-control" id="Fecha"  placeholder="Fecha" name ="fechaServicio">
-                  </div>
-                  <div class="form-group col-md-12">
-                    <label for="inputCantidad">Hora</label>
-                    <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
-                  </div>
-                  <br>
-                  <div class="form-group col-md-12">
-                    <label for="">Servicio</label>
-                          <select class="form-control" name="servicio">
-                          <option value="">Seleccione</option>
-                          {% for c in data1 %}
-                              <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
-                          {% endfor %}
-                          </select>
-                          
-                  </div>
-                  <br>
-                  <div class="form-group col-md-12">
-                    <label for="">Empleado</label>
-                          <select class="form-control" name="empleado">
-                          <option value="">Seleccione</option>
-                          {% for e in data2 %}
-                              <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
-                          {% endfor %}
-                          </select>
-                  </div>
-                  <br>
-                  <button type="submit" class="btn btn-primary">Agendar</button>
-                </div>
-              </form>
-            </div>
-    
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-    
-            </div>
-        </div>
-     </div>
-
-
-
-
-
-
-
-     <div class="modal " id="infor">
-      <div class="modal-dialog">
-          <div class="modal-content">
-  
-          <!-- Modal Header -->
-          <div class="modal-header">
-          <h4 class="modal-title">Citas</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-  
-          <!-- Modal body -->
-          <div class="modal-body gg">
-            <table class="table table-striped">
-             
-              <thead>
-                <tr>
-                  <th>Servicio</th>
-                  <th>Hora</th>
-                  <th>Cliente</th>
-                  <th>Empleado</th>
-                </tr>
-              </thead>
-              <tbody class="details">
-               
-              </tbody>
-            </table>
-          </div>
-  
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            
-          <button  type="button" class="btn btn-danger cerrarModal" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-  
-          </div>
+<main>
+  <section id="scitas">
+    <article class="add">
+      <div class="tit">
+        <h1 class="card-title">Citas</h1>
       </div>
-   </div>
+      <div id="calendar" class="container fc-daygrid-day">
+
+      </div>
+
+      <br>
+      <p>Si deseas agendar un servicio, aqui lo podras realizar</p>
+      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar cita</button>
+    </article>
+  </section>
+</main>
+
+<div class="modal" id="agg">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Citas</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form class="form1" action="{% url 'citaRegistrar' %}" method="post">
+          {% csrf_token %}
+          <h1 style="text-align: center;">Formulario de cita</h1>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputPassword4">Fecha</label>
+              <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio">
+            </div>
+            <div class="form-group col-md-12">
+              <label for="inputCantidad">Hora</label>
+              <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
+            </div>
+            <br>
+            <div class="form-group col-md-12">
+              <label for="">Servicio</label>
+              <select class="form-control" name="servicio">
+                <option value="">Seleccione</option>
+                {% for c in data1 %}
+                <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
+                {% endfor %}
+              </select>
+
+            </div>
+            <br>
+            <div class="form-group col-md-12">
+              <label for="">Empleado</label>
+              <select class="form-control" name="empleado">
+                <option value="">Seleccione</option>
+                {% for e in data2 %}
+                <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Agendar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal " id="infor">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Citas</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body gg">
+        <div class="editar_fecha" style="display: none;">
+          <form action="{% url 'citaActualizar' %}" method="post">
+            {% csrf_token %}
+            <label for="inputPassword4">Fecha</label>
+            <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio_e">
+            <label for="inputCantidad">Hora</label>
+            <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora_e">
+            <label for="">Servicio</label>
+            <select class="form-control"  name="servicio_e">
+              <option value="">Seleccione</option>
+              {% for c in data1 %}
+              <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
+              {% endfor %}
+            </select>
+            <label for="">Empleado</label>
+            <select class="form-control" name="empleado_e">
+              <option value="">Seleccione</option>
+              {% for e in data2 %}
+              <option value="{{ e.id }}" >{{ e.nombre_completo }}</option>
+              {% endfor %}
+            </select><br>
+            <button type="submit" class="btn btn-success">Editar</button>
+            <input type="hidden" id="id_cita" name="id_cita">
+          </form>
+         
+        </div>
+        <table class="table table-striped tl">
+
+          <thead>
+            <tr>
+              <th>Servicio</th>
+              <th>Hora</th>
+              <th>Cliente</th>
+              <th>Empleado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="details">
+
+          </tbody>
+        </table>
+       
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger cerrarModal" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <script>
-    d = document.querySelector('.details')
-    
-    async function abrirmodal(id){
-      $('#infor').modal('show'); 
-      url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
-      data = await url.json()
-      console.log(data)
-      console.log("id " + id)
+  d = document.querySelector('.details')
 
-      url_servicio = await fetch(data.servicio)
-      data_servicio =  await url_servicio.json()
-      
+  function cambiar_estado() {
+    edit = document.querySelector(".editar_fecha")
+    table = document.querySelector(".tl")
+    edit.style.display = "block"
+    table.style.display = "none"
+  }
 
-      url_cliente = await fetch(data.cliente)
-      data_cliente =  await url_cliente.json()
+  async function abrirmodal(id) {
+    cita = document.querySelector("#id_cita")
+    cita.value =  id
+    $('#infor').modal('show');
+    url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
+    data = await url.json()
 
-      url_empleado = await fetch(data.empleado)
-      data_empleado =  await url_empleado.json()
-      
+    url_servicio = await fetch(data.servicio)
+    data_servicio = await url_servicio.json()
 
-      d.innerHTML = `
+
+    url_cliente = await fetch(data.cliente)
+    data_cliente = await url_cliente.json()
+
+    url_empleado = await fetch(data.empleado)
+    data_empleado = await url_empleado.json()
+
+
+
+    d.innerHTML = `
                 <tr>
                   <th>${data_servicio.nombre}</th>
                   <td>${data.hora}</td>
                   <td>${data_cliente.nombre}</td>
                   <td>${data_empleado.nombre_completo}</td>
+                  <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado()">Editar</button>
+          <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
                 </tr>
       `
-    }
-   
-   
-  
-    document.addEventListener('DOMContentLoaded', function(){
-       
-       var calendarUI = document.getElementById('calendar');
-       var calendar = new FullCalendar.Calendar(calendarUI,{
-           events:[
-           {% for eve in data %}
-               {
-                   id:"{{ eve.id }}",
-                   title: "{{ eve.cliente }}",
-                   start:"{{ eve.fechaServicio | date:'Y-m-d' }}",
-                   servicio: "{{ eve.servicio }}"                   
-               },
-               {% endfor %}
-           ],
-           eventMouseEnter: function(info) {
-                info.el.style.cursor = 'pointer';
-            },
-            eventClick: function(info) {
-                abrirmodal(info.event.id)
+  }
 
-            }
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+    var calendarUI = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarUI, {
+      events: [
+        {% for eve in data %}
+               {
+        id: "{{ eve.id }}",
+        title: "{{ eve.cliente }}",
+        start: "{{ eve.fechaServicio | date:'Y-m-d' }}",
+        servicio: "{{ eve.servicio }}"
+      },
+      {% endfor %}
+           ],
+    eventMouseEnter: function (info) {
+      info.el.style.cursor = 'pointer';
+    },
+    eventClick: function (info) {
+      abrirmodal(info.event.id)
+
+    }
             
        });
-     
-       calendar.render();
-       calendar.setOption('locale','es');
+
+  calendar.render();
+  calendar.setOption('locale', 'es');
    });
 
 
