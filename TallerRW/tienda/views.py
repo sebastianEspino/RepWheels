@@ -7,6 +7,7 @@ from django.contrib import messages
 from .crypt import *
 from django.db import IntegrityError, transaction
 from django.core.mail import BadHeaderError, EmailMessage
+from datetime import datetime,timedelta,date
 
 
 
@@ -369,9 +370,14 @@ def proveedores_delete(request,id):
 #CRUD de Citas
 
 def citas(request):
+    now = date.today()
     q = Citas.objects.all()
+    for dates in q:
+        if dates.fechaServicio.day < now.day or dates.fechaServicio.month < now.month or dates.fechaServicio.year < now.year:
+            dates.delete()
     c = Servicios.objects.all()
     e = Empleado.objects.all()   
+
     
     contexto = {"data": q,"data1": c , "data2":e}
     return render(request, "tienda/citas/cita.html",contexto)
@@ -394,28 +400,31 @@ def listarCita(request):
 
 def citaRegistrar(request):
     if request.method == "POST":
-        logueo = request.session.get("logueo",False)
-        u = Usuarios.objects.get(pk=logueo["id"])
-        fecha_servicio = request.POST.get('fechaServicio')
-        hora = request.POST.get('hora')
-        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+        try:
+            logueo = request.session.get("logueo",False)
+            u = Usuarios.objects.get(pk=logueo["id"])
+            fecha_servicio = request.POST.get('fechaServicio')
+            hora = request.POST.get('hora')
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+            empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
 
-        cita = Citas(
-            fechaServicio=fecha_servicio,
-            hora = hora,
-            cliente = u,
-            servicio = servicio ,
-            empleado = empleado
-            
-        )
-        cita.save()
+            cita = Citas(
+                fechaServicio=fecha_servicio,
+                hora = hora,
+                cliente = u,
+                servicio = servicio ,
+                empleado = empleado
+                
+            )
+            cita.save()
 
-        messages.success(request, "Cita guardada correctamente!!")
-        if u.rol == 1:
-            return redirect("listarCita")
-        else:
-           return redirect("citas")  
+            messages.success(request, "Cita guardada correctamente!!")
+            if u.rol == 1:
+                return redirect("listarCita")
+            else:
+                return redirect("citas")  
+        except Exception as error:
+             messages.error(request,"error en agendar")
 
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)

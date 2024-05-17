@@ -25,6 +25,7 @@
             <h1>Servicios</h1>
         </div>
         <article class="tarjetas">
+            {% if servicios %}
                 {% for i in servicios %}
                     
                         <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
@@ -42,7 +43,9 @@
                         
                 
                 {% endfor %}
-            
+                {% else %}
+                <h2>No hay servicios</h2>
+        {% endif %}  
         </article>
         <div class="text-center mb-4">
             <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>

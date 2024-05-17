@@ -41,8 +41,7 @@ class Usuarios(models.Model):
     correo=models.CharField(max_length=254,unique=True)
     clave=models.CharField(max_length=8,null=False)
     foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
-    token_recuperar = models.CharField(max_length=254,blank=False,null=False)
-
+   
     ROLES = (
         (1,"administrador"),
         (2,"gerente"),
@@ -54,7 +53,7 @@ class Usuarios(models.Model):
         return self.nombre
 
 class Empleado(models.Model):
-    nombre_completo = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
+    nombre_completo = models.CharField(max_length=200,blank=False,null=True)
     cedula=models.IntegerField(unique=True)
     correo=models.CharField(max_length=254,unique=True)
     telefono=models.IntegerField(unique=True)
