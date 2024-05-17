@@ -38,7 +38,12 @@ class ClientesSerializers(serializers.HyperlinkedModelSerializer):
 class CitasSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Citas
+<<<<<<< HEAD
         fields = '__all__'
+=======
+        fields = ['id','fechaServicio','hora','servicio','cliente','empleado']
+
+>>>>>>> main
 class CalificacionesSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Calificaciones

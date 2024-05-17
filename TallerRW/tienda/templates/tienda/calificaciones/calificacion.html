@@ -48,12 +48,13 @@
         </div>
       </section>
     </article>
-
-    <article class="add">
-      <p>Si deseas realizar una calificacion al servicio prestado por nosotros</p>
-      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agregar
-        calificacion</button>
-    </article>
+    {% if request.sesssion.logueo != False %}
+      <article class="add">
+        <p>Si deseas realizar una calificacion al servicio prestado por nosotros</p>
+        <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agregar
+          calificacion</button>
+      </article>
+    {% endif %}
 
   </section>
 </main>
@@ -74,28 +75,31 @@
           <h1 style="text-align: center;">Formulario de calificacion</h1>
           <div class="form-row">
             <br>
-            <div class="form-group col-md-12">
-              <label for="inputPassword4">Servicio</label>
-              <input type="Text" class="form-control" name="servicio" id="NombreC" placeholder="Nombre completo">
-            </div>
+            <label for="">Servicio</label>
+              <select class="form-control" name="servicio">
+              <option value="">Seleccione</option>
+              {% for q in servicios %}
+                  <option value="{{ q.id }}">{{ q.nombre }}</option>
+              {% endfor %}
+              </select>
             <br>
             <div class="form-group col-md-12">
               <label for="inputAddress2">Cantidad estrellas</label>
               <p class="clasificacion">
                             <input id="radio1" type="radio" name="grupo_e" class="star" value="5" onclick=" stars()"><!--
-                          --><label for="radio1">★</label><!--
+                          --><label for="radio1" class="calif">★</label><!--
                           --><input id="radio2" type="radio" name="grupo_e" class="star" value="4" onclick="stars()"><!--
-                          --><label for="radio2">★</label><!--
+                          --><label for="radio2" class="calif">★</label><!--
                           --><input id="radio3" type="radio" name="grupo_e" class="star" value="3" onclick="stars()"><!--
-                          --><label for="radio3">★</label><!--
+                          --><label for="radio3" class="calif">★</label><!--
                           --><input id="radio4" type="radio" name="grupo_e" class="star" value="2" onclick="stars()"><!--
-                          --><label for="radio4">★</label><!--
+                          --><label for="radio4" class="calif">★</label><!--
                           --><input id="radio5" type="radio" name="grupo_e" class="star" value="1" onclick="stars()"><!--
-                          --><label for="radio5">★</label>
+                          --><label for="radio5" class="calif">★</label>
               </p>
             </div>
           </div>
-          <input type="number" id="cantidad" name="estrellas">
+          <input type="number" id="cantidad" name="estrellas" hidden>
       </div>
 
       <!-- Modal footer -->

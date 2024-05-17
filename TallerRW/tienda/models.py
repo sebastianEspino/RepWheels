@@ -34,9 +34,27 @@ class Servicios(models.Model):
     precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
+    
+
+class Usuarios(models.Model):
+    nombre=models.CharField(max_length=254)
+    correo=models.CharField(max_length=254,unique=True)
+    clave=models.CharField(max_length=8,null=False)
+    foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
+    token_recuperar = models.CharField(max_length=254,blank=False,null=False)
+
+    ROLES = (
+        (1,"administrador"),
+        (2,"gerente"),
+        (3,"empleado"),
+        (4,"cliente"), 
+    )
+    rol=models.IntegerField(choices=ROLES,default=4)
+    def __str__(self):
+        return self.nombre
 
 class Empleado(models.Model):
-    nombre_completo=models.CharField(max_length=254)
+    nombre_completo = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     cedula=models.IntegerField(unique=True)
     correo=models.CharField(max_length=254,unique=True)
     telefono=models.IntegerField(unique=True)
@@ -53,15 +71,14 @@ class DetallesServicio(models.Model):
         return self.fecha
 
 class Clientes(models.Model):
-    nombre_completo=models.CharField(max_length=254)
+    nombre_completo = models.ForeignKey(Usuarios,on_delete=models.CASCADE,blank=False,null=True)
     cedula=models.IntegerField(blank=True,null=False)
-    correo=models.CharField(max_length=254,unique=True)
+    correo = models.CharField(max_length=254,unique=True)
     telefono=models.IntegerField(blank=False,null =True)
     direccion=models.CharField(max_length=254)
     n = models.IntegerField(null=False, blank=True,default=0)
     def __str__(self):
         return self.nombre_completo
-
 
 
 class Vehiculos(models.Model): 
@@ -72,22 +89,7 @@ class Vehiculos(models.Model):
     kilometraje = models.IntegerField(default=1236456,blank=True,null=True)
     linea = models.CharField(max_length=254,blank=False,null=True)
 
-class Usuarios(models.Model):
-    nombre=models.CharField(max_length=254)
-    correo=models.CharField(max_length=254,unique=True)
-    clave=models.CharField(max_length=8,null=False)
-    foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
-    token_recuperar = models.CharField(max_length=254,blank=False,null=True)
 
-    ROLES = (
-        (1,"administrador"),
-        (2,"gerente"),
-        (3,"empleado"),
-        (4,"cliente"), 
-    )
-    rol=models.IntegerField(choices=ROLES,default=4)
-    def __str__(self):
-        return self.nombre
     
 class Cotizaciones(models.Model):
     vehiculo = models.CharField(max_length=254,blank=False,null=True)
@@ -103,7 +105,7 @@ class Cotizaciones(models.Model):
     
 class Calificaciones(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
-    servicio = models.CharField(max_length=254,null=True)
+    servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=True)
     foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/user.png")
     Estrellas= (
         (1, "1"),
@@ -124,6 +126,12 @@ class Citas(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=False)
     empleado = models.ForeignKey(Empleado, on_delete=models.DO_NOTHING,blank=False,null=True)
+    estados = (
+        (1, "Pendiente"),
+        (2,"Finalizado"),
+        (3,"Cancelada"),
+    )
+    estado_cita = models.IntegerField(choices=estados,default= 3)
 
     def __str__(self):
         return f'{self.fechaServicio}'

@@ -22,6 +22,8 @@ a{
     color: white;
 }
 
+
+
 #section2{
     border: 1px solid black;
     height: 480px;
@@ -241,14 +243,16 @@ i{
 #info_p{
     border: 1px solid black;
     border-radius: 5%;
-    width: 600px;
+    width: 700px;
     height: 450px;
     display: flex;
+    justify-content: space-around;
     flex-direction: row;
     padding: 30px;
     align-items: center;
 
 }
+
 
 #info{
     display: flex;
@@ -344,7 +348,10 @@ p i{
     margin-top: 20px;
     width: 900px;
     height: 600px;
+<<<<<<< HEAD
     
+=======
+>>>>>>> main
 }
 
 
@@ -379,7 +386,7 @@ label {
     unicode-bidi: bidi-override;
 }
 
-label:hover,
+.calif label:hover,
 label:hover~label {
     color: orange;
 }
@@ -391,7 +398,6 @@ input[type="radio"]:checked~label {
 
 .form_ed {
     display: flex;
-
     flex-direction: column;
     width: 450px;
     height: 450px;
@@ -401,6 +407,7 @@ input[type="radio"]:checked~label {
     height: 450px;
 }
 
+<<<<<<< HEAD
 .gg{
     height:200px
 }
@@ -409,3 +416,8 @@ input[type="radio"]:checked~label {
     color: black;
 }
 
+=======
+.fc-daygrid-day a{
+    color: black;
+}
+>>>>>>> main
