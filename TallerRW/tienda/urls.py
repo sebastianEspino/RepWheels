@@ -15,6 +15,8 @@ router.register(r'Usuarios',views.UsuariosViewSet)
 router.register(r'Facturas',views.FacturasViewSet)
 router.register(r'DetalleFactura',views.DetalleFacturaViewSet)
 router.register(r'DetalleServicio',views.DetalleServicioViewSet)
+router.register(r'Categorias',views.CategoriaViewSet)
+router.register(r'Vehiculos',views.VehiculosViewSet)
 
 
 urlpatterns = [

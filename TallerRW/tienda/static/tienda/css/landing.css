@@ -166,6 +166,10 @@ i{
     color: white;
 }
 
+.fc-daygrid-day a{
+    color: black;
+}
+
 #cartas img{
     border-radius: 30px;
     height: 100%;
@@ -344,7 +348,7 @@ p i{
     margin-top: 20px;
     width: 900px;
     height: 600px;
-    background-color: rgb(97, 95, 95);
+    
 }
 
 

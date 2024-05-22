@@ -34,43 +34,7 @@ class Servicios(models.Model):
     precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
-
-class Empleado(models.Model):
-    nombre_completo=models.CharField(max_length=254)
-    cedula=models.IntegerField(unique=True)
-    correo=models.CharField(max_length=254,unique=True)
-    telefono=models.IntegerField(unique=True)
-    fecha_contratacion=models.DateField()
-    cargo=models.CharField(max_length=254)
-    def __str__(self):
-        return self.nombre_completo
-
-class DetallesServicio(models.Model):
-    fecha = models.DateField()
-    servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
-    def __str__(self):
-        return self.fecha
-
-class Clientes(models.Model):
-    nombre_completo=models.CharField(max_length=254)
-    cedula=models.IntegerField(blank=True,null=False)
-    correo=models.CharField(max_length=254,unique=True)
-    telefono=models.IntegerField(blank=False,null =True)
-    direccion=models.CharField(max_length=254)
-    n = models.IntegerField(null=False, blank=True,default=0)
-    def __str__(self):
-        return self.nombre_completo
-
-
-
-class Vehiculos(models.Model): 
-    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, blank=False,null=True)
-    vehiculo = models.CharField(max_length=254,blank=False,null=True)
-    modelo = models.IntegerField(default=1900)
-    placa = models.CharField(max_length=6,blank=False, null=True)  
-    kilometraje = models.IntegerField(default=1236456,blank=True,null=True)
-    linea = models.CharField(max_length=254,blank=False,null=True)
+    
 
 class Usuarios(models.Model):
     nombre=models.CharField(max_length=254)
@@ -88,6 +52,46 @@ class Usuarios(models.Model):
     rol=models.IntegerField(choices=ROLES,default=4)
     def __str__(self):
         return self.nombre
+    
+    
+
+
+class Empleado(models.Model):
+    nombre_completo=models.ForeignKey(Usuarios,on_delete=models.CASCADE,blank=False,null=True)
+    cedula=models.IntegerField(unique=True)
+    correo=models.CharField(max_length=254,unique=True)
+    telefono=models.IntegerField(unique=True)
+    fecha_contratacion=models.DateField()
+    cargo=models.CharField(max_length=254)
+    def __str__(self):
+        return self.nombre_completo.nombre
+
+class DetallesServicio(models.Model):
+    fecha = models.DateField()
+    servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='1')
+    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
+    def __str__(self):
+        return self.fecha
+
+class Clientes(models.Model):
+    nombre_completo=models.ForeignKey(Usuarios,on_delete=models.CASCADE,blank=False,null=True)
+    cedula=models.IntegerField(blank=True,null=False)
+    correo=models.CharField(max_length=254,unique=True)
+    telefono=models.IntegerField(blank=False,null =True)
+    direccion=models.CharField(max_length=254)
+    n = models.IntegerField(null=False, blank=True,default=0)
+    def __str__(self):
+        return self.nombre_completo.nombre
+
+
+class Vehiculos(models.Model): 
+    cliente = models.ForeignKey(Clientes,on_delete=models.DO_NOTHING, blank=False,null=True)
+    vehiculo = models.CharField(max_length=254,blank=False,null=True)
+    modelo = models.IntegerField(default=1900)
+    placa = models.CharField(max_length=6,blank=False, null=True)  
+    kilometraje = models.IntegerField(default=1236456,blank=True,null=True)
+    linea = models.CharField(max_length=254,blank=False,null=True)
+
     
 class Cotizaciones(models.Model):
     vehiculo = models.CharField(max_length=254,blank=False,null=True)

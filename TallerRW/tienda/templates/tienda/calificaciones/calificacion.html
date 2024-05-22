@@ -74,10 +74,13 @@
           <h1 style="text-align: center;">Formulario de calificacion</h1>
           <div class="form-row">
             <br>
-            <div class="form-group col-md-12">
-              <label for="inputPassword4">Servicio</label>
-              <input type="Text" class="form-control" name="servicio" id="NombreC" placeholder="Nombre completo">
-            </div>
+            <label for="">Servicio</label>
+              <select class="form-control" name="servicio">
+              <option value="">Seleccione</option>
+              {% for q in servicios %}
+                  <option value="{{ q.id }}">{{ q.nombre }}</option>
+              {% endfor %}
+              </select>
             <br>
             <div class="form-group col-md-12">
               <label for="inputAddress2">Cantidad estrellas</label>

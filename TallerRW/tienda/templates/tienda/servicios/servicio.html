@@ -8,17 +8,15 @@
         <section style="background-color: black;">
             <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="d-flex align-items-center">
-                    <img src="imagenes/descuento.png" class="d-block mx-auto" width="80%" height="400px"
-                      alt="imagen descuentos">
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="d-flex align-items-center">
-                    <img src="imagenes/combos.jpg" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
-                  </div>
-                </div>
+                {% for i in data %}
+                  
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <div class="d-flex align-items-center">
+                        <img src="{{ i.foto.url }}" class="d-block mx-auto" width="80%" height="400px"
+                          alt="imagen descuentos">
+                      </div>
+                    </div>
+                {% endfor %} 
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

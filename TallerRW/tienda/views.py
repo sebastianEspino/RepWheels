@@ -28,6 +28,10 @@ class ProductosViewSet(viewsets.ModelViewSet):
     queryset = Productos.objects.all()
     serializer_class = ProductosSerializers
 
+class VehiculosViewSet(viewsets.ModelViewSet):
+    queryset = Vehiculos.objects.all()
+    serializer_class = VehiculosSerializers
+
 class EmpleadoViewSet(viewsets.ModelViewSet):
     queryset = Empleado.objects.all()
     serializer_class = EmpleadoSerializers
@@ -396,22 +400,33 @@ def citaRegistrar(request):
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+        
+        from datetime import date , time , datetime
+        
+        today = date.today()
+        
+        data_customer = datetime.strptime(fecha_servicio, '%Y-%m-%d')
+        
+        if data_customer.day >= today.day and data_customer.month >= today.month and data_customer.year >= today.year:
 
-        cita = Citas(
-            fechaServicio=fecha_servicio,
-            hora = hora,
-            cliente = u,
-            servicio = servicio ,
-            empleado = empleado
-            
-        )
-        cita.save()
+            cita = Citas(
+                fechaServicio=fecha_servicio,
+                hora = hora,
+                cliente = u,
+                servicio = servicio ,
+                empleado = empleado
+                
+            )
 
-        messages.success(request, "Cita guardada correctamente!!")
+            cita.save()
+            messages.success(request, "Cita guardada correctamente!!")
+        else:
+             messages.warning(request, "Error en la fecha!!")
         if u.rol == 1:
             return redirect("listarCita")
         else:
-           return redirect("citas")  
+           return redirect("citas")
+        
 
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
@@ -566,7 +581,9 @@ def cotizacionActualizar(request):
 
 def calificaciones(request):
     q = Calificaciones.objects.all()
-    contexto = {"data":q}
+    s = Servicios.objects.all()
+    
+    contexto = {"data":q,"servicios":s}
     return render(request, "tienda/calificaciones/calificacion.html",contexto)
 
 def agregar_calificacion_form(request):
@@ -835,8 +852,10 @@ def registerUser(request):
             clave = hash_password(clave)
         )
 
+        user.save()
+
         cliente = Clientes(
-            nombre_completo = name,
+            nombre_completo = user,
             correo = email,
             cedula = 0,
             telefono = 0,
@@ -846,7 +865,7 @@ def registerUser(request):
         )
         cliente.save()
 
-        user.save()
+       
 
         messages.success(request,'Usuario creado exitosamente')
         return redirect('login')
