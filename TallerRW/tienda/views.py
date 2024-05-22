@@ -902,28 +902,32 @@ def register(request):
 
 def registerUser(request):
     if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        clave = request.POST.get('pswd')
-        user = Usuarios(
-            nombre=name,
-            correo=email,
-            clave=hash_password(clave)
-        )
-        user.save()
-        cliente = Clientes(
-            nombre_completo=user,
-            correo=email,
-            cedula=0,
-            telefono=0,
-            direccion="desconocida"
+        try:
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            clave = request.POST.get('pswd')
+            user = Usuarios(
+                nombre=name,
+                correo=email,
+                clave=hash_password(clave)
+            )
+            user.save()
+            cliente = Clientes(
+                nombre_completo=user,
+                correo=email,
+                cedula=0,
+                telefono=0,
+                direccion="desconocida"
 
 
-        )
-        cliente.save()
+            )
+            cliente.save()
 
-        messages.success(request, 'Usuario creado exitosamente')
-        return redirect('login')
+            messages.success(request, 'Usuario creado exitosamente')
+            return redirect('login')
+        except Exception as err:
+            messages.error(request,"error")
+            return redirect('register')
 
 
 def add_car(request):
