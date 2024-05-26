@@ -32,13 +32,6 @@ class VehiculosViewSet(viewsets.ModelViewSet):
     queryset = Vehiculos.objects.all()
     serializer_class = VehiculosSerializers
 
-class EmpleadoViewSet(viewsets.ModelViewSet):
-    queryset = Empleado.objects.all()
-    serializer_class = EmpleadoSerializers
-
-class ClientesViewSet(viewsets.ModelViewSet):
-    queryset = Clientes.objects.all()
-    serializer_class = ClientesSerializers
 
 class CitasViewSet(viewsets.ModelViewSet):
     queryset = Citas.objects.all()
@@ -124,7 +117,7 @@ def eliminarProductos(request, id):
 	try:
 		q = Productos.objects.get(pk=id)
 		q.delete()
-		messages.success(request, "Eliminado, Exitosamiente!")
+		messages.success(request, "Eliminado, Exitosaamiente!")
 	except Exception as e:
 		messages.error(request, f"Error: {e}")
         
@@ -168,7 +161,7 @@ def registrarCliente(request):
     return render(request, "tienda/clientes/registrarCliente.html")
 
 def listarCliente(request):
-    q = Clientes.objects.all()
+    q = Usuarios.objects.filter(rol=4)
     contexto = {"data" : q}
     return render(request, "tienda/clientes/listarCliente.html",contexto)
 
@@ -180,7 +173,7 @@ def clientesCrear(request):
         telefono=request.POST.get('telefono')
 
         try:
-            q = Clientes(
+            q = Usuarios(
                 cedula=cedula,
                 nombre_completo=nombre,
                 correo=correo,
@@ -198,7 +191,7 @@ def clientesCrear(request):
 
 def clientesEliminar(request,id):
     try:
-        q = Clientes.objects.get(pk = id)
+        q = Usuarios.objects.get(pk = id)
         q.delete()
         messages.success(request,"Cliente eliminado Correctamente!")
     except Exception as e:
@@ -206,7 +199,7 @@ def clientesEliminar(request,id):
     return redirect('listarCliente')
 
 def clientesEditar(request,id):
-    q = Clientes.objects.get(pk = id)
+    q = Usuarios.objects.get(pk = id)
     contexto = {"data" : q}
     return render(request,"tienda/clientes/editarCliente.html",contexto)
 
@@ -218,9 +211,9 @@ def clientesActualizar(request):
         correo=request.POST.get('correo')
         telefono=request.POST.get('telefono')
         try:
-            q=Clientes.objects.get(pk=id)
+            q=Usuarios.objects.get(pk=id)
             q.cedula = cedula
-            q.nombre_completo = nombre_completo
+            q.nombre = nombre_completo
             q.correo = correo
             q.telefono = telefono
             q.save()
@@ -234,7 +227,7 @@ def clientesActualizar(request):
         
 #Crud empleados
 def empleados(request):
-	q = Empleado.objects.all()
+	q = Usuarios.objects.filter(rol=3)
 	contexto = {"data": q}
 	return render(request, "tienda/empleados/listarempleados.html", contexto)
 
@@ -250,7 +243,7 @@ def newempleado(request):
         fechac = request.POST.get('fecha')
         cargo = request.POST.get('cargo')
         try:
-            q = Empleado(
+            q = Usuarios(
                 nombre_completo = nombre,
                 cedula = cedula,
                 correo = correo,
@@ -265,8 +258,8 @@ def newempleado(request):
     return redirect('empleado')
 
 def empleados_formulario_editar(request, id):
-	q = Empleado.objects.get(pk=id)
-	c = Empleado.objects.all()
+	q = Usuarios.objects.get(pk=id)
+	c = Usuarios.objects.filter(rol=3)
 	contexto = {"data": q, "empleado": c}
 	return render(request, "tienda/empleados/editarempleados.html", contexto)
 
@@ -280,8 +273,8 @@ def empleado_actualizar(request):
 		telefono = request.POST.get("telefono")
 		cargo = request.POST.get("cargo")
 		try:
-			q = Empleado.objects.get(pk=id)
-			q.nombre_completo = nombre
+			q = Usuarios.objects.get(pk=id)
+			q.nombre = nombre
 			q.cedula = cedula
 			q.correo = correo
 			q.telefono = telefono
@@ -297,7 +290,7 @@ def empleado_actualizar(request):
 
 def empleado_eliminar(request, id):
 	try:
-		q = Empleado.objects.get(pk=id)
+		q = Usuarios.objects.get(pk=id)
 		q.delete()
 		messages.success(request, "Empleado eliminada correctamente!!")
 	except Exception as e:
@@ -373,15 +366,22 @@ def proveedores_delete(request,id):
 #CRUD de Citas
 
 def citas(request):
-    q = Citas.objects.all()
+    l = request.session.get("logueo",False)
+    u = Usuarios.objects.get(pk=l["id"])
+    if u.rol == 3:
+        q = Citas.objects.filter(empleado = u)
+        print(q)
+    else:
+        q = Citas.objects.all() 
     c = Servicios.objects.all()
-    e = Empleado.objects.all()   
-    
+    e = Usuarios.objects.filter(rol=3)   
     contexto = {"data": q,"data1": c , "data2":e}
     return render(request, "tienda/citas/cita.html",contexto)
 
+ 
+
 def registrarCita(request):
-    e = Empleado.objects.all()
+    e = Usuarios.objects.filter(rol=3)
     c = Servicios.objects.all()
     contexto = {"data": e ,"data1":c}
     return render(request, "tienda/citas/registrarCita.html",contexto)
@@ -392,14 +392,13 @@ def listarCita(request):
     return render(request, "tienda/citas/listarCita.html", contexto)
 
 def citaRegistrar(request):
-
     if request.method == "POST":
         logueo = request.session.get("logueo",False)
         u = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
         
         from datetime import date , time , datetime
         
@@ -430,7 +429,7 @@ def citaRegistrar(request):
 
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
-    e = Empleado.objects.all()
+    e = Usuarios.objects.filter(rol=3)
     c = Servicios.objects.all()
     contexto = {"data": q,"data1":e,"data2":c}
     return render(request, "tienda/citas/editarCita.html", contexto)
@@ -444,7 +443,7 @@ def citaActualizar(request):
         cliente = usuario
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
         try:
             q = Citas.objects.get(pk=id)
             q.fechaServicio = fecha_servicio
@@ -485,7 +484,7 @@ def citaEliminar(request, id):
 #CRUD cotizaciones
 
 def cotizaciones(request):
-    e = Empleado.objects.all()
+    e = Usuarios.objects.all()
     s = Servicios.objects.all()
     contexto = {"empleados":e, "servicios":s}
     return render(request, "tienda/cotizaciones/cotizacion.html",contexto)
@@ -512,7 +511,7 @@ def cotizacionRegistrar(request):
             modelo = request.POST.get("modelo")
             kilometraje = request.POST.get("km")
             linea = request.POST.get("linea")
-            empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+            empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
             servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             
             
@@ -541,9 +540,9 @@ def cotizacionEliminar(request,id):
     return redirect('listarCotizacion')
 
 def cotizacionEditar(request,id):
-    e = Empleado.objects.all()
+    e = Usuarios.objects.all()
     s = Servicios.objects.all()
-    q = Cotizaciones.objects.get(pk=id)
+    #q = Cotizaciones.objects.get(pk=id)
     context = {"data":q,"servicios":s,"empleados":e}
     return render(request,'tienda/cotizaciones/registrarCotizacionEditar.html',context)
 
@@ -557,7 +556,7 @@ def cotizacionActualizar(request):
         modelo = request.POST.get("modelo")
         kilometraje = request.POST.get("km")
         linea = request.POST.get("linea")
-        empleado = Empleado.objects.get(pk=request.POST.get("empleado"))
+        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         try:
             q  = Cotizaciones.objects.get(pk=id)
@@ -592,11 +591,11 @@ def agregar_calificacion_form(request):
 
     if request.method == "POST":
         try:
-            servicio = request.POST.get("servicio")
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             estrellas = int(request.POST.get("estrellas"))
             q = Calificaciones(
                  cliente=u, 
-                 servicio = servicio,
+                 servicios = servicio,
                  foto = u.foto,
                  cantidad_estrellas = estrellas
             )
@@ -618,21 +617,26 @@ def listarCalificacion(request):
 
 def calificacionRegistrar(request):
     if request.method == "POST":
-        logueo = request.session.get("logueo",False)
-        usuario =  Usuarios.objects.get(pk=logueo["id"])
-        nombre = usuario
-        servicio = request.POST.get("servicio")
-        cantidad_estrellas = request.POST.get("cantidad_estrellas")
+        try:
+            logueo = request.session.get("logueo",False)
+            usuario =  Usuarios.objects.get(pk=logueo["id"])
+            nombre = usuario
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+            cantidad_estrellas = request.POST.get("cantidad_estrellas")
 
-        calificacion = Calificaciones(
-            cliente=nombre,
-            servicio = servicio,
-            cantidad_estrellas=cantidad_estrellas,
-        )
-        calificacion.save()
+            calificacion = Calificaciones(
+                cliente=nombre,
+                servicios = servicio,
+                cantidad_estrellas=cantidad_estrellas,
+            )
+            calificacion.save()
 
-        messages.success(request, "Calificación guardada correctamente!!")
-        return redirect("calificacionListar")
+            messages.success(request, "Calificación guardada correctamente!!")
+            return redirect("calificacionListar")
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('registrarCalificacion')
+        
 
 def calificacion_formulario_editar(request, id):
     r = Calificaciones.objects.get(pk=id)
@@ -652,7 +656,7 @@ def calificacionActualizar(request):
         try:
             calificacion = Calificaciones.objects.get(pk=id)
             calificacion.cliente = usuario
-            calificacion.servicio = servicio
+            calificacion.servicios = servicio
             calificacion.cantidad_estrellas = cantidad_estrellas
 
             calificacion.save()
@@ -684,9 +688,10 @@ def calificacion_eliminar(request, id):
 
 def servicio(request):
     q = Servicios.objects.all()
-    context = {"data":q}
+    p = Promociones.objects.all()
+    context = {"data":q , 'promociones' : p}
     return render(request, "tienda/servicios/servicio.html",context)
-
+     
 
 def registrarServicio(request):
     p = Productos.objects.all()
@@ -701,18 +706,23 @@ def listarServicio(request):
 
 def registroServicio(request):
     if request.method == "POST":
-        nombre = request.POST.get("nombre")
-        descripcion_servicio = request.POST.get("descripcion_servicio")
-        producto = Productos.objects.get(pk=request.POST.get("producto"))
-        servicios = Servicios(
-            nombre=nombre,
-            descripcion_servicio=descripcion_servicio,
-            productos = producto
-        )
-        servicios.save()
+        try:
+    
+            nombre = request.POST.get("nombre")
+            descripcion_servicio = request.POST.get("descripcion_servicio")
+            producto = Productos.objects.get(pk=request.POST.get("producto"))
+            servicios = Servicios(
+                nombre=nombre,
+                descripcion_servicio=descripcion_servicio,
+                productos = producto
+            )
+            servicios.save()
 
-        messages.success(request, "Servicio guardada correctamente!!")
-        return redirect("listarServicio")
+            messages.success(request, "Servicio guardada correctamente!!")
+            return redirect("listarServicio")
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('registrarServicio') 
 
 def servicioEliminar(request,id):
     try:
@@ -759,8 +769,6 @@ def servicioActualizar(request):
 
     return redirect('listarServicio')
 
-
-        
 
 
 #Login
@@ -810,70 +818,66 @@ def profile(request):
     p = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=p["id"])
     if u.rol == 4:
-        c = Clientes.objects.get(correo=u.correo)
+        c = u
         contexto = {"data":u,"data1":c}
     else:
         contexto = {"data":u}
     return render(request,'tienda/login/profile.html',contexto)
 
 def completeInformation(request):
-    p = request.session.get("logueo",False)
-    q = Usuarios.objects.get(pk=p["id"])
-    
+    p = request.session.get("logueo",False)    
     if request.method == "POST":
-        n = request.POST.get("info")
-        cedula = request.POST.get("cedula")
-        telefono = request.POST.get("telefono")
-        direccion = request.POST.get("direccion")
 
-        cliente = Clientes.objects.get(correo=q.correo)
-        cliente.cedula = cedula
-        cliente.telefono = telefono
-        cliente.direccion = direccion
-        cliente.n = n
-        cliente.save()
-        
+        try:
+                
+            n = request.POST.get("info")
+            cedula = request.POST.get("cedula")
+            telefono = request.POST.get("telefono")
+            direccion = request.POST.get("direccion")
 
-        messages.success(request,"La informacion se cuardo correctamente")
-        return redirect("perfil")
-          
+            cliente = Usuarios.objects.get(pk=p["id"])
+            cliente.cedula = cedula
+            cliente.telefono = telefono
+            cliente.direccion = direccion
+            cliente.n = n
+            cliente.save()
+            
+
+            messages.success(request,"La informacion se cuardo correctamente")
+            return redirect("perfil")
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('perfil')
+            
 
 def register(request):
     return render(request,"tienda/registro/registro.html")
 
 def registerUser(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        clave = request.POST.get('pswd')
-        user = Usuarios(
-            nombre = name,
-            correo = email,
-            clave = hash_password(clave)
-        )
 
-        user.save()
+    try:
+        if request.method == "POST":
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            clave = request.POST.get('pswd')
+            user = Usuarios(
+                nombre = name,
+                correo = email,
+                clave = hash_password(clave)
+            )
 
-        cliente = Clientes(
-            nombre_completo = user,
-            correo = email,
-            cedula = 0,
-            telefono = 0,
-            direccion = "desconocida"
-
-             
-        )
-        cliente.save()
-
-       
+            user.save()       
 
         messages.success(request,'Usuario creado exitosamente')
         return redirect('login')
+    except Exception  as e :
+            messages.error(request,f'Error: {e}')
+            return redirect('register')
 
 def add_car(request):
      l = request.session.get("logueo",False)
      u = Usuarios.objects.get(pk=l["id"])
-     cliente = Clientes.objects.get(correo = u.correo)
+     cliente = Usuarios.objects.get(correo = u.correo)
      q = Vehiculos.objects.filter(cliente=cliente.id)
      contexto = {
         "data": q
@@ -882,33 +886,48 @@ def add_car(request):
 
 def add_car_profile(request):
     l = request.session.get('logueo',False)
-    u = Usuarios.objects.get(pk=l["id"])
-    cliente = Clientes.objects.get(correo = u.correo)
+    cliente = Usuarios.objects.get(pk=l["id"])
     if request.method == 'POST':
-        vehiculo = request.POST.get("vehiculo")
-        modelo = request.POST.get("modelo")
-        placa = request.POST.get("placa")
-        kilometraje = request.POST.get("km")
-        linea = request.POST.get("linea")
+        try:
+    
+            vehiculo = request.POST.get("vehiculo")
+            modelo = request.POST.get("modelo")
+            placa = request.POST.get("placa")
+            kilometraje = request.POST.get("km")
+            linea = request.POST.get("linea")
 
 
-        vehiculos = Vehiculos(
-             cliente = cliente, 
-             vehiculo = vehiculo,
-             modelo = modelo,
-             placa = placa,
-             kilometraje = kilometraje,
-             linea = linea
+            vehiculos = Vehiculos(
+                cliente = cliente, 
+                vehiculo = vehiculo,
+                modelo = modelo,
+                placa = placa,
+                kilometraje = kilometraje,
+                linea = linea
 
-        )
+            )
 
-        vehiculos.save()
+            vehiculos.save()
 
-        messages.success(request,'Vehiculo agregado correctamente')
-        return redirect('perfil')
+            messages.success(request,'Vehiculo agregado correctamente')
+            return redirect('add_car')
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('add_car')
     else:
         messages.warning(request,'Error')
         return redirect('perfil')
+    
+
+def deleteCar(request, id):
+	try:
+		q = Vehiculos.objects.get(pk=id)
+		q.delete()
+		messages.success(request, "Eliminado, Exitosamiente!")
+	except Exception as e:
+		messages.error(request, f"Error: {e}")
+        
+	return redirect("add_car")
     
 
 def change_password(request):
@@ -951,14 +970,10 @@ def updateInfoProfile(request):
     
         try:
             q = request.session.get("logueo",False)
-            p = Usuarios.objects.get(pk=q["id"])
-            c = Clientes.objects.get(correo = p.correo)
-
+            c = Usuarios.objects.get(pk=q["id"])
+    
             c.correo = email
-            p.correo = email
-            p.foto = foto
-
-            p.save()
+            c.foto = foto
             c.save()
             messages.success(request,"Proveedor actualizada correctamente!!")
         except Exception as e:

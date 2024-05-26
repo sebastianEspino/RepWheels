@@ -32,7 +32,7 @@
               <td>
                   <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
                   <a class="btn btn-danger"
-                      href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')">Eliminar</a>
+                      href="javascript:eliminar('{% url 'delete_car' r.id %}')">Eliminar</a>
               </td>
           </tr>
           {% endfor %}
@@ -51,7 +51,7 @@
     <article class="add" >
     
       <p>Si deseas agregar tu vehiculo, aqui lo podras realizar</p>
-      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar cita</button>
+      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar vehiculo</button>
     </article>
   </section>
 

@@ -62,7 +62,7 @@
               <select class="form-control" name="empleado">
                 <option value="">Seleccione</option>
                 {% for e in data2 %}
-                <option value="{{ e.id }}">{{ e.nombre_completo }}</option>
+                <option value="{{ e.id }}">{{ e.nombre }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -81,12 +81,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
 
 <div class="modal " id="infor">
   <div class="modal-dialog">
@@ -118,7 +112,7 @@
             <select class="form-control" name="empleado_e">
               <option value="">Seleccione</option>
               {% for e in data2 %}
-              <option value="{{ e.id }}" >{{ e.nombre_completo }}</option>
+              <option value="{{ e.id }}" >{{ e.nombre }}</option>
               {% endfor %}
             </select><br>
             <button type="submit" class="btn btn-success">Editar</button>
@@ -137,6 +131,7 @@
               <th>Acciones</th>
             </tr>
           </thead>
+            <input type="text" value="{{ request.session.logueo.rol }}" id="rol" name="rol">
           <tbody class="details">
 
           </tbody>
@@ -168,6 +163,8 @@
   async function abrirmodal(id) {
     cita = document.querySelector("#id_cita")
     cita.value =  id
+    rol = document.querySelector('#rol')
+    const rol1 = rol.value
     $('#infor').modal('show');
     url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
     data = await url.json()
@@ -175,39 +172,33 @@
     url_servicio = await fetch(data.servicio)
     data_servicio = await url_servicio.json()
 
-    console.log(data_servicio.nombre)
-
     url_cliente = await fetch(data.cliente)
     data_cliente = await url_cliente.json()
-
+    
     url_empleado = await fetch(data.empleado)
     data_empleado = await url_empleado.json()
 
-    dato = data_empleado.nombre_completo
+    if(rol1 == 4 ){
 
-    url_2 = await fetch(dato)
+      d.innerHTML = `
+                  <tr>
+                    <th>${data_servicio.nombre}</th>
+                    <td>${data.hora}</td>
+                    <td>${data_cliente.nombre}</td>
+                    <td>${data_empleado.nombre}</td>
+                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado()">Editar</button>
+            <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
+                  </tr>
+        `
 
-  
-    data_2 = await url_2.json()
+    }else{
 
-    console.log(data_2.nombre)
-
-    console.log(dato)
-    
-
-    
-    
-
-    d.innerHTML = `
-                <tr>
-                  <th>${data_servicio.nombre}</th>
-                  <td>${data.hora}</td>
-                  <td>${data_cliente.nombre}</td>
-                  <td>${data_2.nombre}</td>
-                  <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado()">Editar</button>
-          <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
-                </tr>
+      d.innerHTML = `
+      
+        <h1>Soy el empleado</h1>
       `
+    }
+    
   }
 
 

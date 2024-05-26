@@ -36,7 +36,7 @@
               <option value="">Seleccione</option>
               {% for e in data1 %}
               
-                <option value="{{ e.id }}" {% if data.empleado.id == e.id %}selected{% endif %}>{{ e.nombre_completo }}</option>
+                <option value="{{ e.id }}" {% if data.empleado.id == e.id %}selected{% endif %}>{{ e.nombre }}</option>
               
               {% endfor %}
               </select>

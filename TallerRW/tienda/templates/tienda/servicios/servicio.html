@@ -6,14 +6,17 @@
 {% block contenedor %}
       <main>
         <section style="background-color: black;">
-            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
+            <div id="carouselServicios" class="carousel slide" style="max-width: 100%; height: 10">
               <div class="carousel-inner">
-                {% for i in data %}
+                {% for i in promociones %}
                   
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                       <div class="d-flex align-items-center">
                         <img src="{{ i.foto.url }}" class="d-block mx-auto" width="80%" height="400px"
                           alt="imagen descuentos">
+                          <div class="carousel-caption d-none d-md-block">
+                            <h2 style="color: red;">{{ i.descripcion }}</h2>
+                          </div>  
                       </div>
                     </div>
                 {% endfor %} 
@@ -36,18 +39,17 @@
               <div class="product">
                   {% if data %}
                       {% for p in data %}
-                              <div class="card align-items-center text-center p-10 " data-bs-toggle="collapse" data-bs-target=f"#{{ forloop.counter }}" style="width: 18rem; padding: 10px;">
+                              <div class="card align-items-center text-center p-10 "  style="width: 18rem; padding: 10px;">
                                 <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:86%; height: 130px;" >
 
                                 <div class="card-body">
                                   <h5 class="card-title">{{ p.nombre }}</h5>
                                   <p class="card-text"><br> <strong>Precio: {{ p.precio }}</strong></p>
-                                  <p>{{ forloop.counter }}</p>
                                 </div>
-                                <div id="{{ forloop.counter }}" class="collapse">
+                                <div>
                                   <div class="card-body">
                                     <p class="card-text">{{ p.descripcion_servicio }} </p>
-                                    <a href="#" class="btn btn-danger">Detalles de Servicio</a><br><br>
+                                    <a onclick="info({{ p.id }})" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#details">Detalles de Servicio</a> <br><br>
                                     <a href="{% url 'citas' %}" class="btn btn-danger">Agendar Servicio</a>
                                   </div>
                                 </div>
@@ -63,4 +65,80 @@
       
         </section>
       </main>
+
+      <div class="modal" id="details">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Detalles del servicio</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body" id="detalles">
+
+          
+              
+              
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+      
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+
+      <script>
+
+        async function info(id){
+
+          const info = document.querySelector('#detalles')
+
+          url_service = await fetch(`http://127.0.0.1:8000/api/1.0/DetalleServicio/${id}`)
+          data = await url_service.json()
+
+          url_name_service = await fetch(data.servicio)
+          data_service = await url_name_service.json()
+
+          let tamano = data.producto.length
+
+          data.producto.forEach(async function(url) {
+            url_prod = await fetch(url)
+            data_product = await url_prod.json()
+
+            const p = document.createElement('p')
+            p.textContent = `- ${data_product.nombre}`
+
+            info.appendChild(p)
+         })
+        
+         info.innerHTML = `
+          
+          <h1>${data_service.nombre}</h1>
+          <p>${data.descripcion_proceso}</p>
+          <h5>Productos que incluye :</h5>
+          
+        `
+
+          
+         
+
+
+        
+
+
+      
+          
+        
+        }
+
+
+      </script>
+      
 {% endblock %}

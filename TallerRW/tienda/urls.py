@@ -5,10 +5,8 @@ from . import views
 router = routers.DefaultRouter()
 
 router.register(r'Proveedores', views.ProveedoresViewSet)
-router.register(r'Empleado', views.EmpleadoViewSet)
 router.register(r'Servicios', views.ServiciosViewSet)
 router.register(r'Calificaciones', views.CalificacionesViewSet)
-router.register(r'Clientes', views.ClientesViewSet)
 router.register(r'Citas', views.CitasViewSet)
 router.register(r'Productos',views.ProductosViewSet)
 router.register(r'Usuarios',views.UsuariosViewSet)
@@ -92,6 +90,8 @@ urlpatterns = [
     path("servicioEliminar/<int:id>",views.servicioEliminar,name="servicioEliminar"),
     path("servicioEditar/<int:id>",views.servicio_form_editar,name="servicioEditar"),
     path("servicioActualizar",views.servicioActualizar,name="servicioActualizar"),
+    
+    
 
     #Login and Register
     path("login",views.login,name="login"),
@@ -109,6 +109,7 @@ urlpatterns = [
     path("completarInformacion",views.completeInformation,name="completarInformacion"),
     path("add_car_profile",views.add_car_profile,name="add_car_profile"),
     path("add_car",views.add_car,name="add_car"),
+    path("delete_car/<int:id>",views.deleteCar,name="delete_car"),
     
     #Cart - Shopping
 
