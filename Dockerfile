@@ -6,7 +6,6 @@ WORKDIR /TallerRW
 # Copy the application files into the working directory
 COPY . /TallerRW
 
-# Install the application dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
