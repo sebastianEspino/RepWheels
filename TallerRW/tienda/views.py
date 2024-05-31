@@ -482,7 +482,7 @@ def citaEliminar(request, id):
 
 
 #CRUD cotizaciones
-
+"""
 def cotizaciones(request):
     e = Usuarios.objects.all()
     s = Servicios.objects.all()
@@ -575,6 +575,8 @@ def cotizacionActualizar(request):
     else:
         messages.warning(request,f'Error:No se enviaron los datos!!')
     return redirect('listarCotizacion')
+
+"""
 
 #CRUD calificaiones 
 
