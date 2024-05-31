@@ -3,9 +3,9 @@ FROM python:3.10.12
 # Set the working directory in the container
 WORKDIR /TallerRW
 
-COPY . /TallerRW
-
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /TallerRW
 
 EXPOSE 8000
 
