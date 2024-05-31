@@ -1,8 +1,9 @@
 FROM python:3.10.12
 
+WORKDIR /TallerRW
 
 # Copy the application files into the working directory
-COPY . /TallerRW
+COPY /TallerRW
 
 # Install the application dependencies
 RUN pip install -r requirements.txt
