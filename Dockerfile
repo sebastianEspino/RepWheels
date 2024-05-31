@@ -3,7 +3,6 @@ FROM python:3.10.12
 # Set the working directory in the container
 WORKDIR /TallerRW
 
-# Copy the application files into the working directory
 COPY . /TallerRW
 
 RUN pip install --no-cache-dir -r requirements.txt
