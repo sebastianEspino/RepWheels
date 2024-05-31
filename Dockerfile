@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Command to start the server
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
