@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.10.12
 
 # Set the working directory in the container
 WORKDIR /TallerRW
