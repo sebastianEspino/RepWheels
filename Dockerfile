@@ -1,13 +1,19 @@
-FROM python:3.12.2
-# Set the working directory in the container
+# Base image
+FROM python:3.10.12
+
+# Working directory
 WORKDIR /TallerRW
 
-# Copy the application files into the working directory
+# Copy requirements file and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the project files
 COPY . .
-# Install the application dependencies
-RUN pip install -r requirements.txt
 
+# Expose the server port
+EXPOSE 8000
 
+# Command to start the server
 
-# Define the entry point for the container
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
