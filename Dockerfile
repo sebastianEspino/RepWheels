@@ -5,6 +5,7 @@ FROM python:3.12.2
 WORKDIR /TallerRW
 
 # Copy requirements file and install dependencies
+RUN echo $"La ruta del archivo es: {pwd}"
 
 RUN pip install --no-cache-dir -r requirements.txt
 
