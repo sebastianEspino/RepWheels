@@ -5,11 +5,10 @@ FROM python:3.12.2
 WORKDIR /TallerRW
 
 
-# Copy requirements file and install dependencies
-COPY . .
-
+# Copy requirements file and install dependencie
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY . .
 
 
 # Expose the server port
