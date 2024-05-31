@@ -8,7 +8,7 @@ WORKDIR /TallerRW
 # Copy requirements file and install dependencie
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY /TallerRW
 
 
 # Expose the server port
