@@ -4,6 +4,7 @@ FROM python:3.12.2
 # Working directory
 WORKDIR /TallerRW
 
+COPY requirements.txt requirements.txt
 # Copy requirements file and install dependencies
 RUN echo $"La ruta del archivo es: {pwd}"
 
