@@ -99,6 +99,7 @@ urlpatterns = [
     path('logout',views.logout,name='logout'),
     path('perfil',views.profile,name="perfil"),
     path('register',views.register,name="register"),
+    path('tyc',views.tyc,name='tyc'),
     path('registerUser',views.registerUser,name="registerUser"),
     path('change_password',views.change_password,name='change_password'),
     path('change',views.change,name="change"),
@@ -121,7 +122,7 @@ urlpatterns = [
     
     path("pagar",views.payment,name="pagar"),
 
-    path('create_PDF',views.create_PDF,name='create_PDF'),
+
 
 
 
@@ -132,3 +133,6 @@ urlpatterns = [
     
     
 ]
+
+
+

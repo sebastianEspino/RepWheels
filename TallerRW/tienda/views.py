@@ -776,23 +776,26 @@ def servicioActualizar(request):
 def login(request):
     return render(request,'tienda/login/login.html')
 
+def tyc(request):
+    return render(request,'tienda/terminos/tyc.html') 
+
 def logueo(request):
     if request.method == "POST":
-        email = request.POST.get('correo')
+        user = request.POST.get('correo')
         pss = request.POST.get('clave')
         try:
-            u = Usuarios.objects.get(correo=email)
-            if verify_password(pss,u.clave):
+            u = Usuarios.objects.get(email=user)
+            if verify_password(pss,u.password):
                 request.session["logueo"]={
                     "id":u.id,
                     "nombre":u.nombre,
-                    "correo":u.correo,
+                    "correo":u.email,
                     "rol":u.rol
                 }
                 request.session["carrito"] = []
                 request.session["items"] = 0
                 messages.success(request, f"Bienvenido {u.nombre}!!")
-                print(u.clave)
+                print(u.password)
                 return redirect("index")
             else:
                 messages.error(request, "Error: Usuario o contraseña incorrectos...")
@@ -860,16 +863,24 @@ def registerUser(request):
             name = request.POST.get('name')
             email = request.POST.get('email')
             clave = request.POST.get('pswd')
-            user = Usuarios(
-                nombre = name,
-                correo = email,
-                clave = hash_password(clave)
-            )
 
-            user.save()       
+            t = request.POST.get('terminos')
 
-        messages.success(request,'Usuario creado exitosamente')
-        return redirect('login')
+
+            if t == 'on':
+                user = Usuarios(
+                    nombre = name,
+                    email = email,
+                    password = hash_password(clave)
+                )
+
+                user.save()       
+
+                messages.success(request,'Usuario creado exitosamente')
+                return redirect('login')
+            else:
+                messages.warning(request,'Debes aceptar los terminos y condiciones') 
+                return redirect('register')
     except Exception  as e :
             messages.error(request,f'Error: {e}')
             return redirect('register')
@@ -1196,44 +1207,6 @@ def payment(request):
 
     return redirect("productos")
 
-
-from django.http import FileResponse
-import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
-
-def create_PDF(request):
-    buf = io.BytesIO()
-    c = canvas.Canvas(buf,pagesize = letter, bottomup= 0)
-
-    textbob = c.beginText()
-    textbob.setTextOrigin(inch,inch)
-    textbob.setFont('Helvetica',14)
-
-    cot = Cotizaciones.objects.all()
-
-    datos = []
-    for line in cot:
-        datos.append(line.vehiculo)
-        datos.append(line.linea)
-        datos.append(line.modelo)
-        datos.append(line.servicio)
-        datos.append(line.empleado)
-        datos.append(line.cliente)
-        datos.append(line.kilometraje)
-        datos.append("  ")
-
-        
-    for data in datos:
-        textbob.textLine(data)
-
-    c.drawText(textbob)
-    c.showPage()
-    c.save()
-    buf.seek(0)
-
-    return FileResponse(buf, as_attachment=True,filename='Cotizacion')
 
 
 

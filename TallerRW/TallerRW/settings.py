@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(@!*hi&ipfxs+$(2$-ehh4jdr(ue!(wxya&@1x&dl=vqvv(9vr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tienda',
     'rest_framework',
+    'rest_framework.authtoken'
     
     
 ]
@@ -129,3 +130,6 @@ MEDIA_ROOT = BASE_DIR / 'tienda/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "tienda.Usuarios"
+AUTH_PROFILE_MODULE = "tienda.Usuarios"

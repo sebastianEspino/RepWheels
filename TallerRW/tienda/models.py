@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from .authentication import CustomUserManager
 
 # Create your models here.
 class Categoria(models.Model):
@@ -40,10 +42,13 @@ class Promociones(models.Model):
     descripcion = models.CharField(max_length=254)
     foto = models.ImageField(upload_to="fotos_servicios/", default="fotos_servicios/servicio.jpg")
 
-class Usuarios(models.Model):
-    nombre=models.CharField(max_length=254)
-    correo=models.CharField(max_length=254,unique=True)
-    clave=models.CharField(max_length=8,null=True)
+class Usuarios(AbstractUser):
+    username = None
+    nombre = models.CharField(max_length=254)
+	# Custom model authentication: paso 4, el campo email para django es obligatorio, cambiar correo -> email
+    email = models.EmailField(max_length=254, unique=True,blank=False,null=True)
+	# Custom model authentication: paso 5, el campo password para django es obligatorio, cambiar clave -> password
+    password = models.CharField(max_length=254,blank=False,null=True)
     foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
     token_recuperar = models.CharField(max_length=254,blank=False,null=False,default=0)
     telefono=models.IntegerField(null=False,blank=True,default='0')
@@ -60,6 +65,11 @@ class Usuarios(models.Model):
     )
     rol=models.IntegerField(choices=ROLES,default=4)
     n = models.IntegerField(blank=True,null=False,default=0)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["nombre"]
+    objects = CustomUserManager()
+
     def __str__(self):
         return self.nombre
     
@@ -139,3 +149,13 @@ class Configuracion(models.Model):
     contacto = models.CharField(max_length=254)
     ubicacion = models.CharField(max_length=254)
     
+
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
