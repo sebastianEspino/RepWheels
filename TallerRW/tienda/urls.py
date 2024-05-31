@@ -72,7 +72,7 @@ urlpatterns = [
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
     path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
 
-
+	"""
     #crud de cotizaciones
     path('cotizaciones',views.cotizaciones,name='cotizaciones'),
     path('registrarCotizacion',views.registrarCotizacion,name='registrarCotizacion'),
@@ -81,6 +81,8 @@ urlpatterns = [
     path('cotizacionActualizar/',views.cotizacionActualizar,name='cotizacionActualizar'),
     path('cotizacionEliminar/<int:id>',views.cotizacionEliminar,name='cotizacionEliminar'),
     path('cotizacionEditar/<int:id>',views.cotizacionEditar,name='cotizacionEditar'),
+
+    """
     
     #crud Servicios
     path('servicios',views.servicio,name='servicios'),
