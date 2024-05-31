@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.12.2
+FROM python:3.10.12
 
 # Working directory
 WORKDIR /TallerRW
@@ -8,7 +8,7 @@ WORKDIR /TallerRW
 # Copy requirements file and install dependencie
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY /TallerRW
+COPY . .
 
 
 # Expose the server port
