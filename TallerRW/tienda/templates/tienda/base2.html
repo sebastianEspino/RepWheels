@@ -97,10 +97,10 @@
                                 data-bs-toggle="dropdown" style="color: black;">Cotizaciones</a>
                             <ul class="dropdown-menu">
                                 {% if request.session.logueo.rol == 1 %}
-                                <li><a class="dropdown-item" href="{% url 'registrarCotizacion' %}">Registrar</a></li>
-                                <li><a class="dropdown-item" href="{% url 'listarCotizacion' %}">Listar</a></li>
+                                <li><a class="dropdown-item">Registrar</a></li>
+                                <li><a class="dropdown-item">Listar</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'cotizaciones' %}">Cotizaciones</a></li>
+                                <li><a class="dropdown-item" >Cotizaciones</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
