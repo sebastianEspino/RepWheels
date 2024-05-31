@@ -2,7 +2,7 @@
 FROM python:3.10.12
 
 # Working directory
-WORKDIR /app
+WORKDIR /TallerRW
 
 # Copy requirements file and install dependencies
 COPY requirements.txt requirements.txt
