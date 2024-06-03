@@ -94,7 +94,7 @@ def actualizarProductos(request):
 		Precio = request.POST.get("precio")
 		descripcion_producto = request.POST.get("descripcion_producto")
 		cantidad = request.POST.get("cantidad")
-		fecha_Creacion = request.POST.get("fecha_Creacion")
+		foto = request.FILES.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 		try:
 			q = Productos.objects.get(pk=id)
@@ -102,7 +102,7 @@ def actualizarProductos(request):
 			q.Precio = Precio
 			q.descripcion_producto = descripcion_producto
 			q.cantidad = cantidad
-			q.fecha_Creacion = fecha_Creacion
+			q.foto = foto
 			q.categoria = categoria
 			q.save()
 			messages.success(request, "Producto actualizado correctamente!!")
@@ -134,7 +134,7 @@ def crearProducto(request):
 		precio = request.POST.get("precio")
 		descripcion_producto = request.POST.get("descripcion_producto")
 		cantidad = request.POST.get("cantidad")
-		fecha_Creacion = request.POST.get("fecha_Creacion")
+		foto = request.POST.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 		try:
 			q = Productos(
@@ -142,7 +142,7 @@ def crearProducto(request):
                 Precio = precio,
                 descripcion_producto = descripcion_producto,
                 cantidad = cantidad,
-                fecha_Creacion = fecha_Creacion,
+                foto = foto,
                 categoria = categoria
 			)
 			q.save()
@@ -608,7 +608,9 @@ def agregar_calificacion_form(request):
              return redirect('calificaciones')
 
 def registrarCalificacion(request):
-    return render(request, "tienda/calificaciones/registrarCalificacion.html")
+    s = Servicios.objects.all()
+    contexto = {"data":s}
+    return render(request, "tienda/calificaciones/registrarCalificacion.html",contexto)
 
 def listarCalificacion(request):
     r = Calificaciones.objects.all()
@@ -640,7 +642,8 @@ def calificacionRegistrar(request):
 
 def calificacion_formulario_editar(request, id):
     r = Calificaciones.objects.get(pk=id)
-    contexto = {"data": r}
+    s = Servicios.objects.all()
+    contexto = {"data": r,"servicios":s}
     return render(request, "tienda/calificaciones/editarCalificacion.html", contexto)
 
 def calificacionActualizar(request):
@@ -649,7 +652,7 @@ def calificacionActualizar(request):
         logueo = request.session.get("logueo",False)
         usuario =  Usuarios.objects.get(pk=logueo["id"])
         nombre = usuario
-        servicio = request.POST.get("servicio")
+        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
         
 
@@ -694,9 +697,7 @@ def servicio(request):
      
 
 def registrarServicio(request):
-    p = Productos.objects.all()
-    contexto = {"data":p}
-    return render(request,'tienda/servicios/registrarServicio.html',contexto)
+    return render(request,'tienda/servicios/registrarServicio.html')
 
 
 def listarServicio(request):
@@ -710,11 +711,13 @@ def registroServicio(request):
     
             nombre = request.POST.get("nombre")
             descripcion_servicio = request.POST.get("descripcion_servicio")
-            producto = Productos.objects.get(pk=request.POST.get("producto"))
+            precio = request.POST.get('precio')
+            foto = request.FILES.get("foto_new") 
             servicios = Servicios(
                 nombre=nombre,
                 descripcion_servicio=descripcion_servicio,
-                productos = producto
+                precio = precio,
+                foto = foto
             )
             servicios.save()
 
@@ -740,9 +743,8 @@ def servicioEliminar(request,id):
 
 def servicio_form_editar(request,id):
     s = Servicios.objects.get(pk=id)
-    p = Productos.objects.all()
 
-    context = {"data": s,"data1": p}
+    context = {"data": s}
     return render(request,'tienda/servicios/editarServicio.html',context)
 
 def servicioActualizar(request):
@@ -750,13 +752,16 @@ def servicioActualizar(request):
         id = request.POST.get('id')
         nombre = request.POST.get('nombre')
         descripcion_servicio = request.POST.get('descripcion_servicio')
-        productos = Productos.objects.get(pk=request.POST.get("producto"))
+        precio = request.POST.get('precio')
+        foto = request.FILES.get("foto_new")
+        
 
         try:
             servicio = Servicios.objects.get(pk=id)
             servicio.nombre = nombre
             servicio.descripcion_servicio = descripcion_servicio
-            servicio.productos = productos
+            servicio.precio = precio
+            foto = foto
             servicio.save()
 
             messages.success(request, "Servicio actualizada correctamente!!")
@@ -858,7 +863,7 @@ def register(request):
 
 def registerUser(request):
 
-    try:
+    
         if request.method == "POST":
             name = request.POST.get('name')
             email = request.POST.get('email')
@@ -866,24 +871,26 @@ def registerUser(request):
 
             t = request.POST.get('terminos')
 
-
+            
             if t == 'on':
-                user = Usuarios(
-                    nombre = name,
-                    email = email,
-                    password = hash_password(clave)
-                )
+                try:
+                    user = Usuarios(
+                        nombre = name,
+                        email = email,
+                        password = hash_password(clave)
+                    )
 
-                user.save()       
+                    user.save()       
 
-                messages.success(request,'Usuario creado exitosamente')
-                return redirect('login')
+                    messages.success(request,'Usuario creado exitosamente')
+                    return redirect('login')
+                except Exception  as e :
+                        messages.error(request,f'Campos vacios')
+                        return redirect('register')
             else:
                 messages.warning(request,'Debes aceptar los terminos y condiciones') 
                 return redirect('register')
-    except Exception  as e :
-            messages.error(request,f'Error: {e}')
-            return redirect('register')
+   
 
 def add_car(request):
      l = request.session.get("logueo",False)

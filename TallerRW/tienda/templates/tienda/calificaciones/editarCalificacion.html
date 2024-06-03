@@ -10,9 +10,14 @@
   <h1 style="text-align: center;">Editar calificacion</h1>
   <div class="form-row">
     <input type="hidden" name="id" value="{{ data.id }}">
-    <div class="form-group col-md-12">
-      <label for="inputAddress2">¿Que servicio adquiriste?:</label>
-      <input type="text" class="form-control" id="tipoServicio" name="servicio" value="{{ data.servicio }}">
+    <label for="">Servicio</label>
+        <div class="col-6">
+            <select class="form-control" name="servicio">
+                <option value="">Seleccione</option>
+                {% for s in servicios %}
+                    <option value="{{ s.id }}" {% if data.servicio.id == s.id %}selected{% endif %}>{{ s.nombre }}</option>
+                {% endfor %}
+            </select>
     </div>
     <br>
     <div class="form-group col-md-12">
@@ -26,7 +31,7 @@
       </select>
     </div>
     <br>
-    <button type="submit" class="btn btn-primary">Registrar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
 </form>
 </main>
 {% endblock %}

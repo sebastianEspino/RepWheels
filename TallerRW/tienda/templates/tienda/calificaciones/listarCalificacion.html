@@ -12,6 +12,7 @@
                     <th>id</th>
                     <th>Nombre</th>
                     <th>Estrellas</th>
+                    <th>Servicio</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -19,8 +20,9 @@
                 {% for r in data %}
                 <tr>
                     <td>{{ r.id }}</td>
-                    <td>{{ r.cliente }}</td>
+                    <td>{{ r.cliente }}</td>    
                     <td>{{ r.cantidad_estrellas }}</td>
+                    <td>{{ r.servicios }}</td>
                     <td>
                         <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
                         <a class="btn btn-danger"

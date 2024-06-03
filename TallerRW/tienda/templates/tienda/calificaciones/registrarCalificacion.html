@@ -10,9 +10,14 @@
     <h1 style="text-align: center;">Formulario de calificacion</h1>
     <div class="form-row">
       <div class="form-group col-md-12">
-        <label for="inputAddress2">¿Que servicio adquiriste?:</label>
-        <input type="text" class="form-control" id="tipoServicio" name="servicio">
-      </div>
+        <label for="">Servicio</label>
+        <select class="form-control" name="servicio">
+        <option value="">Seleccione</option>
+        {% for s in data %}
+            <option value="{{ s.id }}">{{ s.nombre }}</option>
+        {% endfor %}
+        </select>
+    </div>
       <br>
       <div class="form-group col-md-12">
         <label for="inputAddress2">Cantidad estrellas</label>

@@ -19,15 +19,15 @@
         <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_servicio">
       </div>
       <br>
-              
-             <label for="">Productos</label>
-              <select class="form-control" name="producto">
-              <option value="">Seleccione</option>
-              {% for p in data %}
-                  <option value="{{ p.id }}">{{ p.nombre }}</option>
-              {% endfor %}
-              </select>
-              <br>
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="descripcion" placeholder="precio" name="precio">
+      </div>     
+      <br>
+      <div class="mb-3">
+        <label for="Foto" class="form-label">Foto</label>
+        <input class="form-control" type="file" name="foto_new" placeholder="foto"><br>
+      </div>
       
       <button type="submit" class="btn btn-primary">Registrar</button>
     </div>

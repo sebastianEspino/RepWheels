@@ -10,7 +10,7 @@ class Categoria(admin.ModelAdmin):
 
 @admin.register(Productos)
 class Producto(admin.ModelAdmin):
-    list_display = ['id','nombre','Precio','descripcion_producto','cantidad','fecha_Creacion','foto','ver_foto']
+    list_display = ['id','nombre','Precio','descripcion_producto','cantidad','foto','ver_foto']
     search_fields = ['nombre']
 
     def ver_foto(self, obj):

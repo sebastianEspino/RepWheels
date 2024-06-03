@@ -20,11 +20,11 @@
     </div>
     <br>
       <div class="form-group col-md-12">
-        <label for="">Cotizacion</label>
+        <label for="">Servicio</label>
               <select class="form-control" name="servicio">
               <option value="">Seleccione</option>
               {% for c in data2 %}
-                  <option value="{{ c.id }}" {% if data.servicio.id == c.id %}selected{% endif %}>{{ c.descripcion }}</option>
+                  <option value="{{ c.id }}" {% if data.servicio.id == c.id %}selected{% endif %}>{{ c.descripcion_servicio }}</option>
               {% endfor %}
               </select>
               

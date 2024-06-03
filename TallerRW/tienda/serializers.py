@@ -46,7 +46,7 @@ class CalificacionesSerializers(serializers.HyperlinkedModelSerializer):
 class UsuariosSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model  = Usuarios
-        fields = ['id','nombre','correo','clave','rol']
+        fields = ['id','nombre','email','password','rol']
 
 
 class FacturasSerializers(serializers.HyperlinkedModelSerializer):

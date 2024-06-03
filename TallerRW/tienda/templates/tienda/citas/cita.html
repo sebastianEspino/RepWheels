@@ -169,8 +169,10 @@
     url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
     data = await url.json()
 
+    console.log(data)
     url_servicio = await fetch(data.servicio)
     data_servicio = await url_servicio.json()
+    console.log(data_servicio)
 
     url_cliente = await fetch(data.cliente)
     data_cliente = await url_cliente.json()
