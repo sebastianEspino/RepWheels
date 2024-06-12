@@ -148,6 +148,7 @@ class Configuracion(models.Model):
     nombre = models.CharField(max_length=254)
     contacto = models.CharField(max_length=254)
     ubicacion = models.CharField(max_length=254)
+    correo = models.CharField(max_length=254,blank=False,null=True)
     
 
 from django.conf import settings

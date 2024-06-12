@@ -59,7 +59,7 @@ footer{
 }
 
 #infer{
-    background-color:rgb(55, 191, 240);
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;

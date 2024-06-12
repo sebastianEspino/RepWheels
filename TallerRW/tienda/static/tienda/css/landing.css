@@ -245,12 +245,13 @@ i{
 #info_p{
     border: 1px solid black;
     border-radius: 5%;
-    width: 600px;
-    height: 450px;
+    width: 800px;
+    height: 400px;
     display: flex;
     flex-direction: row;
     padding: 30px;
     align-items: center;
+    justify-content: space-around;
 
 }
 

@@ -5,44 +5,61 @@
 
 {% block contenedor %}
 <h1 class="text-center" style="padding-top: 5%;">Informacion de perfil</h1>
-<div id="info">
-    <article id="info_p">
-       <!-- <img src="{{ data.foto }}" alt="" height="100px" width="200px"><br><br> !-->
-        <p>
-            Nombre : {{ data.nombre }} <br>
-            Correo : {{ data.correo }} <br>
-        </p>
-        {% if request.session.rol != 4 %}
-            {% if data1.n == 0 %}
-                <form action="{% url 'completarInformacion' %}" method="post">
-                    {% csrf_token %}
-                    <input type="number" value="1" name="info" hidden>
-                    <label for="">Cedula:</label>
-                    <input type="number" name="cedula"><br>
-                    <label for="">Telefono</label>
-                    <input type="number" name="telefono"><br>
-                    <label for="">Direccion</label>
-                    <input type="text" name="direccion"><br>
-                    <button class="btn btn-danger">Enviar</button>
-                </form>
-            {% elif data1.n == 1 %}
+<div style="display: flex; justify-content: center; align-content: center;">
+    
+    <div id="info">
+        <article id="info_p">
+            <div style="display: flex; justify-content: center; flex-direction: column;">
+                <img src="{{ data.foto.url }}" alt="" height="100px" width="200px"><br><br>
+                <button class="btn btn-danger">Cambiar</button>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
             <p>
-                Cedula : {{ data1.cedula }} <br>
-                Telefono : {{ data1.telefono }} <br>
-                Direccion : {{ data1.direccion }} <br>
+                Nombre : {{ data.nombre }} <br><br>
+                Correo : {{ data.email }} <br>
             </p>
+            {% if request.session.rol != 4 %}
+                {% if data1.n == 0 %}
+                    <form action="{% url 'completarInformacion' %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" value="1" name="info" hidden>
+                        <label for="">Cedula:</label>
+                        <input type="number" name="cedula"><br><br>
+                        <label for="">Telefono</label>
+                        <input type="number" name="telefono"><br><br>
+                        <label for="">Direccion</label>
+                        <input type="text" name="direccion"><br><br>
+                        <button class="btn btn-danger">Enviar</button>
+                    </form>
+                {% elif data1.n == 1 %}
+                <p>
+                    Cedula : {{ data1.cedula }} <br><br>
+                    Telefono : {{ data1.telefono }} <br><br>
+                    Direccion : {{ data1.direccion }} <br><br>
+                </p>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        <br><br>
-
-        <div>
-            <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
-                 
-            <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+            {% if data1.n == 0 %}
+                <div hidden>
+                    <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
+                        
+                    <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+                </div>
+            {% elif data1.n == 1 %}
+                <div >
+                    <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
+                        
+                    <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+                </div>
+            {% endif %}
         </div>
-    </article>
+        </article>
+        
+    
+    </div>
+    
 
-</main>
+</div>
 
 
 

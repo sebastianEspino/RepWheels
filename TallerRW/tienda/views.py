@@ -367,18 +367,19 @@ def proveedores_delete(request,id):
 
 def citas(request):
     l = request.session.get("logueo",False)
-    u = Usuarios.objects.get(pk=l["id"])
-    if u.rol == 3:
-        q = Citas.objects.filter(empleado = u)
-        print(q)
+    if l == False:
+        return render(request, "tienda/citas/cita.html")
     else:
-        q = Citas.objects.all() 
-    c = Servicios.objects.all()
-    e = Usuarios.objects.filter(rol=3)   
-    contexto = {"data": q,"data1": c , "data2":e}
-    return render(request, "tienda/citas/cita.html",contexto)
-
- 
+        u = Usuarios.objects.get(pk=l["id"])
+        if u.rol == 3:
+            q = Citas.objects.filter(empleado = u)
+            print(q)
+        else:
+            q = Citas.objects.all() 
+        c = Servicios.objects.all()
+        e = Usuarios.objects.filter(rol=3)   
+        contexto = {"data": q,"data1": c , "data2":e}
+        return render(request, "tienda/citas/cita.html",contexto)
 
 def registrarCita(request):
     e = Usuarios.objects.filter(rol=3)
