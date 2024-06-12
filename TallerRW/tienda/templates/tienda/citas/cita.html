@@ -97,7 +97,7 @@
         <div class="editar_fecha" style="display: none;">
             <form action="{% url 'citaActualizar' %}" method="post">
               {% csrf_token %}
-              <input type="text" hidden name="id>
+              <input type="text" hidden name="id" id="id">
               <label for="inputPassword4">Fecha</label>
               <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio">
               <label for="inputCantidad">Hora</label>
@@ -154,11 +154,15 @@
 <script>
   d = document.querySelector('.details')
 
-  function cambiar_estado() {
+  function cambiar_estado(id) {
     edit = document.querySelector(".editar_fecha")
     table = document.querySelector(".tl")
+    id_date = document.getElementById('id')
+    id_date.value = id
     edit.style.display = "block"
     table.style.display = "none"
+    
+
   }
 
   async function abrirmodal(id) {
@@ -189,7 +193,7 @@
                     <td>${data.hora}</td>
                     <td>${data_cliente.nombre}</td>
                     <td>${data_empleado.nombre}</td>
-                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado()">Editar</button>
+                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado(${id})">Editar</button>
             <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
                   </tr>
         `

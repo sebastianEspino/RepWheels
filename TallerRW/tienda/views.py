@@ -396,6 +396,7 @@ def listarCita(request):
     q = Citas.objects.all()
     contexto = {"data": q}
     return render(request, "tienda/citas/listarCita.html", contexto)
+from datetime import date , time , datetime
 
 def citaRegistrar(request):
     if request.method == "POST":
@@ -406,7 +407,7 @@ def citaRegistrar(request):
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
         
-        from datetime import date , time , datetime
+        
         
         today = date.today()
         
@@ -441,25 +442,35 @@ def cita_formulario_editar(request, id):
     return render(request, "tienda/citas/editarCita.html", contexto)
 
 def citaActualizar(request):
+    logueo = request.session.get("logueo",False)
+    usuario = Usuarios.objects.get(pk=logueo["id"])
     if request.method == "POST":
-        logueo = request.session.get("logueo",False)
-        usuario = Usuarios.objects.get(pk=logueo["id"])
         id = request.POST.get("id")
         fecha_servicio = request.POST.get("fechaServicio")
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio_e"))
         empleado = Usuarios.objects.get(pk=request.POST.get("empleado_e"))
         try:
-            q = Citas.objects.get(pk=id)
-            q.fechaServicio = fecha_servicio
-            q.cliente = usuario
-            q.hora = hora
-            q.empleado = empleado
-            q.servicio = servicio
-            
-            q.save()
 
-            messages.success(request, "Cita actualizada correctamente!!")
+            today = date.today()
+        
+            data_customer = datetime.strptime(fecha_servicio, '%Y-%m-%d')
+            if data_customer.day >= today.day and data_customer.month >= today.month and data_customer.year >= today.year:
+                 
+
+                q = Citas.objects.get(pk=id)
+                q.fechaServicio = fecha_servicio
+                q.cliente = usuario
+                q.hora = hora
+                q.empleado = empleado
+                q.servicio = servicio
+                
+                q.save()
+
+                messages.success(request, "Cita actualizada correctamente!!")
+            else:
+                messages.warning(request, "Error en la fecha!!")
+
         except Citas.DoesNotExist:
             messages.error(request, "Cita no encontrada.")
         except Exception as e:
@@ -467,7 +478,10 @@ def citaActualizar(request):
     else:
         messages.warning(request, 'Error: No se enviaron los datos!!')
 
-    return redirect('listarCita')
+    if usuario.rol == 4:
+        return redirect('citas')
+    else:
+        return redirect('listarCitas') 
 
 def citaEliminar(request, id):
     try:
@@ -1025,7 +1039,7 @@ def emailToPassword(request):
 					<a href='http://127.0.0.1:8000/tienda/verificar_recuperar/?correo={correo}'>Recuperar...</a>
 					"""
             try:
-                msg = EmailMessage("Tienda ADSO", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+                msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
                 msg.content_subtype = "html"  # Habilitar contenido html
                 msg.send()
                 messages.success(request, "Correo enviado!!")
