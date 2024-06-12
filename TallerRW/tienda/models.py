@@ -53,7 +53,7 @@ class Usuarios(AbstractUser):
     token_recuperar = models.CharField(max_length=254,blank=False,null=False,default=0)
     telefono=models.IntegerField(null=False,blank=True,default='0')
     #fecha_contratacion=models.DateField(blank=True,null=False)
-    cargo=models.CharField(max_length=254,null=False)
+    cargo = models.CharField(max_length=254,null=False)
     direccion=models.CharField(max_length=254)
     cedula=models.IntegerField(blank=True,null=False,default='0')
 
@@ -142,7 +142,7 @@ class Calificaciones(models.Model):
     )
     cantidad_estrellas = models.IntegerField(choices=Estrellas,default=5)
     def __str__(self):
-        return self.servicio
+        return f'{self.servicios}'
     
 class Configuracion(models.Model):
     nombre = models.CharField(max_length=254)

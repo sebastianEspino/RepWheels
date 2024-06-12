@@ -170,14 +170,14 @@ def clientesCrear(request):
         cedula=request.POST.get('cedula')        
         nombre=request.POST.get('nombre_completo')
         correo=request.POST.get('correo')
-        telefono=request.POST.get('telefono')
+        password =request.POST.get('password')
 
         try:
             q = Usuarios(
                 cedula=cedula,
-                nombre_completo=nombre,
-                correo=correo,
-                telefono=telefono
+                nombre=nombre,
+                email=correo,
+                password=hash_password(password)
             )
             q.save()
             messages.success(request,"Guardado Correctamente!")
@@ -214,7 +214,7 @@ def clientesActualizar(request):
             q=Usuarios.objects.get(pk=id)
             q.cedula = cedula
             q.nombre = nombre_completo
-            q.correo = correo
+            q.email = correo
             q.telefono = telefono
             q.save()
             messages.success(request, "Cliente actualizado correctamente!!")
@@ -232,24 +232,29 @@ def empleados(request):
 	return render(request, "tienda/empleados/listarempleados.html", contexto)
 
 def nuevoempleado(request):
-	return render(request, "tienda/empleados/crearempleado.html")
+    u = Usuarios.objects.all()
+    contexto = {"data":u}
+	
+    return render(request, "tienda/empleados/crearempleado.html",contexto)
 
 def newempleado(request):
     if request.method == 'POST':
         cedula = request.POST.get('cedula')
         nombre = request.POST.get('nombre')
+        password = request.POST.get('password')
         correo = request.POST.get('correo')
         telefono = request.POST.get('telefono')
-        fechac = request.POST.get('fecha')
         cargo = request.POST.get('cargo')
         try:
             q = Usuarios(
-                nombre_completo = nombre,
+                nombre = nombre,
                 cedula = cedula,
-                correo = correo,
+                password = hash_password(password),
+                email = correo,
                 telefono = telefono,
-                fecha_contratacion = fechac,
-                cargo = cargo
+                cargo = cargo,
+                rol = 3
+
             )
             q.save()
             messages.success(request, 'guardado correctamente')
@@ -276,7 +281,7 @@ def empleado_actualizar(request):
 			q = Usuarios.objects.get(pk=id)
 			q.nombre = nombre
 			q.cedula = cedula
-			q.correo = correo
+			q.email = correo
 			q.telefono = telefono
 			q.cargo = cargo
 			q.save()
@@ -441,10 +446,9 @@ def citaActualizar(request):
         usuario = Usuarios.objects.get(pk=logueo["id"])
         id = request.POST.get("id")
         fecha_servicio = request.POST.get("fechaServicio")
-        cliente = usuario
         hora = request.POST.get('hora')
-        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
+        servicio = Servicios.objects.get(pk=request.POST.get("servicio_e"))
+        empleado = Usuarios.objects.get(pk=request.POST.get("empleado_e"))
         try:
             q = Citas.objects.get(pk=id)
             q.fechaServicio = fecha_servicio
@@ -475,11 +479,6 @@ def citaEliminar(request, id):
     except Exception as e:
         messages.error(request, f'Error: {e}')
     return redirect('listarCita')
-
-
-
-
-
 
 
 #CRUD cotizaciones
@@ -863,8 +862,6 @@ def register(request):
     return render(request,"tienda/registro/registro.html")
 
 def registerUser(request):
-
-    
         if request.method == "POST":
             name = request.POST.get('name')
             email = request.POST.get('email')
@@ -896,8 +893,8 @@ def registerUser(request):
 def add_car(request):
      l = request.session.get("logueo",False)
      u = Usuarios.objects.get(pk=l["id"])
-     cliente = Usuarios.objects.get(correo = u.correo)
-     q = Vehiculos.objects.filter(cliente=cliente.id)
+     cliente = Usuarios.objects.get(email = u.email)
+     q = Vehiculos.objects.filter(cliente=cliente)
      contexto = {
         "data": q
      }
@@ -960,10 +957,10 @@ def change(request):
         a = request.POST.get("anteriorP")
         n1 = request.POST.get("nuevaP")
         n2 = request.POST.get("repetirP")
-
-        if a == q.clave:
+        
+        if verify_password(a,q.password):
              if n1 == n2:
-                q.clave = n1
+                q.password = hash_password(n1)
                 q.save()
                 
                 messages.success(request,"Cambio de contraseña exitoso!!!")
@@ -1012,7 +1009,7 @@ def emailToPassword(request):
         correo = request.POST.get("correo")
 
         try:
-            q = Usuarios.objects.get(correo=correo)     
+            q = Usuarios.objects.get(email=correo)     
             from random import randint
             import base64
             token = base64.b64encode(str(randint(100000, 999999)).encode("ascii")).decode("ascii")
@@ -1022,7 +1019,7 @@ def emailToPassword(request):
 
             destinatario = correo
             mensaje = f"""
-					<h1 style='color:blue;'>Tienda virtual</h1>
+					<h1 style='color:blue;'>RepWheels</h1>
 					<p>Usted ha solicitado recuperar su contraseña, haga clic en el link y digite el token.</p>
 					<p>Token: <strong>{token}</strong></p>
 					<a href='http://127.0.0.1:8000/tienda/verificar_recuperar/?correo={correo}'>Recuperar...</a>

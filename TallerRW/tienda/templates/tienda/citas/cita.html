@@ -95,29 +95,30 @@
       <!-- Modal body -->
       <div class="modal-body gg">
         <div class="editar_fecha" style="display: none;">
-          <form action="{% url 'citaActualizar' %}" method="post">
-            {% csrf_token %}
-            <label for="inputPassword4">Fecha</label>
-            <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio_e">
-            <label for="inputCantidad">Hora</label>
-            <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora_e">
-            <label for="">Servicio</label>
-            <select class="form-control"  name="servicio_e">
-              <option value="">Seleccione</option>
-              {% for c in data1 %}
-              <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
-              {% endfor %}
-            </select>
-            <label for="">Empleado</label>
-            <select class="form-control" name="empleado_e">
-              <option value="">Seleccione</option>
-              {% for e in data2 %}
-              <option value="{{ e.id }}" >{{ e.nombre }}</option>
-              {% endfor %}
-            </select><br>
-            <button type="submit" class="btn btn-success">Editar</button>
-            <input type="hidden" id="id_cita" name="id_cita">
-          </form>
+            <form action="{% url 'citaActualizar' %}" method="post">
+              {% csrf_token %}
+              <input type="text" hidden name="id>
+              <label for="inputPassword4">Fecha</label>
+              <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio">
+              <label for="inputCantidad">Hora</label>
+              <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
+              <label for="">Servicio</label>
+              <select class="form-control"  name="servicio_e">
+                <option value="">Seleccione</option>
+                {% for c in data1 %}
+                <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
+                {% endfor %}
+              </select>
+              <label for="">Empleado</label>
+              <select class="form-control" name="empleado_e">
+                <option value="">Seleccione</option>
+                {% for e in data2 %}
+                <option value="{{ e.id }}" >{{ e.nombre }}</option>
+                {% endfor %}
+              </select><br>
+              <button type="submit" class="btn btn-success">Editar</button>
+              <input type="hidden" id="id_cita" name="id_cita">
+            </form>
          
         </div>
         <table class="table table-striped tl">
@@ -131,7 +132,7 @@
               <th>Acciones</th>
             </tr>
           </thead>
-            <input type="text" value="{{ request.session.logueo.rol }}" id="rol" name="rol">
+            <input type="text" value="{{ request.session.logueo.rol }}" hidden id="rol" name="rol">
           <tbody class="details">
 
           </tbody>
