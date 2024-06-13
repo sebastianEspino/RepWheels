@@ -112,6 +112,7 @@ urlpatterns = [
     path("add_car",views.add_car,name="add_car"),
     path("delete_car/<int:id>",views.deleteCar,name="delete_car"),
     path('restablecimiento',views.restablecimiento,name='restablecimiento'),
+    path('updatePictureProfile',views.updatePictureProfile,name='updatePictureProfile'),
     
     #Cart - Shopping
 

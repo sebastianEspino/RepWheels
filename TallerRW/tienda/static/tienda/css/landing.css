@@ -255,6 +255,10 @@ i{
 
 }
 
+#body_modal{
+    height: 170px;
+}
+
 #info{
     display: flex;
     justify-content: center;

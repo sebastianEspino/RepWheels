@@ -6,7 +6,7 @@
 {% block contenedor %}
 
 {% if check %}
-    <form action="#" method="post" class="mb-3 mt-5 w-100 h-100 ml-0 mr-0 mx-auto" style="max-width: 540px;">
+    <form action="{% url 'restablecimiento' %}" method="post" class="mb-3 mt-5 w-100 h-100 ml-0 mr-0 mx-auto" style="max-width: 540px;">
         {% csrf_token %}
         <input type="hidden" name="check" value="{{ check }}"/>
         <input type="hidden" name="correo" class="form-control" placeholder="Correo" required="" value="{{correo}}"><br>
@@ -15,13 +15,13 @@
         <label>Repetir Contraseña</label>
         <input type="password" name="nueva2" required="" class="form-control"><br>
 
-        <button type="submit" class="btn btn-info">Guardar</button>
+        <button type="submit" class="btn btn-danger">Guardar</button>
     </form>
 {% else %}
-    <form action="#" method="post" class="col-3 m-auto mt-5">
+    <form action="{% url 'restablecimiento' %}" method="post" class="col-3 m-auto mt-5">
         <h3>Ingrese el token enviado al correo</h3>
         {% csrf_token %}
-        <input type="hidden" name="correo" class="form-control" placeholder="Correo" required="" value="{{correo}}"><br>
+        <input type="hidden" name="correo" class="form-control" placeholder="Correo" required="" value="{{ correo }}"><br>
         <input type="text" name="token" class="form-control" placeholder="Token" required=""><br>
         <button type="submit" class="btn btn-danger">Verificar...</button>
     </form>

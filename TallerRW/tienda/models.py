@@ -118,8 +118,9 @@ class Citas(models.Model):
 
 
 class DetalleFactura(models.Model):
+
     fecha = models.DateField()
-    cita = models.ForeignKey(Citas,on_delete=models.DO_NOTHING,default='1')
+    factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
     producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     cantidad = models.IntegerField()
     total = models.IntegerField()

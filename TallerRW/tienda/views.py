@@ -406,9 +406,7 @@ def citaRegistrar(request):
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
-        
-        
-        
+    
         today = date.today()
         
         data_customer = datetime.strptime(fecha_servicio, '%Y-%m-%d')
@@ -802,27 +800,31 @@ def logueo(request):
     if request.method == "POST":
         user = request.POST.get('correo')
         pss = request.POST.get('clave')
-        try:
-            u = Usuarios.objects.get(email=user)
-            if verify_password(pss,u.password):
-                request.session["logueo"]={
-                    "id":u.id,
-                    "nombre":u.nombre,
-                    "correo":u.email,
-                    "rol":u.rol
-                }
-                request.session["carrito"] = []
-                request.session["items"] = 0
-                messages.success(request, f"Bienvenido {u.nombre}!!")
-                print(u.password)
-                return redirect("index")
-            else:
+        t = request.POST.get('terminos')
+        if t == 'on':
+            try:
+                u = Usuarios.objects.get(email=user)
+                if verify_password(pss,u.password):
+                    request.session["logueo"]={
+                        "id":u.id,
+                        "nombre":u.nombre,
+                        "correo":u.email,
+                        "rol":u.rol
+                    }
+                    request.session["carrito"] = []
+                    request.session["items"] = 0
+                    messages.success(request, f"Bienvenido {u.nombre}!!")
+                    print(u.password)
+                    return redirect("index")
+                else:
+                    messages.error(request, "Error: Usuario o contraseña incorrectos...")
+                    return redirect("login")
+            except Exception as e:
                 messages.error(request, "Error: Usuario o contraseña incorrectos...")
                 return redirect("login")
-        except Exception as e:
-            messages.error(request, "Error: Usuario o contraseña incorrectos...")
+        else:
+            messages.error(request,'Error, debes aceptar los terminos y condiciones')
             return redirect("login")
-        
     else:
         messages.warning(request,"Error: No se enviaron los datos")
         return redirect('login')
@@ -1002,7 +1004,7 @@ def updateInfoProfile(request):
             q = request.session.get("logueo",False)
             c = Usuarios.objects.get(pk=q["id"])
     
-            c.correo = email
+            c.email = email
             c.foto = foto
             c.save()
             messages.success(request,"Proveedor actualizada correctamente!!")
@@ -1012,6 +1014,23 @@ def updateInfoProfile(request):
         messages.warning(request,f'Error:No se enviaron los datos!!')
     return redirect('index')
         
+def updatePictureProfile(request):
+    
+    if request.method == 'POST':
+        foto = request.FILES.get("foto_new")
+        print(foto)
+        try:
+            q = request.session.get("logueo",False)
+            c = Usuarios.objects.get(pk=q["id"])
+    
+            c.foto = foto
+            c.save()
+            messages.success(request,"Foto actualizada correctamente!!")
+        except Exception as e:
+            messages.error(request,f'Error: {e}')
+    else:
+        messages.warning(request,f'Error:No se enviaron los datos!!')
+    return redirect('index')
 
         
 
@@ -1036,13 +1055,12 @@ def emailToPassword(request):
 					<h1 style='color:blue;'>RepWheels</h1>
 					<p>Usted ha solicitado recuperar su contraseña, haga clic en el link y digite el token.</p>
 					<p>Token: <strong>{token}</strong></p>
-					<a href='http://127.0.0.1:8000/restablecimiento'>Recuperar...</a>
 					"""
             try:
                 msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
                 msg.content_subtype = "html"  # Habilitar contenido html
                 msg.send()
-                messages.success(request, "Correo enviado!!")
+                messages.success(request,"Correo enviado!!")
             except BadHeaderError:
                 messages.error(request, "Encabezado no válido")
             except Exception as e:
@@ -1050,7 +1068,11 @@ def emailToPassword(request):
 
         except Usuarios.DoesNotExist:
             messages.error(request, "No existe el usuario....")
-        return render(request, "tienda/login/restablecerPassword.html")
+        
+        context = {
+             'correo':correo
+        }
+        return render(request, "tienda/login/restablecimiento.html",context)
     else:
         return render(request, "tienda/login/restablecerPassword.html")
 
@@ -1060,7 +1082,7 @@ def restablecimiento(request):
 	if request.method == "POST":
 		if request.POST.get("check"):
 			correo = request.POST.get("correo")
-			q = Usuarios.objects.get(eamil=correo)
+			q = Usuarios.objects.get(email=correo)
 
 			c1 = request.POST.get("nueva1")
 			c2 = request.POST.get("nueva2")
@@ -1194,10 +1216,9 @@ def removeEvething(request):
         messages.warning(request,'Error!')
         return redirect('inicio')
     
-def updateAmountCar(request):
+def updateAmountCar(request,id):
      carrito = request.session.get("carrito",False)
-     cantidad = request.POST.get("cantidad")
-
+     cantidad = request.GET.get("cantidad")
      if carrito != False:
           for i, n in enumerate(carrito):
                if n["id"] == id:
@@ -1235,12 +1256,12 @@ def payment(request):
                 raise Exception('El producto no existe...!!')
             if int(enum["cantidad"]) > p.cantidad:
                 raise Exception(f"La cantidad del producto '{enum['producto']}' supera el inventario")
-            
+
 
             df = DetalleFactura(
                  
                 factura = venta,
-                productos = enum["producto"],
+                producto = enum["producto"],
                 cantidad = int(enum["cantidad"]),
                 total = int(enum["precio"])
 

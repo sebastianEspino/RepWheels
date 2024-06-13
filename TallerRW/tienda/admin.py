@@ -63,7 +63,7 @@ class Facturas(admin.ModelAdmin):
 
 @admin.register(DetalleFactura)
 class DetalleFacturas(admin.ModelAdmin):
-    list_display = ["id","producto","cita","cantidad","total"]
+    list_display = ["id","producto","factura","cantidad","total"]
 
 
 @admin.register(DetallesServicio)

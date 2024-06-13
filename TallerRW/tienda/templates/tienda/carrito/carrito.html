@@ -24,8 +24,16 @@
                     <td><a href="javascript:removeone(`{% url 'eliminarProductoCarrito' p.id %}`)" class="btn btn-danger">x</a></td>
                 </tr>
                 
+                
             {% endfor %}
-            
+
+            <tr>
+                <td colspan="2"><strong>TOTAL</strong></td>
+                <td class="text-end"><strong>${{ total }}</strong></td>
+                <td>&nbsp;</td>
+            </tr>
+
+                
         </tbody>
     </table>
     <a href="{% url 'vaciarCarrito' %}" class="btn btn-danger">Vaciar</a>
