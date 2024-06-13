@@ -185,6 +185,8 @@
     url_empleado = await fetch(data.empleado)
     data_empleado = await url_empleado.json()
 
+    
+
     if(rol1 == 4 ){
 
       d.innerHTML = `
@@ -194,7 +196,7 @@
                     <td>${data_cliente.nombre}</td>
                     <td>${data_empleado.nombre}</td>
                     <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado(${id})">Editar</button>
-            <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
+                    <button  type="button" class="btn btn-danger cerrarModal">Eliminar</button></td>
                   </tr>
         `
 
@@ -202,12 +204,17 @@
 
       d.innerHTML = `
       
-        <h1>Soy el empleado</h1>
+                     <tr>
+                    <th>${data_servicio.nombre}</th>
+                    <td>${data.hora}</td>
+                    <td>${data_cliente.nombre}</td>
+                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick='cancelar(${id})'>Cancelar</button>
+  
+                  </tr>
       `
     }
     
   }
-
 
 
   document.addEventListener('DOMContentLoaded', function () {

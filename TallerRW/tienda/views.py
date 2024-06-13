@@ -1090,8 +1090,6 @@ def restablecimiento(request):
 		return render(request, "tienda/login/restablecimiento.html", contexto)
 
 
-
-
 # Cart - Shopping 
 
 
@@ -1262,6 +1260,33 @@ def payment(request):
 
 
     return redirect("productos")
+
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+
+class CustomAuthToken(ObtainAuthToken):
+	def post(self, request, *args, **kwargs):
+		serializer = self.serializer_class(data=request.data,
+										   context={'request': request})
+		serializer.is_valid(raise_exception=True)
+		user = serializer.validated_data['username']
+		# traer datos del usuario para bienvenida y ROL
+		usuario = Usuarios.objects.get(email=user)
+		token, created = Token.objects.get_or_create(user=usuario)
+
+		return Response({
+			'token': token.key,
+			'user': {
+				'user_id': usuario.pk,
+				'email': usuario.email,
+				'nombre': usuario.nombre,
+				'rol': usuario.rol,
+				'foto': usuario.foto.url
+			}
+		})
 
 
 
