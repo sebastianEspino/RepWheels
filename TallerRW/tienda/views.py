@@ -884,7 +884,7 @@ def registerUser(request):
             t = request.POST.get('terminos')
 
             
-            if t == 'on':
+            if t == 'on' and Usuarios.DoesNotExist:
                 try:
                     user = Usuarios(
                         nombre = name,
@@ -897,7 +897,7 @@ def registerUser(request):
                     messages.success(request,'Usuario creado exitosamente')
                     return redirect('login')
                 except Exception  as e :
-                        messages.error(request,f'Campos vacios')
+                        messages.error(request,f'Campos vacios o Usuario ya existe !!')
                         return redirect('register')
             else:
                 messages.warning(request,'Debes aceptar los terminos y condiciones') 
@@ -1036,7 +1036,7 @@ def emailToPassword(request):
 					<h1 style='color:blue;'>RepWheels</h1>
 					<p>Usted ha solicitado recuperar su contraseña, haga clic en el link y digite el token.</p>
 					<p>Token: <strong>{token}</strong></p>
-					<a href='http://127.0.0.1:8000/tienda/verificar_recuperar/?correo={correo}'>Recuperar...</a>
+					<a href='http://127.0.0.1:8000/restablecimiento'>Recuperar...</a>
 					"""
             try:
                 msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
@@ -1053,6 +1053,43 @@ def emailToPassword(request):
         return render(request, "tienda/login/restablecerPassword.html")
     else:
         return render(request, "tienda/login/restablecerPassword.html")
+
+
+
+def restablecimiento(request):
+	if request.method == "POST":
+		if request.POST.get("check"):
+			correo = request.POST.get("correo")
+			q = Usuarios.objects.get(eamil=correo)
+
+			c1 = request.POST.get("nueva1")
+			c2 = request.POST.get("nueva2")
+
+			if c1 == c2:
+				q.password = hash_password(c1)
+				q.token_recuperar = ""
+				q.save()
+				messages.success(request, "Contraseña guardada correctamente!!")
+				return redirect("index")
+			else:
+				messages.info(request, "Las contraseñas nuevas no coinciden...")
+				return redirect("restablecimiento")+"/?correo="+correo
+		else:
+			correo = request.POST.get("correo")
+			token = request.POST.get("token")
+			q = Usuarios.objects.get(email=correo)
+			if (q.token_recuperar == token) and q.token_recuperar != "":
+				contexto = {"check": "ok", "correo":correo}
+				return render(request, "tienda/login/restablecimiento.html", contexto)
+			else:
+				messages.error(request, "Token incorrecto")
+				return redirect("restablecimiento")
+	else:
+		correo = request.GET.get("correo")
+		contexto = {"correo":correo}
+		return render(request, "tienda/login/restablecimiento.html", contexto)
+
+
 
 
 # Cart - Shopping 
