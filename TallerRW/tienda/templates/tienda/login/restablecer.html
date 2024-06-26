@@ -5,16 +5,17 @@
 {% block titulo %}Inicio{% endblock %}
 
 {% block contenedor %}
-
-<h1 style="text-align: center;">Cambiar contraseña</h1>
-<div class="card w-25 m-auto mt-auto mb-auto h-100 p-10" >
-    <form action="{% url 'change' %}" method="post" class="m-3 text-center" >
-        {% csrf_token %}
-        <input class="form-control" autofocus="" required="" type="password" name="anteriorP" placeholder="Contrasena actual"><br>
-        <input class="form-control" autofocus="" required="" type="password" name="nuevaP" placeholder="Contrasena nueva"><br>
-        <input class="form-control" autofocus="" required="" type="password" name="repetirP" placeholder="Repitr contrasena nueva"><br>
-        <button type="submit" class="btn btn-danger">Cambiar</button>
-    </form>
+<div style="padding: 8%;">
+    <h1 style="text-align: center;">Cambiar contraseña</h1>
+    <div class="card w-25 m-auto mt-auto mb-auto h-100 p-10">
+        <form action="{% url 'change' %}" method="post" class="m-3 text-center" >
+            {% csrf_token %}
+            <input class="form-control" autofocus="" required="" type="password" name="anteriorP" placeholder="Contrasena actual"><br>
+            <input class="form-control" autofocus="" required="" type="password" name="nuevaP" placeholder="Contrasena nueva"><br>
+            <input class="form-control" autofocus="" required="" type="password" name="repetirP" placeholder="Repitr contrasena nueva"><br>
+            <button type="submit" class="btn btn-danger">Cambiar</button>
+        </form>
+    </div>    
 </div>
 
 

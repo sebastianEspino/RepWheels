@@ -375,16 +375,72 @@ def citas(request):
     if l == False:
         return render(request, "tienda/citas/cita.html")
     else:
-        u = Usuarios.objects.get(pk=l["id"])
-        if u.rol == 3:
-            q = Citas.objects.filter(empleado = u)
-            print(q)
-        else:
-            q = Citas.objects.all() 
+        q = Citas.objects.all() 
         c = Servicios.objects.all()
-        e = Usuarios.objects.filter(rol=3)   
+        e = Usuarios.objects.filter(rol=3)  
         contexto = {"data": q,"data1": c , "data2":e}
         return render(request, "tienda/citas/cita.html",contexto)
+    
+
+def citasEmpleado(request):
+    l = request.session.get('logueo',False)
+    u = Usuarios.objects.get(pk=l["id"])
+    q = Citas.objects.filter(empleado=u)
+    
+    context = {'citas':q}
+    return render(request, "tienda/citas/citas_empleado.html",context)
+
+def cancell(request,id):
+    c = Citas.objects.get(pk=id)
+    u = Usuarios.objects.get(nombre=c.cliente)
+
+    c.delete()
+    destinatario = u.email
+    mensaje = f"""
+					<h1 style='color:blue;'>RepWheels</h1>
+					<p>Su cita ha sido cancela por problemas del empleado.</p>
+					"""
+    try:
+        msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+        msg.content_subtype = "html"  # Habilitar contenido html
+        msg.send()
+        messages.success(request,"Correo enviado!!")
+    except BadHeaderError:
+        messages.error(request, "Encabezado no válido")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+
+    messages.success(request,'La cita se ha cancelado correctamente!!')
+    return render(request, "tienda/citas/citas_empleado.html")
+
+    
+def finish(request,id):
+    c = Citas.objects.get(pk=id)
+    u = Usuarios.objects.get(nombre=c.cliente)
+
+    destinatario = u.email
+    mensaje = f"""
+					<h1 style='color:blue;'>RepWheels</h1>
+					<p>Su cita que adquirio ya ha finalizado</p>
+					"""
+    try:
+        msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+        msg.content_subtype = "html"  # Habilitar contenido html
+        msg.send()
+        messages.success(request,"Correo enviado!!")
+    except BadHeaderError:
+        messages.error(request, "Encabezado no válido")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+
+    c.delete()
+
+    messages.success(request,'La cita se ha cancelado correctamente!!')
+    return render(request, "tienda/citas/citas_empleado.html")
+
+      
+
+
 
 def registrarCita(request):
     e = Usuarios.objects.filter(rol=3)
@@ -1017,7 +1073,7 @@ def updateInfoProfile(request):
 def updatePictureProfile(request):
     
     if request.method == 'POST':
-        foto = request.FILES.get("foto_new")
+        foto = request.FILES.get('new_foto')
         print(foto)
         try:
             q = request.session.get("logueo",False)

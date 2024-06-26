@@ -83,6 +83,9 @@
                                 <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarCita' %}">Listar</a></li>
                                 {% endif %}
+                                {% if request.session.logueo.rol == 3 %}
+                                <li><a class="dropdown-item" href="{% url 'citaEmpleado' %}">Listar</a></li>
+                                {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'citas' %}">Citas</a></li>
                             </ul>
                         </li>
