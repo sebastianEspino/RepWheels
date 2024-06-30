@@ -77,14 +77,14 @@ urlpatterns = [
     path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
 
 
-    #crud de cotizaciones
+    #crud de categoria
     path('cotizaciones',views.cotizaciones,name='cotizaciones'),
-    path('registrarCotizacion',views.registrarCotizacion,name='registrarCotizacion'),
-    path('listarCotizacion/',views.listarCotizacion,name='listarCotizacion'),
-    path('cotizacionRegistrar/',views.cotizacionRegistrar,name='cotizacionRegistrar'),
-    path('cotizacionActualizar/',views.cotizacionActualizar,name='cotizacionActualizar'),
-    path('cotizacionEliminar/<int:id>',views.cotizacionEliminar,name='cotizacionEliminar'),
-    path('cotizacionEditar/<int:id>',views.cotizacionEditar,name='cotizacionEditar'),
+    path('registrarCategoria',views.registrarCategoria,name='registrarCategoria'),
+    path('listarCategoria/',views.listarCategoria,name='listarCategoria'),
+    path('categoriaRegistrar/',views.categoriaRegistrar,name='categoriaRegistrar'),
+    path('categoriaActualizar/',views.categoriaActualizar,name='categoriaActualizar'),
+    path('categoriaEliminar/<int:id>',views.categoriaEliminar,name='categoraEliminar'),
+    path('categoriaEditar/<int:id>',views.categoriaEditar,name='categoriaEditar'),
     
     #crud Servicios
     path('servicios',views.servicio,name='servicios'),

@@ -558,91 +558,59 @@ def cotizaciones(request):
     return render(request, "tienda/cotizaciones/cotizacion.html",contexto)
 
 
-def registrarCotizacion(request):
-    e = Empleado.objects.all()
-    s = Servicios.objects.all()
-    contexto = {"empleados":e, "servicios":s}
-    return render(request,'tienda/cotizaciones/registrarCotizacion.html',contexto)
+def registrarCategoria(request):
+    return render(request,'tienda/cotizaciones/registrarCategoria.html')
 
 
-def listarCotizacion(request):
-    q = Cotizaciones.objects.all()
+def listarCategoria(request):
+    q = Categoria.objects.all()
     context = {"data": q}
-    return render(request, "tienda/cotizaciones/listarCotizacion.html", context)
+    return render(request, "tienda/cotizaciones/listarCategoria.html", context)
 
-def cotizacionRegistrar(request):
+def categoriaRegistrar(request):
 	if request.method == "POST":
-            l = request.session.get("logueo",False)
-            u = Usuarios.objects.get(pk=l["id"])
-            marca = request.POST.get("vehiculo")
-            placa = request.POST.get("placa")
-            modelo = request.POST.get("modelo")
-            kilometraje = request.POST.get("km")
-            linea = request.POST.get("linea")
-            empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
-            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+            n = request.POST.get("nombre")
+            d = request.POST.get("descripcion")            
             
-            
-            q = Cotizaciones(
-                vehiculo = marca,
-                modelo = modelo,
-                placa = placa,
-                kilometraje = kilometraje,
-                linea = linea,
-                empleado = empleado,
-                servicio = servicio,
-                cliente = u             
+            q = Categoria(
+                nombre = n,
+                descripcion_categoria = d,
+                        
             )
             q.save()
             messages.success(request, "Guardado correctamente!!")
             
-            return redirect("listarCotizacion")
+            return redirect("listarCategoria")
         
-def cotizacionEliminar(request,id):
+def categoriaEliminar(request,id):
     try:
-        q = Cotizaciones.objects.get(pk=id)
+        q = Categoria.objects.get(pk=id)
         q.delete()
         messages.success(request,"Empleado eliminada correctamente!!!")
     except Exception as e:
         messages.error(request,f'Error:{e}')
-    return redirect('listarCotizacion')
+    return redirect('listarCategoria')
 
-def cotizacionEditar(request,id):
-    e = Usuarios.objects.all()
-    s = Servicios.objects.all()
-    #q = Cotizaciones.objects.get(pk=id)
-    context = {"data":q,"servicios":s,"empleados":e}
-    return render(request,'tienda/cotizaciones/registrarCotizacionEditar.html',context)
+def categoriaEditar(request,id):
+    q = Categoria.objects.get(pk=id)
+    context = {"data":q}
+    return render(request,'tienda/cotizaciones/registrarCategoriaEditar.html',context)
 
-def cotizacionActualizar(request):
+def categoriaActualizar(request):
     if request.method == 'POST':
         id = request.POST.get("id")
-        l = request.session.get("logueo",False)
-        u = Usuarios.objects.get(pk=l["id"])
-        marca = request.POST.get("vehiculo")
-        placa = request.POST.get("placa")
-        modelo = request.POST.get("modelo")
-        kilometraje = request.POST.get("km")
-        linea = request.POST.get("linea")
-        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
-        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+        n = request.POST.get("nombre")
+        d = request.POST.get("descripcion")   
         try:
-            q  = Cotizaciones.objects.get(pk=id)
-            q.vehiculo = marca
-            q.placa = placa
-            q.servicio = servicio
-            q.empleado = empleado
-            q.linea = linea
-            q.kilometraje = kilometraje
-            q.modelo = modelo
-            
-            
+            q  = Categoria.objects.get(pk=id)
+            q.nombre = n
+            q.descripcion_categoria = d    
             q.save()
         except Exception as e:
                 messages.error(request,f'Error: {e}')
     else:
         messages.warning(request,f'Error:No se enviaron los datos!!')
-    return redirect('listarCotizacion')
+    return redirect('listarCategoria')
 
 #CRUD calificaiones 
 

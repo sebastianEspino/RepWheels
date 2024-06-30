@@ -21,14 +21,11 @@
               {% for r in data %}
                   <tr>
                       <td>{{ r.id }}</td>
-                      <td>{{ r.vehiculo }}</td>
-                      <td>{{ r.servicio }}</td>
-                      <td>{{ r.empleado }}</td>
-                      <td>{{ r.modelo }}</td>
-                      
+                      <td>{{ r.nombre }}</td>
+                      <td>{{ r.descripcion_categoria }}</td>    
                       <td>
-                        <a class="btn btn-info" href="{% url 'cotizacionEditar' r.id %}">Editar</button>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'cotizacionEliminar' r.id %}')">Eliminar</a>
+                        <a class="btn btn-info" href="{% url 'categoriaEditar' r.id %}">Editar</button>
+                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'categoriaEliminar' r.id %}')">Eliminar</a>
                       </td>
                   </tr>
               {% endfor %}
