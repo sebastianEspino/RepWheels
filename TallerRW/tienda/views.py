@@ -555,17 +555,17 @@ def cotizaciones(request):
     e = Usuarios.objects.all()
     s = Servicios.objects.all()
     contexto = {"empleados":e, "servicios":s}
-    return render(request, "tienda/cotizaciones/cotizacion.html",contexto)
+    return render(request, "tienda/categorias/cotizacion.html",contexto)
 
 
 def registrarCategoria(request):
-    return render(request,'tienda/cotizaciones/registrarCategoria.html')
+    return render(request,'tienda/categorias/registrarCategoria.html')
 
 
 def listarCategoria(request):
     q = Categoria.objects.all()
     context = {"data": q}
-    return render(request, "tienda/cotizaciones/listarCategoria.html", context)
+    return render(request, "tienda/categorias/listarCategoria.html", context)
 
 def categoriaRegistrar(request):
 	if request.method == "POST":
@@ -586,7 +586,7 @@ def categoriaEliminar(request,id):
     try:
         q = Categoria.objects.get(pk=id)
         q.delete()
-        messages.success(request,"Empleado eliminada correctamente!!!")
+        messages.success(request,"Categoria eliminada correctamente!!!")
     except Exception as e:
         messages.error(request,f'Error:{e}')
     return redirect('listarCategoria')
@@ -594,12 +594,12 @@ def categoriaEliminar(request,id):
 def categoriaEditar(request,id):
     q = Categoria.objects.get(pk=id)
     context = {"data":q}
-    return render(request,'tienda/cotizaciones/registrarCategoriaEditar.html',context)
+    return render(request,'tienda/categorias/registrarCategoriaEditar.html',context)
 
 def categoriaActualizar(request):
     if request.method == 'POST':
         id = request.POST.get("id")
-        n = request.POST.get("nombre")
+        n = request.POST.get("categoria")
         d = request.POST.get("descripcion")   
         try:
             q  = Categoria.objects.get(pk=id)

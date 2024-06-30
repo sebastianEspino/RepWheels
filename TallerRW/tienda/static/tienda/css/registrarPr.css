@@ -107,7 +107,9 @@ li{
 }
 
 
+
 nav li a:hover{
-    background-color: rgb(55, 191, 240);
+    background-color: grey;
+    border-radius: 30PX;
 
 }

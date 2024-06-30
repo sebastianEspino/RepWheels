@@ -83,7 +83,7 @@ urlpatterns = [
     path('listarCategoria/',views.listarCategoria,name='listarCategoria'),
     path('categoriaRegistrar/',views.categoriaRegistrar,name='categoriaRegistrar'),
     path('categoriaActualizar/',views.categoriaActualizar,name='categoriaActualizar'),
-    path('categoriaEliminar/<int:id>',views.categoriaEliminar,name='categoraEliminar'),
+    path('categoriaEliminar/<int:id>',views.categoriaEliminar,name='categoriaEliminar'),
     path('categoriaEditar/<int:id>',views.categoriaEditar,name='categoriaEditar'),
     
     #crud Servicios
