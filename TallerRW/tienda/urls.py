@@ -62,7 +62,7 @@ urlpatterns = [
     path("cita_formulario_editar/<int:id>", views.cita_formulario_editar, name="cita_formulario_editar"),
     path("citaActualizar", views.citaActualizar, name="citaActualizar"),
     path('citaEmpleado',views.citasEmpleado,name='citaEmpleado'),
-    path('cancelar/<int:id>',views.cancell,name='cancelar'),
+    path('cancelar/',views.cancell,name='cancelar'),
     path('terminar/<int:id>',views.finish,name='terminar'),
     
     

@@ -396,27 +396,35 @@ def citasEmpleado(request):
     context = {'citas':q}
     return render(request, "tienda/citas/citas_empleado.html",context)
 
-def cancell(request,id):
-    c = Citas.objects.get(pk=id)
-    u = Usuarios.objects.get(nombre=c.cliente)
+def cancell(request):
+    
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        obs = request.POST.get('observacion')
 
-    c.delete()
-    destinatario = u.email
-    mensaje = f"""
-					<h1 style='color:blue;'>RepWheels</h1>
-					<p>Su cita ha sido cancela por problemas del empleado.</p>
-					"""
-    try:
-        msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
-        msg.content_subtype = "html"  # Habilitar contenido html
-        msg.send()
-        messages.success(request,"Correo enviado!!")
-    except BadHeaderError:
-        messages.error(request, "Encabezado no válido")
-    except Exception as e:
-        messages.error(request, f"Error: {e}")
+        c = Citas.objects.get(pk=id)
+        u = Usuarios.objects.get(nombre = c.cliente)
 
-    messages.success(request,'La cita se ha cancelado correctamente!!')
+        c.delete()
+
+        destinatario = u.email
+        mensaje = f"""
+                        <h1 style='color:blue;'>RepWheels</h1>
+                        <p>Senor(@) {u.nombre} <br>Motivo de la cancelacion: <br> {obs}</p>
+                        <p>Este correo solamente es para brindar informacion</p>
+        
+                        """
+        try:
+            msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+            msg.content_subtype = "html"  # Habilitar contenido html
+            msg.send()
+        except BadHeaderError:
+            messages.error(request, "Encabezado no válido")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+
+        messages.success(request,'La cita se ha cancelado correctamente!!')
+
     return redirect('citaEmpleado')
 
     
