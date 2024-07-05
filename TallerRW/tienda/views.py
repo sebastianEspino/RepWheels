@@ -16,6 +16,12 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializers
 
+class ConfiguracionViewSet(viewsets.ModelViewSet):
+    queryset = Configuracion.objects.all()
+    serializer_class = ConfiguracionSerializers
+
+
+
 class ProveedoresViewSet(viewsets.ModelViewSet):
     queryset = Proveedores.objects.all()
     serializer_class = ProveedoresSerializers
@@ -411,11 +417,12 @@ def cancell(request,id):
         messages.error(request, f"Error: {e}")
 
     messages.success(request,'La cita se ha cancelado correctamente!!')
-    return render(request, "tienda/citas/citas_empleado.html")
+    return redirect('citaEmpleado')
 
     
 def finish(request,id):
     c = Citas.objects.get(pk=id)
+    
     u = Usuarios.objects.get(nombre=c.cliente)
 
     destinatario = u.email
@@ -435,9 +442,8 @@ def finish(request,id):
 
     c.delete()
 
-    messages.success(request,'La cita se ha cancelado correctamente!!')
-    return render(request, "tienda/citas/citas_empleado.html")
-
+    messages.success(request,'La cita se ha terminado correctamente!!')
+    redirect('citaEmpleado')
       
 
 

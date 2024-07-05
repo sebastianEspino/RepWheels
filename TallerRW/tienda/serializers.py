@@ -13,6 +13,12 @@ class VehiculosSerializers(serializers.HyperlinkedModelSerializer):
         fields = ['id','cliente','vehiculo','modelo','placa','kilometraje','linea']
 
 
+class ConfiguracionSerializers(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Configuracion
+        fields = ['id','nombre','contacto','ubicacion','correo']
+
+
 
 class ProveedoresSerializers(serializers.ModelSerializer):
     class Meta:

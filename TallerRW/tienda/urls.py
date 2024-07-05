@@ -15,7 +15,7 @@ router.register(r'DetalleFactura',views.DetalleFacturaViewSet)
 router.register(r'DetalleServicio',views.DetalleServicioViewSet)
 router.register(r'Categorias',views.CategoriaViewSet)
 router.register(r'Vehiculos',views.VehiculosViewSet)
-
+router.register(r'Configuracion',views.ConfiguracionViewSet)
 
 urlpatterns = [
     path('',views.index, name = "index"),
