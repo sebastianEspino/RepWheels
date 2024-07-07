@@ -1313,13 +1313,14 @@ def payment(request):
             df = DetalleFactura(
                  
                 factura = venta,
-                producto = enum["producto"],
+                producto = p,
                 cantidad = int(enum["cantidad"]),
-                total = int(enum["precio"])
+                total = int(int(enum["precio"])*int(enum["cantidad"]))
 
             )
             cantidad_new = p.cantidad - enum["cantidad"]
             p.cantidad = cantidad_new
+
             p.save()
             df.save()
 
@@ -1333,6 +1334,11 @@ def payment(request):
 
 
     return redirect("productos")
+
+
+def compras(request):
+    return render(request,"tienda/ventas/ventas.html", )
+    
 
 
 from rest_framework.authtoken.views import ObtainAuthToken

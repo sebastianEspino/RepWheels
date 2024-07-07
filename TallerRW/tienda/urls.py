@@ -125,8 +125,8 @@ urlpatterns = [
     path("eliminarProductoCarrito/<int:id>",views.removeOne,name="eliminarProductoCarrito"),
     path("vaciarCarrito",views.removeEvething,name="vaciarCarrito"),
     path("actualizarCarrito/<int:id>",views.updateAmountCar,name="actualizarCarrito"),
-    
     path("pagar",views.payment,name="pagar"),
+    path('compras',views.compras,name='compras')
 
 
 

@@ -78,7 +78,7 @@ class Facturas(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     fecha = models.DateField(auto_now=True)
     def __str__(self):
-        return self.cliente
+        return f'{self.cliente}'
     
 
 class DetallesServicio(models.Model):
@@ -119,14 +119,12 @@ class Citas(models.Model):
 
 
 class DetalleFactura(models.Model):
-
-    fecha = models.DateField()
     factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
     producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     cantidad = models.IntegerField()
     total = models.IntegerField()
     def __str__(self):
-        return self.fecha
+        return f'{self.total}'
 
     
     
