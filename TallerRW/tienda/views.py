@@ -381,7 +381,11 @@ def citas(request):
     if l == False:
         return render(request, "tienda/citas/cita.html")
     else:
+        now = date.today()
         q = Citas.objects.all() 
+        for dates in q:
+            if dates.fechaServicio.day < now.day or dates.fechaServicio.month < now.month or dates.fechaServicio.year < now.year:
+                dates.delete()
         c = Servicios.objects.all()
         e = Usuarios.objects.filter(rol=3)  
         contexto = {"data": q,"data1": c , "data2":e}
@@ -454,8 +458,6 @@ def finish(request,id):
     redirect('citaEmpleado')
       
 
-
-
 def registrarCita(request):
     e = Usuarios.objects.filter(rol=3)
     c = Servicios.objects.all()
@@ -476,24 +478,36 @@ def citaRegistrar(request):
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
+
+        import datetime
+        from django.utils.timezone import localtime
+        import pytz
+        est = pytz.timezone('America/Bogota')
+
     
         today = date.today()
-        
-        data_customer = datetime.strptime(fecha_servicio, '%Y-%m-%d')
+
+        hora = datetime.datetime.strptime(hora, '%H:%M')
+
+        data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
+
+        hora_fin = hora + + datetime.timedelta(hours=0, minutes=59)
+
+        citas = Citas.objects.all()
         
         if data_customer.day >= today.day and data_customer.month >= today.month and data_customer.year >= today.year:
+           
+                cita = Citas(
+                    fechaServicio=fecha_servicio,
+                    hora = hora,
+                    cliente = u,
+                    servicio = servicio ,
+                    empleado = empleado,
+                    hora_fin = hora_fin
+                )
 
-            cita = Citas(
-                fechaServicio=fecha_servicio,
-                hora = hora,
-                cliente = u,
-                servicio = servicio ,
-                empleado = empleado
-                
-            )
-
-            cita.save()
-            messages.success(request, "Cita guardada correctamente!!")
+                cita.save()
+                messages.success(request, "Cita guardada correctamente!!")
         else:
              messages.warning(request, "Error en la fecha!!")
         if u.rol == 1:

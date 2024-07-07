@@ -38,7 +38,7 @@ class Proveedores(admin.ModelAdmin):
 class Usuario(admin.ModelAdmin):
     list_display=['id','nombre','email','password','rol','foto','ver_foto','token_recuperar']
     search_fields = ['nombre']
-    list_editable = ["nombre"]
+    list_editable = ["rol"]
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
@@ -53,7 +53,7 @@ class Calificaciones(admin.ModelAdmin):
 
 @admin.register(Citas)
 class Citas(admin.ModelAdmin):
-     list_display=['id','fechaServicio','hora','cliente','servicio','empleado','estado']
+     list_display=['id','fechaServicio','hora','cliente','servicio','empleado','estado','hora_fin']
      search_fields = ['tipoServicio']
 
 @admin.register(Facturas)
