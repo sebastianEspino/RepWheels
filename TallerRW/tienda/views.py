@@ -1367,6 +1367,18 @@ class CustomAuthToken(ObtainAuthToken):
 			}
 		})
 
+     
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+	authentication_classes = [TokenAuthentication, SessionAuthentication]
+	authentication_classes = [TokenAuthentication]
+	permission_classes = [IsAuthenticated]
+	queryset = Usuarios.objects.all()
+	serializer_class = UsuariosSerializers
 
 
 
