@@ -1337,7 +1337,10 @@ def payment(request):
 
 
 def compras(request):
-    return render(request,"tienda/ventas/ventas.html", )
+    q = request.session.get("logueo",False)
+    v = Facturas.objects.filter(pk=q["id"])
+    context = {"data":v}
+    return render(request,"tienda/ventas/ventas.html", context)
     
 
 

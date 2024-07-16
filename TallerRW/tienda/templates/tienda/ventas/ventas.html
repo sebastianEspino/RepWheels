@@ -4,5 +4,31 @@
 {% block titulo %}Compras{% endblock %}
 
 {% block contenedor %}
-      <h1>Mis compras</h1>
+<div class="container-fluid m-3" style="padding:90px;">
+<h1 class="h1">Mis compras</h1>
+<table class="table table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>Numero de compra</th>
+      <th>Fecha</th>
+      <th>Cliente</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in data %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.fecha }}</td>
+      <td>{{ r.cliente }}</td>
+      
+      <td>
+        <a type="button" class="btn btn-danger">Ver detalles</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
 {% endblock %}
