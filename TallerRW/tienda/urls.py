@@ -20,6 +20,8 @@ router.register(r'Configuracion',views.ConfiguracionViewSet)
 urlpatterns = [
     path('',views.index, name = "index"),
     path('api/1.0/', include(router.urls)),
+    path('api/1.0/token-auth/', views.CustomAuthToken.as_view()),
+    path('api/1.0/api-auth/', include('rest_framework.urls')),
     #crud de productos
     path('productos',views.productos,name='productos'),
     path('listarProductos',views.listarProductos, name= "listarProductos"),
