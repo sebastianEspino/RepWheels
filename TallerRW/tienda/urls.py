@@ -16,12 +16,14 @@ router.register(r'DetalleServicio',views.DetalleServicioViewSet)
 router.register(r'Categorias',views.CategoriaViewSet)
 router.register(r'Vehiculos',views.VehiculosViewSet)
 router.register(r'Configuracion',views.ConfiguracionViewSet)
+router.register(r'RegistrarUsuarios',views.RegistrarUsuarioViewSet)
 
 urlpatterns = [
     path('',views.index, name = "index"),
     path('api/1.0/', include(router.urls)),
     path('api/1.0/token-auth/', views.CustomAuthToken.as_view()),
     path('api/1.0/api-auth/', include('rest_framework.urls')),
+    path('api/1.0/registrar_usuario/', views.RegistrarUsuario.as_view(), name='registrar_usuario'),
     #crud de productos
     path('productos',views.productos,name='productos'),
     path('listarProductos',views.listarProductos, name= "listarProductos"),
@@ -66,6 +68,7 @@ urlpatterns = [
     path('citaEmpleado',views.citasEmpleado,name='citaEmpleado'),
     path('cancelar/',views.cancell,name='cancelar'),
     path('terminar/<int:id>',views.finish,name='terminar'),
+    
     
     
     #CRUD calificaciones
@@ -128,7 +131,9 @@ urlpatterns = [
     path("vaciarCarrito",views.removeEvething,name="vaciarCarrito"),
     path("actualizarCarrito/<int:id>",views.updateAmountCar,name="actualizarCarrito"),
     path("pagar",views.payment,name="pagar"),
-    path('compras',views.compras,name='compras')
+    path('compras',views.compras,name='compras'),
+     path('detalleInfo/<int:id>',views.details_buy,name="detalleInfo"),
+
 
 
 

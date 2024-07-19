@@ -1,0 +1,26 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Detalle de compra{% endblock %}
+
+{% block contenedor %}
+<div style="display: flex; justify-content: center; align-content: center; padding: 6%;">
+    
+    <div id="info">
+        <article id="info_p">
+            <h1>Factura numero <strong>{{ data.id }}</strong></h1>
+            <p>
+                {{ data.producto }} <br>
+                {{ data.cantidad }} <br>
+                {{ data.total }}
+                
+                
+            </p>
+        </article>
+        
+    </div>
+    
+</div>
+
+
+{% endblock %}

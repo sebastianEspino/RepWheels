@@ -18,6 +18,10 @@ class ConfiguracionSerializers(serializers.HyperlinkedModelSerializer):
         model = Configuracion
         fields = ['id','nombre','contacto','ubicacion','correo']
 
+class RegistrarUsuarioSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RegistrarUsuario
+        fields = ['id', 'nombre', 'correo', 'clave1', 'clave2']
 
 
 class ProveedoresSerializers(serializers.ModelSerializer):

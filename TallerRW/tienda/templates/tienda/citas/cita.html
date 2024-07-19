@@ -171,7 +171,7 @@
     rol = document.querySelector('#rol')
     const rol1 = rol.value
     $('#infor').modal('show');
-    url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
+    url = await fetch(`http://10.171.68.189:8000/api/1.0/Citas/${id}`)
     data = await url.json()
 
     console.log(data)

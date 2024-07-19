@@ -19,9 +19,10 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="{% static 'tienda/js/settings.js' %}"></script>
 </head>
 
-<body>
+<body onload="cargar()">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="trasnnav" >
             <div class="container" >
@@ -94,17 +95,16 @@
                             </ul>
                         </li>
                         
-                        <li class="nav-item dropdown" hidden>
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" style="color: black;">Cotizaciones</a>
-                            <ul class="dropdown-menu">
-                                {% if request.session.logueo.rol == 1 %}
-                                <li><a class="dropdown-item" href="{% url 'registrarCategoria' %}">Registrar</a></li>
-                                <li><a class="dropdown-item" href="{% url 'listarCategoria' %}">Listar</a></li>
-                                {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'cotizaciones' %}">Cotizaciones</a></li>
-                            </ul>
-                        </li>
+                        {% if request.session.logueo.rol == 1 %}
+                            <li class="nav-item dropdown" >
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" style="color: black;">Categoria</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'registrarCategoria' %}">Registrar</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'listarCategoria' %}">Listar</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" style="color: black;">Servicios</a>
@@ -153,11 +153,14 @@
     <footer>
         <div id="super">
             <div>
-                <h1 class="h1">RepWheels</h1>
+                <h1 class="h1" id="company"></h1>
             </div>
             <div>
                 <h3>Contactenos</h3>
-                <p>Celular: 312 434567<br>Telefono: 345 692 12<br>Direccion: Calle 45-25</p>
+                <p id="cel"></p>
+                <p id="cor"></p>
+                <p id="ubi"></p>
+                
             </div>
             <div>
                 <h3>Servicios</h3>

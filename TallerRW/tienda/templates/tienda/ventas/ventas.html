@@ -23,7 +23,7 @@
       <td>{{ r.cliente }}</td>
       
       <td>
-        <a type="button" class="btn btn-danger">Ver detalles</a>
+        <a type="button" class="btn btn-danger" href="{% url 'detalleInfo' r.id %}">Ver detalles</a>
       </td>
     </tr>
     {% endfor %}

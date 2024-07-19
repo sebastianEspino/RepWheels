@@ -24,7 +24,7 @@ class Productos(models.Model):
     cantidad=models.IntegerField()
     #fecha_Creacion=models.DateField()
     categoria=models.ForeignKey(Categoria,on_delete=models.DO_NOTHING,blank=False,null=True)
-    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_productos/default.png")
+    foto = models.ImageField(upload_to="media/", default="media/default.png")
     
     def __str__(self):
         return self.nombre
@@ -160,3 +160,10 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+class RegistrarUsuario(models.Model):
+	nombre = models.CharField(max_length=254)
+	correo = models.EmailField(max_length=254, unique=True)
+	clave1 = models.CharField(max_length=254)
+	clave2 = models.CharField(max_length=254)

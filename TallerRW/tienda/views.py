@@ -7,6 +7,12 @@ from django.contrib import messages
 from .crypt import *
 from django.db import IntegrityError, transaction
 from django.core.mail import BadHeaderError, EmailMessage
+import datetime
+from django.utils.timezone import localtime
+from rest_framework.views import APIView
+import re
+import pytz
+est = pytz.timezone('America/Bogota')
 
 
 
@@ -19,8 +25,6 @@ class CategoriaViewSet(viewsets.ModelViewSet):
 class ConfiguracionViewSet(viewsets.ModelViewSet):
     queryset = Configuracion.objects.all()
     serializer_class = ConfiguracionSerializers
-
-
 
 class ProveedoresViewSet(viewsets.ModelViewSet):
     queryset = Proveedores.objects.all()
@@ -64,6 +68,40 @@ class DetalleFacturaViewSet(viewsets.ModelViewSet):
 class DetalleServicioViewSet(viewsets.ModelViewSet):
     queryset = DetallesServicio.objects.all()
     serializer_class = DetallesServicioSerializers
+
+class RegistrarUsuarioViewSet(viewsets.ModelViewSet):
+    queryset = RegistrarUsuario.objects.all()
+    serializer_class = RegistrarUsuarioSerializer
+
+class RegistrarUsuario(APIView):
+    def post(self, request):
+        print(request.data)
+        if request.method == "POST":
+            nombre = request.data["nombre"]
+            correo = request.data["correo"]
+            clave1 = request.data["password"]
+            clave2 = request.data["confirmPassword"]
+            nick = correo
+            if nombre == "" or correo == "" or clave1 == "" or clave2 == "":
+                return Response(data={'message': 'Todos los campos son obligatorios', 'respuesta': 400}, status=400)
+            elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+                return Response(data={'message': 'El correo no es válido', 'respuesta': 400}, status=400)
+            elif clave1 != clave2:
+                return Response(data={'message': 'Las contraseñas no coinciden', 'respuesta': 400}, status=400)
+            else:
+                try:
+                    q = Usuarios(
+                        nombre=nombre,
+                        email=correo,
+                        password=hash_password(clave1),
+
+                    )
+                    q.save()
+                except Exception as e:
+                    return Response(data={'message': 'El Usuario ya existe', 'respuesta': 409}, status=409)
+
+        # Renderiza la misma página de registro con los mensajes de error
+        return Response(data={'message': f'Usuario creado correctamente tu nick es: {nick}', 'respuesta': 201}, status=201)
 
 
 def index(request):
@@ -468,30 +506,26 @@ def listarCita(request):
     q = Citas.objects.all()
     contexto = {"data": q}
     return render(request, "tienda/citas/listarCita.html", contexto)
+
+
 from datetime import date , time , datetime
 
 def citaRegistrar(request):
     if request.method == "POST":
+        import datetime
         logueo = request.session.get("logueo",False)
         u = Usuarios.objects.get(pk=logueo["id"])
         fecha_servicio = request.POST.get('fechaServicio')
         hora = request.POST.get('hora')
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
-
-        import datetime
-        from django.utils.timezone import localtime
-        import pytz
-        est = pytz.timezone('America/Bogota')
-
-    
         today = date.today()
 
         hora = datetime.datetime.strptime(hora, '%H:%M')
 
         data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
 
-        hora_fin = hora + + datetime.timedelta(hours=0, minutes=59)
+        hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
 
         citas = Citas.objects.all()
         
@@ -514,6 +548,8 @@ def citaRegistrar(request):
             return redirect("listarCita")
         else:
            return redirect("citas")
+        
+
         
 
 def cita_formulario_editar(request, id):
@@ -1338,9 +1374,16 @@ def payment(request):
 
 def compras(request):
     q = request.session.get("logueo",False)
-    v = Facturas.objects.filter(pk=q["id"])
+    u = Usuarios.objects.get(pk=q["id"])
+    v = Facturas.objects.filter(cliente=u)
     context = {"data":v}
     return render(request,"tienda/ventas/ventas.html", context)
+    
+
+def details_buy(request,id):
+    det = DetalleFactura.objects.get(pk=id)
+    context = {"data":det}
+    return render(request,"tienda/ventas/detalleVentas.html", context)
     
 
 
