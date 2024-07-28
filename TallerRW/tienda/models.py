@@ -120,7 +120,7 @@ class Citas(models.Model):
 
 class DetalleFactura(models.Model):
     factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
+    producto = models.ManyToManyField(Productos)
     cantidad = models.IntegerField()
     total = models.IntegerField()
     def __str__(self):

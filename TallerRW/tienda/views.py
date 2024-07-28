@@ -1085,17 +1085,19 @@ def editeFormProfile(request):
 def updateInfoProfile(request):
     
     if request.method == 'POST':
+        direccion = request.POST.get('direccion')
+        telefono = request.POST.get('telefono')
         email = request.POST.get("email")
-        foto = request.FILES.get("foto_new")
-    
+        
         try:
             q = request.session.get("logueo",False)
             c = Usuarios.objects.get(pk=q["id"])
     
             c.email = email
-            c.foto = foto
+            c.direccion = direccion
+            c.telefono = telefono
             c.save()
-            messages.success(request,"Proveedor actualizada correctamente!!")
+            messages.success(request,"Informacion actualizada correctamente!!")
         except Exception as e:
             messages.error(request,f'Error: {e}')
     else:

@@ -5,30 +5,35 @@
 
 {% block contenedor %}
 <div class="container-fluid m-3" style="padding:90px;">
-<h1 class="h1">Mis compras</h1>
-<table class="table table-bordered">
-  <thead class="table-dark">
-    <tr>
-      <th>Numero de compra</th>
-      <th>Fecha</th>
-      <th>Cliente</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in data %}
-    <tr>
-      <td>{{ r.id }}</td>
-      <td>{{ r.fecha }}</td>
-      <td>{{ r.cliente }}</td>
-      
-      <td>
-        <a type="button" class="btn btn-danger" href="{% url 'detalleInfo' r.id %}">Ver detalles</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  {% if data %}
+  <h1 class="h1">Mis compras</h1>
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Numero de compra</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in data %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.cliente }}</td>
+          
+          <td>
+            <a type="button" class="btn btn-danger" href="{% url 'detalleInfo' r.id %}">Ver detalles</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% else %}
+    <h1 >No hay informacion de compras realizadas</h1>
+  {% endif %}
 </div>
 
 {% endblock %}
