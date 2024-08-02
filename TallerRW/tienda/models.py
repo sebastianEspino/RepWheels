@@ -83,7 +83,7 @@ class Facturas(models.Model):
 
 class DetallesServicio(models.Model):
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ManyToManyField(Productos)
+    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     descripcion_proceso = models.CharField(max_length=254,blank=False,null=True)
     def __str__(self):
         return self.descripcion_proceso

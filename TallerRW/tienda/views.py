@@ -599,7 +599,7 @@ def citaActualizar(request):
     if usuario.rol == 4:
         return redirect('citas')
     else:
-        return redirect('listarCitas') 
+        return redirect('listarCita') 
 
 def citaEliminar(request, id):
     try:
@@ -612,6 +612,19 @@ def citaEliminar(request, id):
         messages.error(request, f'Error: {e}')
     return redirect('listarCita')
 
+def deleteDateFromCustomer(request):
+    try:
+        if request.method == "POST":
+            id = request.POST.get('idDate')
+            cita = Citas.objects.get(pk=id)
+            print('Eliminado')
+            cita.delete()
+            messages.success(request, "Cita eliminada correctamente!!!")
+    except Citas.DoesNotExist:
+        messages.error(request, "Cita no encontrada.")
+    except Exception as e:
+        messages.error(request, f'Error: {e}')
+    return redirect('citas')
 
 #CRUD cotizaciones
 
@@ -1105,15 +1118,15 @@ def updateInfoProfile(request):
     return redirect('index')
         
 def updatePictureProfile(request):
-    
     if request.method == 'POST':
-        foto = request.FILES.get('new_foto')
+        foto = request.FILES.get('foto_new')
         print(foto)
         try:
             q = request.session.get("logueo",False)
             c = Usuarios.objects.get(pk=q["id"])
     
             c.foto = foto
+            
             c.save()
             messages.success(request,"Foto actualizada correctamente!!")
         except Exception as e:
