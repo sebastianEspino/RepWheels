@@ -9,45 +9,48 @@
     <div class="tit">
       <h1>Calificacion de nuestros servicios</h1>
     </div>
-    <article id="personas">
-      <section class="container-fluid">
-        <div id="cali">
-          <div class="product">
-            {% if data %}
-            {% for p in data %}
-            <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
-            <img src="{{ p.foto.url }}" class="card-img-top" style="width:85%;">
+    {% if data %}
+      <article id="personas">
+        <section class="container-fluid">
+          <div id="cali">
+            <div class="product">
 
-              <div class="card-body">
-                <strong>Calificaciones: </strong>
-                <form id="form_calificaciones">
+              {% for p in data %}
+              <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
+              <img src="{{ p.foto.url }}" class="card-img-top" style="width:85%;">
 
-                  <p class="clasificacion">
-                    <input type="radio" name="estrellas" class="star" value="5" {% if p.cantidad_estrellas == 5 %}checked="true"{% endif%}>
-                    <label for="radio1">★</label>
-                    <input type="radio" name="estrellas" class="star" value="4" {% if p.cantidad_estrellas == 4 %}checked="true"{% endif%}>
-                    <label for="radio2">★</label>
-                    <input type="radio" name="estrellas" class="star" value="3" {% if p.cantidad_estrellas == 3 %}checked="true"{% endif%}>
-                    <label for="radio3">★</label>
-                    <input type="radio" name="estrellas" class="star" value="2" {% if p.cantidad_estrellas == 2 %}checked="true"{% endif%}>
-                    <label class="st">★</label>
-                    <input type="radio" name="estrellas" class="star" value="1" {% if p.cantidad_estrellas == 1 %}checked="true"{% endif%}>
-                    <label for="radio5">★</label>
-                  </p>
-                </form>
-                <p class="card-text">{{ p.nombre }} </p>
-                <p class="text"><strong>Hecho por:</strong> {{ p.cliente }}</p>
-                <p class="text"><strong>Servicio:</strong>{{ p.servicios }}</p>
+                <div class="card-body">
+                  <strong>Calificaciones: </strong>
+                  <form id="form_calificaciones">
+
+                    <p class="clasificacion">
+                      <input type="radio" name="estrellas" class="star" value="5" {% if p.cantidad_estrellas == 5 %}checked="true"{% endif%}>
+                      <label for="radio1">★</label>
+                      <input type="radio" name="estrellas" class="star" value="4" {% if p.cantidad_estrellas == 4 %}checked="true"{% endif%}>
+                      <label for="radio2">★</label>
+                      <input type="radio" name="estrellas" class="star" value="3" {% if p.cantidad_estrellas == 3 %}checked="true"{% endif%}>
+                      <label for="radio3">★</label>
+                      <input type="radio" name="estrellas" class="star" value="2" {% if p.cantidad_estrellas == 2 %}checked="true"{% endif%}>
+                      <label class="st">★</label>
+                      <input type="radio" name="estrellas" class="star" value="1" {% if p.cantidad_estrellas == 1 %}checked="true"{% endif%}>
+                      <label for="radio5">★</label>
+                    </p>
+                  </form>
+                  <p class="card-text">{{ p.nombre }} </p>
+                  <p class="text"><strong>Hecho por:</strong> {{ p.cliente }}</p>
+                  <p class="text"><strong>Servicio:</strong>{{ p.servicios }}</p>
+                </div>
               </div>
+              {% endfor %}
+              
             </div>
-            {% endfor %}
-            {% else %}
-            <h1>No hay calificaciones !!</h1>
-            {% endif %}
           </div>
-        </div>
-      </section>
-    </article>
+        </section>
+      </article>
+    {% else %}
+          <h1>No hay calificaciones !!</h1>
+    {% endif %}
+
 
     <article class="add">
       <p>Si deseas realizar una calificacion al servicio prestado por nosotros</p>

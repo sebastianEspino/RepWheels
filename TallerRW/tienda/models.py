@@ -77,6 +77,7 @@ class Usuarios(AbstractUser):
 class Facturas(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     fecha = models.DateField(auto_now=True)
+    total = models.IntegerField(default=0)
     def __str__(self):
         return f'{self.cliente}'
     
@@ -120,9 +121,10 @@ class Citas(models.Model):
 
 class DetalleFactura(models.Model):
     factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ManyToManyField(Productos)
+    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     cantidad = models.IntegerField()
-    total = models.IntegerField()
+    precio = models.IntegerField()
+    
     def __str__(self):
         return f'{self.total}'
 

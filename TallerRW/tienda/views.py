@@ -1341,10 +1341,12 @@ def updateAmountCar(request,id):
 def payment(request):
     q = request.session.get("logueo",False)
     carrito = request.session.get("carrito",False)
+    total = sum(p["subtotal"] for p in carrito)
     try:
         u = Usuarios.objects.get(pk=q["id"])
         venta = Facturas(
-            cliente = u
+            cliente = u,
+            total = total
         )
         venta.save()
 
@@ -1360,21 +1362,24 @@ def payment(request):
             if int(enum["cantidad"]) > p.cantidad:
                 raise Exception(f"La cantidad del producto '{enum['producto']}' supera el inventario")
 
+                     
 
             df = DetalleFactura(
                  
                 factura = venta,
                 producto = p,
                 cantidad = int(enum["cantidad"]),
-                total = int(int(enum["precio"])*int(enum["cantidad"]))
+                precio = int(int(enum["precio"])*int(enum["cantidad"])),
 
             )
+                 
             cantidad_new = p.cantidad - enum["cantidad"]
             p.cantidad = cantidad_new
 
             p.save()
             df.save()
 
+        
             request.session["carrito"] = []
             request.session["items"] = 0
 
@@ -1396,8 +1401,9 @@ def compras(request):
     
 
 def details_buy(request,id):
-    det = DetalleFactura.objects.get(pk=id)
-    context = {"data":det}
+    vent = Facturas.objects.get(pk=id)
+    det = DetalleFactura.objects.filter(factura=id)
+    context = {"data":det,"data1":vent}
     return render(request,"tienda/ventas/detalleVentas.html", context)
     
 

@@ -17,7 +17,7 @@
       <br>
       <p>Si deseas agendar un servicio, aqui lo podras realizar</p>
       {% if request.session != True %}
-      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg" {% if if request.session == True %}hidden{% endif%}>Agendar cita</button>
+      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg" {% if request.session == True %}hidden{% endif%}>Agendar cita</button>
       {% else %}
       <p>Debes iniciar sesion o registrarse si todavia no lo haz hecho</p>
       {% endif %}

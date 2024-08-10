@@ -7,15 +7,32 @@
 <div style="display: flex; justify-content: center; align-content: center; padding: 6%;">
     
     <div id="info">
-        <article id="info_p">
-            <h1>Factura numero <strong>{{ data.id }}</strong></h1>
-            <p>
-                {{ data.producto }} <br>
-                {{ data.cantidad }} <br>
-                {{ data.total }}
-                
-                
-            </p>
+
+        <article id="info_bill">
+            <h1>Factura</h1><br>
+            <h6>Fecha de compra: {{ data1.fecha }}</h6><br>
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for r in data %}
+                  <tr>
+                    <td>{{ r.producto }}</td>
+                    <td>{{ r.cantidad }}</td>
+                    <td>{{ r.precio }}</td>
+                    
+                  </tr>
+                  {% endfor %}
+        
+                </tbody>
+              </table>
+              <h6>Total de la compra: {{ data1.total }}</h6><br>
         </article>
         
     </div>

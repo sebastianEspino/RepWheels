@@ -58,12 +58,12 @@ class Citas(admin.ModelAdmin):
 
 @admin.register(Facturas)
 class Facturas(admin.ModelAdmin):
-    list_display = ["id","cliente","fecha"]
+    list_display = ["id","cliente","fecha","total"]
 
 
 @admin.register(DetalleFactura)
 class DetalleFacturas(admin.ModelAdmin):
-    list_display = ["id","factura","cantidad","total"]
+    list_display = ["id","factura","cantidad","precio"]
 
 
 @admin.register(DetallesServicio)
