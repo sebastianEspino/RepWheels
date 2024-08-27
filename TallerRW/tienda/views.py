@@ -529,7 +529,7 @@ def citaRegistrar(request):
 
         citas = Citas.objects.all()
         
-        if data_customer.day >= today.day and data_customer.month >= today.month and data_customer.year >= today.year:
+        if data_customer.month >= today.month and data_customer.year >= today.year:
            
                 cita = Citas(
                     fechaServicio=fecha_servicio,
@@ -541,6 +541,7 @@ def citaRegistrar(request):
                 )
 
                 cita.save()
+                print(cita)
                 messages.success(request, "Cita guardada correctamente!!")
         else:
              messages.warning(request, "Error en la fecha!!")
@@ -573,7 +574,7 @@ def citaActualizar(request):
             today = date.today()
         
             data_customer = datetime.strptime(fecha_servicio, '%Y-%m-%d')
-            if data_customer.day >= today.day and data_customer.month >= today.month and data_customer.year >= today.year:
+            if data_customer.month >= today.month and data_customer.year >= today.year:
                  
 
                 q = Citas.objects.get(pk=id)
@@ -706,13 +707,14 @@ def agregar_calificacion_form(request):
         try:
             servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             estrellas = int(request.POST.get("estrellas"))
+
             q = Calificaciones(
                  cliente=u, 
                  servicios = servicio,
                  foto = u.foto,
                  cantidad_estrellas = estrellas
             )
-            print("eee",estrellas)
+            
             q.save()
             messages.success(request,"Realizado.....")
             return redirect('calificaciones')
@@ -942,7 +944,7 @@ def logout(request):
 def profile(request):
     p = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=p["id"])
-    if u.rol == 4:
+    if u.rol != 1:
         c = u
         contexto = {"data":u,"data1":c}
     else:
@@ -959,13 +961,23 @@ def completeInformation(request):
             cedula = request.POST.get("cedula")
             telefono = request.POST.get("telefono")
             direccion = request.POST.get("direccion")
-
-            cliente = Usuarios.objects.get(pk=p["id"])
-            cliente.cedula = cedula
-            cliente.telefono = telefono
-            cliente.direccion = direccion
-            cliente.n = n
-            cliente.save()
+            if Usuarios.objects.get(pk=p['id']).rol == 4:
+                cliente = Usuarios.objects.get(pk=p["id"])
+                cliente.cedula = cedula
+                cliente.telefono = telefono
+                cliente.direccion = direccion
+                cliente.n = n
+                cliente.save()
+            else:
+                cargo = request.POST.get('cargo')
+                empleado = Usuarios.objects.get(pk=p["id"])
+                empleado.cargo = cargo
+                empleado.cedula = cedula
+                empleado.telefono = telefono
+                empleado.direccion = direccion
+                empleado.n = n
+                empleado.save()
+                 
             
 
             messages.success(request,"La informacion se cuardo correctamente")

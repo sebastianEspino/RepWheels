@@ -5,59 +5,61 @@
 
 {% block contenedor %}
 
+<main>
+  <div class="container-fluid m-3" style="padding: 5%; height: 100%;">
+    <h1>Mis vehiculos</h1>
+    {% if data %}
+      <table class="table table-bordered">
+          <thead class="table-dark">
+              <tr>
+                  <th>Vehiculo</th>
+                  <th>Modelo</th>
+                  <th>Placa</th>
+                  <th>Kilometraje</th>
+                  <th>Linea</th>
+                  <th>Acciones</th>
 
-<div class="container-fluid m-3" style="padding: 90px;">
-  <h1>Mis vehiculos</h1>
-  {% if data %}
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Vehiculo</th>
-                <th>Modelo</th>
-                <th>Placa</th>
-                <th>Kilometraje</th>
-                <th>Linea</th>
-                <th>Acciones</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in data %}
-            <tr>
-                <td>{{ r.vehiculo }}</td>
-                <td>{{ r.modelo }}</td>
-                <td>{{ r.placa }}</td>
-                <td>{{ r.kilometraje }}</td>
-                <td>{{ r.linea }}</td>
-                
-                <td>
-                    <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
-                    <a class="btn btn-danger"
-                        href="javascript:eliminar('{% url 'delete_car' r.id %}')">Eliminar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
-  {% else %}
-    <h1 >No hay informacion de vehiculos</h1>
-  {% endif %}
-  <section class="d-flex justify-content-center">
-    <article class="add" >
-    
-      <p>Si deseas agregar tu vehiculo, aqui lo podras realizar</p>
-      <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar vehiculo</button>
-    </article>
-  </section>
+              </tr>
+          </thead>
+          <tbody>
+              {% for r in data %}
+              <tr>
+                  <td>{{ r.vehiculo }}</td>
+                  <td>{{ r.modelo }}</td>
+                  <td>{{ r.placa }}</td>
+                  <td>{{ r.kilometraje }}</td>
+                  <td>{{ r.linea }}</td>
+                  
+                  <td>
+                      <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                      <a class="btn btn-danger"
+                          href="javascript:eliminar('{% url 'delete_car' r.id %}')">Eliminar</a>
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+      </nav>
+    {% else %}
+      <h1 >No hay informacion de vehiculos</h1>
+    {% endif %}
+    <section class="d-flex justify-content-center">
+      <article class="add" >
+      
+        <p>Si deseas agregar tu vehiculo, aqui lo podras realizar</p>
+        <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agg">Agendar vehiculo</button>
+      </article>
+    </section>
+  </div>
+</main>
 
   <div class="modal" id="agg">
     <div class="modal-dialog">
@@ -114,9 +116,5 @@
 
 </div>
 
-      <main>
-        
-        </form>
-          
-      </main>
-      {% endblock %}
+
+{% endblock %}

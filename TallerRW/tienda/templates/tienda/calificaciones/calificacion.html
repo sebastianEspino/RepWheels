@@ -4,7 +4,7 @@
 {% block titulo %}Calificaciones{% endblock %}
 
 {% block contenedor %}
-<main>
+<main class="mainly">
   <section id="funcionC">
     <div class="tit">
       <h1>Calificacion de nuestros servicios</h1>
@@ -25,15 +25,15 @@
 
                     <p class="clasificacion">
                       <input type="radio" name="estrellas" class="star" value="5" {% if p.cantidad_estrellas == 5 %}checked="true"{% endif%}>
-                      <label for="radio1">★</label>
+                      <label for="radio1" class="st">★</label>
                       <input type="radio" name="estrellas" class="star" value="4" {% if p.cantidad_estrellas == 4 %}checked="true"{% endif%}>
-                      <label for="radio2">★</label>
+                      <label for="radio2" class="st">★</label>
                       <input type="radio" name="estrellas" class="star" value="3" {% if p.cantidad_estrellas == 3 %}checked="true"{% endif%}>
-                      <label for="radio3">★</label>
+                      <label for="radio3" class="st">★</label>
                       <input type="radio" name="estrellas" class="star" value="2" {% if p.cantidad_estrellas == 2 %}checked="true"{% endif%}>
-                      <label class="st">★</label>
+                      <label class="st" class="st">★</label>
                       <input type="radio" name="estrellas" class="star" value="1" {% if p.cantidad_estrellas == 1 %}checked="true"{% endif%}>
-                      <label for="radio5">★</label>
+                      <label for="radio5" class="st">★</label>
                     </p>
                   </form>
                   <p class="card-text">{{ p.nombre }} </p>

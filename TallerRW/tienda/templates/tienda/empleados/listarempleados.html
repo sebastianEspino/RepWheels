@@ -5,44 +5,46 @@
 
 {% block contenedor %}
 <main>
-    <h1>Empleados</h1>
-    <table  class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>id</th>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>correo</th>
-                <th>cargo</th>
-                <th>Operaciones</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in data %}
+    <div class="container-fluid m-3" style="padding:4%;">
+        <h1 class="h1">Empleados</h1>
+        <table  class="table table-bordered">
+            <thead class="table-dark">
                 <tr>
-                    <td>{{ r.id }}</td>
-                    <td>{{ r.cedula }}</td>
-                    <td>{{ r.nombre }}</td>
-                    <td>{{ r.email }}</td>
-                    <td>{{ r.cargo }}</td>
-                    <td>
-                        <a class="btn btn-info" href="{% url 'empleados_formulario_editar' r.id %}">Editar</a>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'empleado_eliminar' r.id %}')">Eliminar</a>
-                    </td>
+                    <th>id</th>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>correo</th>
+                    <th>cargo</th>
+                    <th>Operaciones</th>
+                    
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for r in data %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.cedula }}</td>
+                        <td>{{ r.nombre }}</td>
+                        <td>{{ r.email }}</td>
+                        <td>{{ r.cargo }}</td>
+                        <td>
+                            <a class="btn btn-info" href="{% url 'empleados_formulario_editar' r.id %}">Editar</a>
+                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'empleado_eliminar' r.id %}')">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
 </main>
 {% endblock %}

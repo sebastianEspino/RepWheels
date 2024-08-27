@@ -4,39 +4,40 @@
 {% block titulo %}Listar Productos{% endblock %}
 
 {% block contenedor %}
-<div class="container-fluid m-3" style="padding:50px;">
-    <h1>Productos</h1>
-        <table  class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Categoria</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for q in data %}
+<main>
+    <div class="container-fluid m-3" style="padding: 2%;">
+        <h1>Productos</h1>
+            <table  class="table table-bordered">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ q.id }}</td>
-                        <td>{{ q.nombre }}</td>
-                        <td>{{ q.Precio }}</td>
-                        <td>{{ q.descripcion_producto }}</td>
-                        <td>{{ q.cantidad }}</td>
-                        <td>{{ q.categoria }}</td>
-                        
-                        
-                        <td>
-                            <a class="btn btn-info" href="{% url 'editarProductos' q.id %}">Editar</a>
-                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')">Eliminar</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Categoria</th>
+                        <th>Acciones</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div>
-
+                </thead>
+                <tbody>
+                    {% for q in data %}
+                        <tr>
+                            <td>{{ q.id }}</td>
+                            <td>{{ q.nombre }}</td>
+                            <td>{{ q.Precio }}</td>
+                            <td>{{ q.descripcion_producto }}</td>
+                            <td>{{ q.cantidad }}</td>
+                            <td>{{ q.categoria }}</td>
+                            
+                            
+                            <td>
+                                <a class="btn btn-info" href="{% url 'editarProductos' q.id %}">Editar</a>
+                                <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</main>
 {% endblock %}

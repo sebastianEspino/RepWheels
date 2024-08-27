@@ -12,6 +12,7 @@ class Categoria(admin.ModelAdmin):
 class Producto(admin.ModelAdmin):
     list_display = ['id','nombre','Precio','descripcion_producto','cantidad','foto','ver_foto']
     search_fields = ['nombre']
+    list_editable = ['cantidad']
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")

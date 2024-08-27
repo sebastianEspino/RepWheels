@@ -1,7 +1,8 @@
 main{
     display: flex;
     justify-content: center;
-    height: 650px;
+    height: 100%; 
+    padding: 5%;
 }
 
 .form1{

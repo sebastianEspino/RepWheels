@@ -4,31 +4,33 @@
 {% block titulo %}Categoria{% endblock %}
 
 {% block contenedor %}
-<div class="container-fluid m-3" style="padding:90px;">
-        <h1 class="h1">Lista de Categoria</h1>
-        <table class="table table-bordered">
-            <thead class="table-dark">
-              <tr>
-                <th>ID categoria</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for r in data %}
-                  <tr>
-                      <td>{{ r.id }}</td>
-                      <td>{{ r.nombre }}</td>
-                      <td>{{ r.descripcion_categoria }}</td>    
-                      <td>
-                        <a class="btn btn-info" href="{% url 'categoriaEditar' r.id %}">Editar</button>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'categoriaEliminar' r.id %}')">Eliminar</a>
-                      </td>
-                  </tr>
-              {% endfor %}
-              
-            </tbody>
-          </table>
-</div>
-      {% endblock %}
+<main>
+  <div class="container-fluid m-3" style="padding:1%;">
+          <h1 class="h1">Lista de Categoria</h1>
+          <table class="table table-bordered">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID categoria</th>
+                  <th>Nombre</th>
+                  <th>Descripcion</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in data %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.nombre }}</td>
+                        <td>{{ r.descripcion_categoria }}</td>    
+                        <td>
+                          <a class="btn btn-info" href="{% url 'categoriaEditar' r.id %}">Editar</button>
+                          <a class="btn btn-danger" href="javascript:eliminar('{% url 'categoriaEliminar' r.id %}')">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                
+              </tbody>
+            </table>
+  </div>
+</main>
+{% endblock %}

@@ -5,7 +5,7 @@
 
 {% block contenedor %}
 <main>
-  <form class="form1"  action="{% url 'registroServicio' %}"  method="post">
+  <form class="form1"  action="{% url 'registroServicio' %}"  method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <h1 style="text-align: center;">Formulario de servicio</h1>
     <div class="form-row">
