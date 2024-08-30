@@ -511,44 +511,50 @@ def listarCita(request):
 from datetime import date , time , datetime
 
 def citaRegistrar(request):
-    if request.method == "POST":
-        import datetime
-        logueo = request.session.get("logueo",False)
+    logueo = request.session.get("logueo",False)
+    if logueo:
         u = Usuarios.objects.get(pk=logueo["id"])
-        fecha_servicio = request.POST.get('fechaServicio')
-        hora = request.POST.get('hora')
-        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-        empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
-        today = date.today()
+        if request.method == "POST":
+            import datetime
+            fecha_servicio = request.POST.get('fechaServicio')
+            hora = request.POST.get('hora')
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+            empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
+            today = date.today()
 
-        hora = datetime.datetime.strptime(hora, '%H:%M')
+            hora = datetime.datetime.strptime(hora, '%H:%M')
 
-        data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
+            data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
 
-        hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
+            hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
 
-        citas = Citas.objects.all()
-        
-        if data_customer.month >= today.month and data_customer.year >= today.year:
-           
-                cita = Citas(
-                    fechaServicio=fecha_servicio,
-                    hora = hora,
-                    cliente = u,
-                    servicio = servicio ,
-                    empleado = empleado,
-                    hora_fin = hora_fin
-                )
+            citas = Citas.objects.all()
+            
+            if data_customer.month >= today.month and data_customer.year >= today.year:
+            
+                    cita = Citas(
+                        fechaServicio=fecha_servicio,
+                        hora = hora,
+                        cliente = u,
+                        servicio = servicio ,
+                        empleado = empleado,
+                        hora_fin = hora_fin
+                    )
 
-                cita.save()
-                print(cita)
-                messages.success(request, "Cita guardada correctamente!!")
-        else:
-             messages.warning(request, "Error en la fecha!!")
-        if u.rol == 1:
-            return redirect("listarCita")
-        else:
-           return redirect("citas")
+                    cita.save()
+                    
+                    messages.success(request, "Cita guardada correctamente!!")
+            else:
+                messages.warning(request, "Error en la fecha!!")
+
+            if u.rol == 1:
+                return redirect("listarCita")
+    else:
+        messages.warning(request,"Debes iniciar sesion")
+
+    
+    
+    return redirect("citas")
         
 
         
@@ -700,27 +706,31 @@ def calificaciones(request):
     return render(request, "tienda/calificaciones/calificacion.html",contexto)
 
 def agregar_calificacion_form(request):
-    logueo = request.session.get("logueo",False)
-    u = Usuarios.objects.get(pk=logueo["id"])
+    q = request.session.get("logueo",False)
+    if q:
+        u = Usuarios.objects.get(pk=q["id"])
+        if request.method == "POST":
+            try:
+                servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+                estrellas = int(request.POST.get("estrellas"))
 
-    if request.method == "POST":
-        try:
-            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-            estrellas = int(request.POST.get("estrellas"))
+                q = Calificaciones(
+                    cliente=u, 
+                    servicios = servicio,
+                    foto = u.foto,
+                    cantidad_estrellas = estrellas
+                )
+                
+                q.save()
+                messages.success(request,"calificacion realizada correctamente")
+                
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
 
-            q = Calificaciones(
-                 cliente=u, 
-                 servicios = servicio,
-                 foto = u.foto,
-                 cantidad_estrellas = estrellas
-            )
-            
-            q.save()
-            messages.success(request,"Realizado.....")
-            return redirect('calificaciones')
-        except Exception as e:
-             messages.error(request, f"Error: {e}")
-             return redirect('calificaciones')
+    else:
+        messages.warning(request,"Debes iniciar sesion para poder realizar la calificacion")        
+    
+    return redirect('calificaciones')
 
 def registrarCalificacion(request):
     s = Servicios.objects.all()
@@ -999,21 +1009,24 @@ def registerUser(request):
             t = request.POST.get('terminos')
 
             
-            if t == 'on' and Usuarios.DoesNotExist:
-                try:
-                    user = Usuarios(
-                        nombre = name,
-                        email = email,
-                        password = hash_password(clave)
-                    )
+            if t == 'on':
+                if Usuarios.DoesNotExist:
+                    try:
+                        user = Usuarios(
+                            nombre = name,
+                            email = email,
+                            password = hash_password(clave)
+                        )
 
-                    user.save()       
+                        user.save()       
 
-                    messages.success(request,'Usuario creado exitosamente')
-                    return redirect('login')
-                except Exception  as e :
-                        messages.error(request,f'Campos vacios o Usuario ya existe !!')
-                        return redirect('register')
+                        messages.success(request,'Usuario creado exitosamente')
+                        return redirect('login')
+                    except Exception  as e :
+                            messages.error(request,f'Campos vacios o Usuario ya existe !!')
+                            return redirect('register')
+                else:
+                    messages.warning(request,f'Usuario ya existe !!') 
             else:
                 messages.warning(request,'Debes aceptar los terminos y condiciones') 
                 return redirect('register')
@@ -1352,53 +1365,57 @@ def updateAmountCar(request,id):
 @transaction.atomic
 def payment(request):
     q = request.session.get("logueo",False)
-    carrito = request.session.get("carrito",False)
-    total = sum(p["subtotal"] for p in carrito)
-    try:
-        u = Usuarios.objects.get(pk=q["id"])
-        venta = Facturas(
-            cliente = u,
-            total = total
-        )
-        venta.save()
-
-        for i, enum in enumerate(carrito):
-            try:
-                p = Productos.objects.get(pk=enum["id"])
-            except p.DoesNotExist:
-                carrito.pop(i)
-                request.session["carrito"] = carrito    
-                request.session["items"] = len(carrito)
-			
-                raise Exception('El producto no existe...!!')
-            if int(enum["cantidad"]) > p.cantidad:
-                raise Exception(f"La cantidad del producto '{enum['producto']}' supera el inventario")
-
-                     
-
-            df = DetalleFactura(
-                 
-                factura = venta,
-                producto = p,
-                cantidad = int(enum["cantidad"]),
-                precio = int(int(enum["precio"])*int(enum["cantidad"])),
-
+    if q:
+        carrito = request.session.get("carrito",False)
+        total = sum(p["subtotal"] for p in carrito)
+        try:
+            u = Usuarios.objects.get(pk=q["id"])
+            venta = Facturas(
+                cliente = u,
+                total = total
             )
-                 
-            cantidad_new = p.cantidad - enum["cantidad"]
-            p.cantidad = cantidad_new
+            venta.save()
 
-            p.save()
-            df.save()
+            for i, enum in enumerate(carrito):
+                try:
+                    p = Productos.objects.get(pk=enum["id"])
+                except p.DoesNotExist:
+                    carrito.pop(i)
+                    request.session["carrito"] = carrito    
+                    request.session["items"] = len(carrito)
+                
+                    raise Exception('El producto no existe...!!')
+                if int(enum["cantidad"]) > p.cantidad:
+                    raise Exception(f"La cantidad del producto '{enum['producto']}' supera el inventario")
 
-        
-            request.session["carrito"] = []
-            request.session["items"] = 0
+                        
 
-        messages.success(request,"La venta se creo correctamente !!")
-    except  Exception as e:
-        transaction.set_rollback(True)
-        messages.error(request, f"Error: {e}")
+                df = DetalleFactura(
+                    
+                    factura = venta,
+                    producto = p,
+                    cantidad = int(enum["cantidad"]),
+                    precio = int(int(enum["precio"])*int(enum["cantidad"])),
+
+                )
+                    
+                cantidad_new = p.cantidad - enum["cantidad"]
+                p.cantidad = cantidad_new
+
+                p.save()
+                df.save()
+
+            
+                request.session["carrito"] = []
+                request.session["items"] = 0
+
+            messages.success(request,"La venta se creo correctamente !!")
+        except  Exception as e:
+            transaction.set_rollback(True)
+            messages.error(request, f"Error: {e}")
+    else:
+         messages.warning(request,"Para realizar la compra debes iniciar sesion!!")
+         
 
 
     return redirect("productos")

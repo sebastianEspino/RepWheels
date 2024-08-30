@@ -6,9 +6,10 @@
 {% block contenedor %}
 <main>
       <section class="servicios" style="padding: 6%;">
-        <h1>Trabajos pendientes</h1>
+        {% if citas %}
         <div>
-          {% if citas %}
+          <h1>Trabajos pendientes</h1>
+         
           <div class="product">
               
                   {% for p in citas %}
@@ -26,12 +27,12 @@
                           </div>
                   {% endfor %}
           </div>
-          {% else %}
-              <h1>No hay citas pendientes</h1>
-          {% endif %}
+          
       </div>
+      {% else %}
+              <h1>No hay citas pendientes</h1>
+      {% endif %}
       </section>
-    </section>
   </main>
 
 

@@ -15,8 +15,9 @@ section{
     
 }
 #section1{
-    height: 575px;
+    height: 100%;
     display: flex;
+    padding: 2%;
     flex-direction: column;
     
 }
@@ -28,7 +29,8 @@ a{
 
 #section2{
     border: 1px solid black;
-    height: 480px;
+    padding: 2%;
+    height: 100%;
 }
 
 h1{
@@ -195,7 +197,8 @@ i{
 }
 
 .section3{
-    height: 570px; 
+    height: 100%; 
+    padding: 2%;
 }
 
 #opciones{
@@ -294,6 +297,11 @@ i{
     height:870px;
     color: black;
     padding-top: 80px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-around;
+    
 }
 
 .botones a{
