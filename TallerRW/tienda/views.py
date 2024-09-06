@@ -1271,6 +1271,8 @@ def add_cart(request):
                     else:
                         messages.warning(request,"Cantidad no dispoinble!!")
                     break
+
+                #carrito
                     
                    
             else:
