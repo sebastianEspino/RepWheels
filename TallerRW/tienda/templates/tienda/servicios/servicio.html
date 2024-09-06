@@ -99,6 +99,7 @@
         async function info(id){
 
           const info = document.querySelector('#detalles')
+          console.log(id)
 
           url_service = await fetch(`http://127.0.0.1:8000/api/1.0/DetalleServicio/${id}`)
           data = await url_service.json()
@@ -108,6 +109,7 @@
 
           let tamano = data.producto.length
 
+          /*
           data.producto.forEach(async function(url) {
             url_prod = await fetch(url)
             data_product = await url_prod.json()
@@ -117,6 +119,8 @@
 
             info.appendChild(p)
          })
+
+         */
         
          info.innerHTML = `
           

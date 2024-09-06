@@ -1246,25 +1246,33 @@ def restablecimiento(request):
 def add_cart(request):
     if request.method == "POST":
         try:
+            id_producto = request.POST.get("id")
+            cantidad = request.POST.get("cantidad")
             carrito = request.session.get("carrito",False)
             if not carrito:
                 request.session["carrito"] = []
                 request.session["items"] = 0
                 carrito = []
 
-            id_producto = request.POST.get("id")
-            cantidad = request.POST.get("cantidad")
-
+            
+            
             q = Productos.objects.get(pk=id_producto)
 
-            for p in carrito:
-                if p["id"] == id_producto:
-                    if q.cantidad >= (p["cantidad"] + int(cantidad) and int(cantidad)> 0):
-                        p["cantidad"]+= int(cantidad)
-                        p["subtotal"] = p["cantidad"]*q.Precio
+      
+            for p in range(0,len(carrito)):  
+                print(carrito[p]['id'])
+                if carrito[p]["id"] == int(q.id):
+                    
+                    if int(q.cantidad) >= (carrito[p]["cantidad"]+int(cantidad)) and int(cantidad)> 0:
+                        carrito[p]["cantidad"]+= int(cantidad)
+                        
+                        carrito[p]["subtotal"] = carrito[p]["cantidad"]*q.Precio
+                        print('Im here ')
                     else:
                         messages.warning(request,"Cantidad no dispoinble!!")
                     break
+                    
+                   
             else:
                 if q.cantidad >= int(cantidad) and int(cantidad) > 0:
                     carrito.append(
@@ -1287,6 +1295,9 @@ def add_cart(request):
 				"total": sum(p["subtotal"] for p in carrito)
 			}
             request.session["items"] = len(carrito)
+
+            for i in range(0,len(carrito)):
+                print(f'{i} - {carrito[i]["id"]}')
 
             return render(request, "tienda/carrito/carrito.html", contexto)
 
