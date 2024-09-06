@@ -7,7 +7,7 @@
 <main>
   <div class="container-fluid m-3" style="padding:4%;">
   <h1 class="h1">Lista de Clientes</h1>
-  <table class="table table-bordered">
+  <table class="table table-bordered" id="tableR">
     <thead class="table-dark">
       <tr>
         <th>ID</th>
@@ -25,9 +25,9 @@
         <td>{{ r.nombre }}</td>
         <td>{{ r.email }}</td>
         <td>
-          <a type="button" class="btn btn-info" href="{% url 'clientesEditar' r.id %}"> Editar <br></a>
+          <a type="button" class="btn btn-info" href="{% url 'clientesEditar' r.id %}"> <i class="bi bi-pencil-square"></i> <br></a>
           <a type="button" class="btn btn-danger"
-            href="javascript:eliminar('{% url 'clientesEliminar' r.id %}')">Eliminar</a>
+            href="javascript:eliminar('{% url 'clientesEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
         </td>
       </tr>
       {% endfor %}

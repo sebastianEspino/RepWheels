@@ -13,8 +13,8 @@
             {% for p in request.session.carrito %}
                 <tr>
                     <td>
-                        <img src="{{ p.foto }}" width="25%" alt=""><br>
-                        {{ p.nombre }} <br>Precio: $ {{ p.precio }}
+                        <img src="{{ p.foto }}" width="70%" alt=""><br>
+                        Nombre: <strong>{{ p.producto }}</strong> <br>Precio: $ {{ p.precio }}
                     </td>
                     <td>
                         <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />

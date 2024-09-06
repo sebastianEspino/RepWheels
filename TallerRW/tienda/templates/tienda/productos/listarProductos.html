@@ -7,7 +7,7 @@
 <main>
     <div class="container-fluid m-3" style="padding: 2%;">
         <h1>Productos</h1>
-            <table  class="table table-bordered">
+            <table  class="table table-bordered" id="tableR">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -31,8 +31,9 @@
                             
                             
                             <td>
-                                <a class="btn btn-info" href="{% url 'editarProductos' q.id %}">Editar</a>
-                                <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')">Eliminar</a>
+                                <a class="btn btn-warning" href="{% url 'editarProductos' q.id %}"><i class="bi bi-eye"></i></a>
+                                <a class="btn btn-info" href="{% url 'editarProductos' q.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')"><i class="bi bi-trash-fill"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

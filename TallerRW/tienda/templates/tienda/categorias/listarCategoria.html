@@ -7,7 +7,7 @@
 <main>
   <div class="container-fluid m-3" style="padding:1%;">
           <h1 class="h1">Lista de Categoria</h1>
-          <table class="table table-bordered">
+          <table class="table table-bordered" id="tableR">
               <thead class="table-dark">
                 <tr>
                   <th>ID categoria</th>
@@ -23,8 +23,8 @@
                         <td>{{ r.nombre }}</td>
                         <td>{{ r.descripcion_categoria }}</td>    
                         <td>
-                          <a class="btn btn-info" href="{% url 'categoriaEditar' r.id %}">Editar</button>
-                          <a class="btn btn-danger" href="javascript:eliminar('{% url 'categoriaEliminar' r.id %}')">Eliminar</a>
+                          <a class="btn btn-info" href="{% url 'categoriaEditar' r.id %}"><i class="bi bi-pencil-square"></i></button>
+                          <a class="btn btn-danger" href="javascript:eliminar('{% url 'categoriaEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

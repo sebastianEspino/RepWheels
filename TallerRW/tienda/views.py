@@ -1267,14 +1267,11 @@ def add_cart(request):
                         carrito[p]["cantidad"]+= int(cantidad)
                         
                         carrito[p]["subtotal"] = carrito[p]["cantidad"]*q.Precio
-                        print('Im here ')
+                        
                     else:
                         messages.warning(request,"Cantidad no dispoinble!!")
                     break
 
-                #carrito
-                    
-                   
             else:
                 if q.cantidad >= int(cantidad) and int(cantidad) > 0:
                     carrito.append(
@@ -1298,8 +1295,7 @@ def add_cart(request):
 			}
             request.session["items"] = len(carrito)
 
-            for i in range(0,len(carrito)):
-                print(f'{i} - {carrito[i]["id"]}')
+            
 
             return render(request, "tienda/carrito/carrito.html", contexto)
 

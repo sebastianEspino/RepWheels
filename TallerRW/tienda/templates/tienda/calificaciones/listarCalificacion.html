@@ -6,7 +6,7 @@
 {% block contenedor %}
     <div class="container-fluid m-3" style="padding: 90px;">
         <h1>Calificaiones</h1>
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="tableR">
             <thead class="table-dark">
                 <tr>
                     <th>id</th>
@@ -24,9 +24,9 @@
                     <td>{{ r.cantidad_estrellas }}</td>
                     <td>{{ r.servicios }}</td>
                     <td>
-                        <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                        <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}"><i class="bi bi-pencil-square"></i></a>
                         <a class="btn btn-danger"
-                            href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')">Eliminar</a>
+                            href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
                     </td>
                 </tr>
                 {% endfor %}

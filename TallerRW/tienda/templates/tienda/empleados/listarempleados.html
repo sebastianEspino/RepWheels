@@ -1,4 +1,4 @@
-{% extends 'tienda/base.html' %}
+{% extends 'tienda/base1.html' %}
 {% load static %}
 
 {% block titulo %}Empleados{% endblock %}
@@ -7,7 +7,7 @@
 <main>
     <div class="container-fluid m-3" style="padding:4%;">
         <h1 class="h1">Empleados</h1>
-        <table  class="table table-bordered">
+        <table  class="table table-bordered" id="tableR">
             <thead class="table-dark">
                 <tr>
                     <th>id</th>
@@ -28,8 +28,8 @@
                         <td>{{ r.email }}</td>
                         <td>{{ r.cargo }}</td>
                         <td>
-                            <a class="btn btn-info" href="{% url 'empleados_formulario_editar' r.id %}">Editar</a>
-                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'empleado_eliminar' r.id %}')">Eliminar</a>
+                            <a class="btn btn-info" href="{% url 'empleados_formulario_editar' r.id %}"><i class="bi bi-pencil-square"></i></a>
+                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'empleado_eliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
