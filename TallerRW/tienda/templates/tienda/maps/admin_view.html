@@ -1,0 +1,30 @@
+<!-- admin_view.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ubicaciones de Usuarios</title>
+</head>
+<body>
+    <h1>Ubicaciones de Usuarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Dirección</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in user_locations %}
+                <tr>
+                    <td>{{ location.user.username }}</td>
+                    <td>{{ location.address }}</td>
+                    <td>{{ location.latitude }}</td>
+                    <td>{{ location.longitude }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

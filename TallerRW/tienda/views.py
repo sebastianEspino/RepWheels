@@ -1479,3 +1479,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
 
 
+
+import folium
+
+
+def map(request):
+    initialMap = folium.Map(location=[6.1817678,-75.6071863,17.93],zoom_start=11)
+    context = {"map":initialMap_repr_html_()}
+    return render (request, "/maps/maps.html",context)

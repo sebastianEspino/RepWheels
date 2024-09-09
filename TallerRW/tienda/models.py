@@ -169,3 +169,5 @@ class RegistrarUsuario(models.Model):
 	correo = models.EmailField(max_length=254, unique=True)
 	clave1 = models.CharField(max_length=254)
 	clave2 = models.CharField(max_length=254)
+
+

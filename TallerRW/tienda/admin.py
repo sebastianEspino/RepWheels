@@ -78,3 +78,6 @@ class Promociones(admin.ModelAdmin):
 @admin.register(Configuracion)
 class Configuracion (admin.ModelAdmin):
     list_display = ["id","nombre","contacto","ubicacion"]
+
+
+
