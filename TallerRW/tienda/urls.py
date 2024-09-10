@@ -80,6 +80,8 @@ urlpatterns = [
     path("calificacionActualizar", views.calificacionActualizar, name="calificacionActualizar"),
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
     path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
+    path("eliminarCalificacion",views.eliminarCalificacion, name="eliminarCalificacion"),
+    
 
 
     #crud de categoria

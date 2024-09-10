@@ -1,0 +1,42 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Calificaciones{% endblock %}
+
+{% block contenedor %}
+<main class="mainly">
+  <div class="container-fluid m-3" style="padding:7%;">
+    {% if data %}
+    <h1 class="h1">Mis calificaciones</h1><br>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Cliente</th>
+            <th>Servicio</th>
+            <th>Cantidad de estrellas</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in data %}
+          <tr>
+            <td>{{ r.cliente }}</td>
+            <td>{{ r.servicios }}</td>
+            <td>{{ r.cantidad_estrellas }}</td>
+            
+            <td>
+              <a type="button" class="btn btn-danger" href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
+              
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <h1 >No hay informacion de calificaciones realizadas</h1>
+    {% endif %}
+  </div>
+</main>
+
+{% endblock %}

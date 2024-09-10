@@ -7,7 +7,7 @@
 <main>
     <div class="container-fluid m-3" style="padding: 2%;">
         <h1>Productos</h1>
-            <table  class="table table-bordered" id="tableR">
+            <table  class="table table-bordered table-hover" id="tableR">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -31,7 +31,7 @@
                             
                             
                             <td>
-                                <a class="btn btn-warning" href="{% url 'editarProductos' q.id %}"><i class="bi bi-eye"></i></a>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#agg_{{ q.id }}"><i class="bi bi-eye"></i></button>
                                 <a class="btn btn-info" href="{% url 'editarProductos' q.id %}"><i class="bi bi-pencil-square"></i></a>
                                 <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')"><i class="bi bi-trash-fill"></i></a>
                             </td>
@@ -39,6 +39,44 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div style="display: flex; justify-content: center; align-content: center;">
+                <a href="{% url 'crearProductoform' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
+            </div>
+            
     </div>
 </main>
+{% for q in data %}
+<div class="modal" id="agg_{{ q.id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{ q.nombre }}</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div style="display: flex; flex-direction: column; justify-content: space-around;">
+                <img src="{{ q.foto.url}}" alt="">
+                <p class="text-center">Nombre: {{ q.nombre }} <br> Descripcion: {{ q.descripcion_producto }}<br> Precio: {{ q.Precio }}<br> Cantidad: {{ q.cantidad }}<br>Categoria: {{ q.categoria }}</p>
+               
+        
+            </div>
+            
+          
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  
 {% endblock %}

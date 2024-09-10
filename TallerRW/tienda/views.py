@@ -116,6 +116,7 @@ def index(request):
 
 def productos(request):
     p = Productos.objects.all()
+    
     contexto = {'data':p}
     return render(request,"tienda/productos/producto.html",contexto)
 
@@ -180,6 +181,7 @@ def crearProducto(request):
 		cantidad = request.POST.get("cantidad")
 		foto = request.POST.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+        
 		try:
 			q = Productos(
                 nombre = nombre,
@@ -216,18 +218,26 @@ def clientesCrear(request):
         correo=request.POST.get('correo')
         password =request.POST.get('password')
 
-        try:
-            q = Usuarios(
-                cedula=cedula,
-                nombre=nombre,
-                email=correo,
-                password=hash_password(password)
-            )
-            q.save()
-            messages.success(request,"Guardado Correctamente!")
-        except Exception as e:
-            messages.error(request,f"Error:{e}")
-        return redirect('listarCliente')
+        if nombre == "" or cedula == "" or correo == "" or cedula == "":
+            messages.error(request,f'Campos Vacios!')
+        elif int(cedula) <= 0:
+            messages.error(request,f'La cedula no puede ser un numeor negativo')
+        elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+            messages.error(request,f'El correo no es valido')
+        else:
+
+            try:
+                q = Usuarios(
+                    cedula=cedula,
+                    nombre=nombre,
+                    email=correo,
+                    password=hash_password(password)
+                )
+                q.save()
+                messages.success(request,"Guardado Correctamente!")
+            except Exception as e:
+                messages.error(request,f"Error:{e}")
+            return redirect('listarCliente')
 
     else:
         messages.error(request,"Error: no se enviaron datos")
@@ -289,21 +299,28 @@ def newempleado(request):
         correo = request.POST.get('correo')
         telefono = request.POST.get('telefono')
         cargo = request.POST.get('cargo')
-        try:
-            q = Usuarios(
-                nombre = nombre,
-                cedula = cedula,
-                password = hash_password(password),
-                email = correo,
-                telefono = telefono,
-                cargo = cargo,
-                rol = 3
+        if nombre == "" or cedula == "" or correo == "" or password == "" or telefono == "" or cargo == "":
+            messages.error(request,f'Campos Vacios!')
+        elif int(telefono) < 0 or int(cedula) < 0:
+            messages.error(request,f'Los datos numericos no pueden ser negativos')
+        elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+                messages.error(request,f'El correo no es valido')
+        else:
+            try:
+                q = Usuarios(
+                    nombre = nombre,
+                    cedula = cedula,
+                    password = hash_password(password),
+                    email = correo,
+                    telefono = telefono,
+                    cargo = cargo,
+                    rol = 3
 
-            )
-            q.save()
-            messages.success(request, 'guardado correctamente')
-        except Exception as e:
-            messages.error(request, f"Error: {e}")
+                )
+                q.save()
+                messages.success(request, 'guardado correctamente')
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
     return redirect('empleado')
 
 def empleados_formulario_editar(request, id):
@@ -523,15 +540,12 @@ def citaRegistrar(request):
             today = date.today()
 
             hora = datetime.datetime.strptime(hora, '%H:%M')
-
             data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
-
             hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
-
             citas = Citas.objects.all()
             
             if data_customer.month >= today.month and data_customer.year >= today.year:
-            
+                if data_customer.day >= today.day:
                     cita = Citas(
                         fechaServicio=fecha_servicio,
                         hora = hora,
@@ -544,6 +558,8 @@ def citaRegistrar(request):
                     cita.save()
                     
                     messages.success(request, "Cita guardada correctamente!!")
+                else:
+                    messages.warning(request, "Error en el dia !!")
             else:
                 messages.warning(request, "Error en la fecha!!")
 
@@ -624,7 +640,6 @@ def deleteDateFromCustomer(request):
         if request.method == "POST":
             id = request.POST.get('idDate')
             cita = Citas.objects.get(pk=id)
-            print('Eliminado')
             cita.delete()
             messages.success(request, "Cita eliminada correctamente!!!")
     except Citas.DoesNotExist:
@@ -654,15 +669,17 @@ def listarCategoria(request):
 def categoriaRegistrar(request):
 	if request.method == "POST":
             n = request.POST.get("nombre")
-            d = request.POST.get("descripcion")            
-            
-            q = Categoria(
-                nombre = n,
-                descripcion_categoria = d,
-                        
-            )
-            q.save()
-            messages.success(request, "Guardado correctamente!!")
+            d = request.POST.get("descripcion")     
+            if n == "" or d == "" or correo == "":
+                messages.error(request,f'Campos Vacios!')
+                return redirect('registrarCategoria')
+            else:     
+                q = Categoria(
+                    nombre = n,
+                    descripcion_categoria = d,      
+                )
+                q.save()
+                messages.success(request, "Guardado correctamente!!")
             
             return redirect("listarCategoria")
         
@@ -710,22 +727,25 @@ def agregar_calificacion_form(request):
     if q:
         u = Usuarios.objects.get(pk=q["id"])
         if request.method == "POST":
-            try:
-                servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-                estrellas = int(request.POST.get("estrellas"))
-
-                q = Calificaciones(
-                    cliente=u, 
-                    servicios = servicio,
-                    foto = u.foto,
-                    cantidad_estrellas = estrellas
-                )
-                
-                q.save()
-                messages.success(request,"calificacion realizada correctamente")
-                
-            except Exception as e:
-                messages.error(request, f"Error: {e}")
+            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+            estrellas = int(request.POST.get("estrellas"))
+            if servicio == "" or estrellas == "":
+                messages.error(request,f'Campos Vacios!')
+            else:
+                try:
+                    
+                    q = Calificaciones(
+                        cliente=u, 
+                        servicios = servicio,
+                        foto = u.foto,
+                        cantidad_estrellas = estrellas
+                    )
+                    
+                    q.save()
+                    messages.success(request,"calificacion realizada correctamente")
+                    
+                except Exception as e:
+                    messages.error(request, f"Error: {e}")
 
     else:
         messages.warning(request,"Debes iniciar sesion para poder realizar la calificacion")        
@@ -744,13 +764,15 @@ def listarCalificacion(request):
 
 def calificacionRegistrar(request):
     if request.method == "POST":
+        logueo = request.session.get("logueo",False)
+        usuario =  Usuarios.objects.get(pk=logueo["id"])
+        nombre = usuario
+        servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
+        cantidad_estrellas = request.POST.get("cantidad_estrellas")
+        if servicio == "" or cantidad_estrellas == "" or nombre == "":
+            messages.error(request,f'Campos Vacios!')
         try:
-            logueo = request.session.get("logueo",False)
-            usuario =  Usuarios.objects.get(pk=logueo["id"])
-            nombre = usuario
-            servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
-            cantidad_estrellas = request.POST.get("cantidad_estrellas")
-
+        
             calificacion = Calificaciones(
                 cliente=nombre,
                 servicios = servicio,
@@ -800,6 +822,8 @@ def calificacionActualizar(request):
     return redirect('calificacionListar')
 
 def calificacion_eliminar(request, id):
+    l = request.session.get('logueo',False)
+    usuario = Usuarios.objects.get(pk=l['id'])
     try:
         calificacion = Calificaciones.objects.get(pk=id)
         calificacion.delete()
@@ -810,7 +834,22 @@ def calificacion_eliminar(request, id):
     except Exception as e:
         messages.error(request, f'Error: {e}')
 
-    return redirect('calificacionListar')
+    if usuario.rol == 1:
+        return redirect('calificacionListar')
+    else:
+        return redirect('calificaciones')
+    
+
+def eliminarCalificacion(request):
+    l = request.session.get('logueo',False)
+    usuario = Usuarios.objects.get(pk=l['id'])
+
+    calificaciones = Calificaciones.objects.filter(cliente=usuario)
+
+    contexto = {"data":calificaciones}
+    
+    return render(request,'tienda/calificaciones/calificaciones_personal.html',contexto)
+    
 
 #Crud Servicio
 
@@ -832,25 +871,30 @@ def listarServicio(request):
 
 def registroServicio(request):
     if request.method == "POST":
-        try:
-    
-            nombre = request.POST.get("nombre")
-            descripcion_servicio = request.POST.get("descripcion_servicio")
-            precio = request.POST.get('precio')
-            foto = request.FILES.get("foto_new") 
-            servicios = Servicios(
-                nombre=nombre,
-                descripcion_servicio=descripcion_servicio,
-                precio = precio,
-                foto = foto
-            )
-            servicios.save()
+        nombre = request.POST.get("nombre")
+        descripcion_servicio = request.POST.get("descripcion_servicio")
+        precio = request.POST.get('precio')
+        foto = request.FILES.get("foto_new") 
+        if nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
+            messages.error(request,f'Campos Vacios!')
+        elif int(precio) <= 0:
+            messages.error(request,f'El precio no puede ser negativo')
+        else:
+            try:
+                
+                servicios = Servicios(
+                    nombre=nombre,
+                    descripcion_servicio=descripcion_servicio,
+                    precio = precio,
+                    foto = foto
+                )
+                servicios.save()
 
-            messages.success(request, "Servicio guardada correctamente!!")
-            return redirect("listarServicio")
-        except Exception as e:
-             messages.error(request, f"Error: {e}")
-             return redirect('registrarServicio') 
+                messages.success(request, "Servicio guardada correctamente!!")
+                return redirect("listarServicio")
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
+    return redirect('registrarServicio') 
 
 def servicioEliminar(request,id):
     try:
@@ -927,7 +971,6 @@ def logueo(request):
                     request.session["carrito"] = []
                     request.session["items"] = 0
                     messages.success(request, f"Bienvenido {u.nombre}!!")
-                    print(u.password)
                     return redirect("index")
                 else:
                     messages.error(request, "Error: Usuario o contraseña incorrectos...")
@@ -1005,31 +1048,35 @@ def registerUser(request):
             name = request.POST.get('name')
             email = request.POST.get('email')
             clave = request.POST.get('pswd')
-
             t = request.POST.get('terminos')
 
-            
-            if t == 'on':
-                if Usuarios.DoesNotExist:
-                    try:
-                        user = Usuarios(
-                            nombre = name,
-                            email = email,
-                            password = hash_password(clave)
-                        )
+            if name == "" or clave == "" or clave == "":
+                messages.error(request,f'Campos Vacios!')
+            elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                messages.error(request,f'El correo no es valido')
+            elif Usuarios.objects.get(email=email):
+                messages.error(request,f'El usuario ya existe')
+            elif t == 'on':
 
-                        user.save()       
+                try:
+                    user = Usuarios(
+                        nombre = name,
+                        email = email,
+                        password = hash_password(clave)
+                    )
 
-                        messages.success(request,'Usuario creado exitosamente')
-                        return redirect('login')
-                    except Exception  as e :
-                            messages.error(request,f'Campos vacios o Usuario ya existe !!')
-                            return redirect('register')
+                    user.save()       
+                    messages.success(request,'Usuario creado exitosamente')
+                    return redirect('login')
+                except Exception  as e :
+                    messages.error(request,f'Campos vacios o Usuario ya existe !!')
+                    return redirect('register')
                 else:
                     messages.warning(request,f'Usuario ya existe !!') 
             else:
                 messages.warning(request,'Debes aceptar los terminos y condiciones') 
-                return redirect('register')
+    
+        return redirect('register')
    
 
 def add_car(request):
@@ -1433,7 +1480,10 @@ def payment(request):
 def compras(request):
     q = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=q["id"])
-    v = Facturas.objects.filter(cliente=u)
+    if u.rol != 4:
+        v = Facturas.objects.all()
+    else:
+        v = Facturas.objects.filter(cliente=u)
     context = {"data":v}
     return render(request,"tienda/ventas/ventas.html", context)
     

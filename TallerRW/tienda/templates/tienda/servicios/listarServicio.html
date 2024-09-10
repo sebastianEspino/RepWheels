@@ -8,7 +8,7 @@
 
     <div class="container-fluid m-3">
     <h1 class="h1">Lista de Servicios</h1>
-    <table class="table" id="tableR">
+    <table class="table table-hover table-bordered" id="tableR">
     <thead class="table-dark">
         <tr>
             <th>idServicio</th>
@@ -33,6 +33,9 @@
         {% endfor %}
     </tbody>
     </table>
+    <div style="display: flex; justify-content: center; align-content: center;">
+        <a href="{% url 'registrarServicio' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
+    </div>
 
     
     </div>

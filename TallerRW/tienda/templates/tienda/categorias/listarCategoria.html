@@ -7,7 +7,7 @@
 <main>
   <div class="container-fluid m-3" style="padding:1%;">
           <h1 class="h1">Lista de Categoria</h1>
-          <table class="table table-bordered" id="tableR">
+          <table class="table table-bordered table-hover" id="tableR">
               <thead class="table-dark">
                 <tr>
                   <th>ID categoria</th>
@@ -31,6 +31,9 @@
                 
               </tbody>
             </table>
+            <div style="display: flex; justify-content: center; align-content: center;">
+              <a href="{% url 'registrarCategoria' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
+          </div>
   </div>
 </main>
 {% endblock %}
