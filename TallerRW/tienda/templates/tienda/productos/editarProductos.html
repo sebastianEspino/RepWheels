@@ -5,8 +5,8 @@
 
 {% block contenedor %}
 
-<main>
-    <form class="form2" action="{% url 'actualizarProductos' %}" method="post">
+<main> 
+    <form class="form2" action="{% url 'actualizarProductos' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <h1 style="text-align: center;">Editar repuesto</h1>
       <div class="form-row">
@@ -16,14 +16,19 @@
           <input type="text" class="form-control" id="Nombre" placeholder="Nombre" name="nombre" value="{{ data.nombre }}">
         </div>
         <br>
-        <div class="form-group col-md-12">
-          <label for="inputEmail4">Precio</label>
-          <input type="number" class="form-control" id="Nombre" placeholder="Nombre" name="precio" value="{{ data.Precio }}">
-        </div>
-        <br>
-        <div class="form-group col-md-12">
-          <label for="inputCantidad">Cantidad</label>
-          <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad" value="{{ data.cantidad}}">
+        <div class="row">
+          <div class="col">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">Precio</label>
+              <input type="number" class="form-control" id="Nombre" placeholder="Nombre" name="precio" value="{{ data.Precio }}">
+            </div>
+          </div><br>
+          <div class="col">
+            <div class="form-group col-md-12">
+              <label for="inputCantidad">Cantidad</label>
+              <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad" value="{{ data.cantidad}}">
+            </div>
+          </div>
         </div>
         <br>
         <div class="form-group col-md-12">
@@ -33,7 +38,7 @@
         <br>
         <div class="form-group col-md-12">
           <label for="inputEmail4">Foto del producto</label>
-          <input class="form-control" type="file" name="foto_new" placeholder="foto">
+          <input class="form-control" type="file" name="foto_new" placeholder="foto" value="{{ data.foto.url }}">
         </div>
         <br> 
         <label for="">Categoria</label>

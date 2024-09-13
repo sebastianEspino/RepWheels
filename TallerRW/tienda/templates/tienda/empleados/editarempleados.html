@@ -6,7 +6,7 @@
 {% block contenedor %}
 
 <main>
-    <form class="form1" action="{% url 'empleado_actualizar' %}" method="post">
+    <form class="form1" action="{% url 'empleado_actualizar' %}" method="post" enctype="multipart/form-data">
         <h1 style="text-align: center;">Editar empleado</h1>
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ data.id }}">
@@ -33,6 +33,7 @@
             <label for="inputAddress2">Cargo</label>
             <input type="Text" class="form-control" id="inputAddress2" name="cargo" placeholder="cargo" value="{{ data.cargo }}">
           </div>
+          
           <button type="submit" class="btn btn-success">Actualizar</button>
         </div>
       </form>

@@ -99,9 +99,10 @@
         async function info(id){
 
           const info = document.querySelector('#detalles')
-          console.log(id)
+          const x = location.origin
+          
 
-          url_service = await fetch(`http://127.0.0.1:8000/api/1.0/DetalleServicio/${id}`)
+          url_service = await fetch(`${x}/api/1.0/DetalleServicio/${id}`)
           data = await url_service.json()
 
           url_name_service = await fetch(data.servicio)

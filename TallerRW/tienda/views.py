@@ -116,7 +116,6 @@ def index(request):
 
 def productos(request):
     p = Productos.objects.all()
-    
     contexto = {'data':p}
     return render(request,"tienda/productos/producto.html",contexto)
 
@@ -179,8 +178,11 @@ def crearProducto(request):
 		precio = request.POST.get("precio")
 		descripcion_producto = request.POST.get("descripcion_producto")
 		cantidad = request.POST.get("cantidad")
-		foto = request.POST.get("foto_new")
+		foto = request.FILES.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+        
+
+        
         
 		try:
 			q = Productos(
@@ -237,11 +239,13 @@ def clientesCrear(request):
                 messages.success(request,"Guardado Correctamente!")
             except Exception as e:
                 messages.error(request,f"Error:{e}")
-            return redirect('listarCliente')
+            
 
     else:
         messages.error(request,"Error: no se enviaron datos")
-        return redirect("listarCliente")
+        
+
+    return redirect('listarCliente')
 
 def clientesEliminar(request,id):
     try:
@@ -264,17 +268,25 @@ def clientesActualizar(request):
         nombre_completo=request.POST.get('nombre_completo')
         correo=request.POST.get('correo')
         telefono=request.POST.get('telefono')
-        try:
-            q=Usuarios.objects.get(pk=id)
-            q.cedula = cedula
-            q.nombre = nombre_completo
-            q.email = correo
-            q.telefono = telefono
-            q.save()
-            messages.success(request, "Cliente actualizado correctamente!!")
-        except Exception as e:
-            messages.error(request,f"ERROR:{e}")
-        return redirect("listarCliente")
+
+        if nombre_completo == "" or cedula == "" or correo == "" or telefono == "":
+            messages.error(request,f'Campos Vacios!')
+        elif int(cedula) <= 0 or int(telefono) < 0:
+            messages.error(request,f'La cedula no puede ser un numeor negativo')
+        elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+            messages.error(request,f'El correo no es valido')
+        else:
+            try:
+                q=Usuarios.objects.get(pk=id)
+                q.cedula = cedula
+                q.nombre = nombre_completo
+                q.email = correo
+                q.telefono = telefono
+                q.save()
+                messages.success(request, "Cliente actualizado correctamente!!")
+            except Exception as e:
+                messages.error(request,f"ERROR:{e}")
+            return redirect("listarCliente")
     else:
         messages.error(request,"Error: no se enviaron datos")
         return redirect("listarCliente")
@@ -299,6 +311,7 @@ def newempleado(request):
         correo = request.POST.get('correo')
         telefono = request.POST.get('telefono')
         cargo = request.POST.get('cargo')
+
         if nombre == "" or cedula == "" or correo == "" or password == "" or telefono == "" or cargo == "":
             messages.error(request,f'Campos Vacios!')
         elif int(telefono) < 0 or int(cedula) < 0:
@@ -338,6 +351,8 @@ def empleado_actualizar(request):
 		correo = request.POST.get("correo")
 		telefono = request.POST.get("telefono")
 		cargo = request.POST.get("cargo")
+
+        
 		try:
 			q = Usuarios.objects.get(pk=id)
 			q.nombre = nombre
@@ -369,7 +384,6 @@ def proveedores_registrar(request):
 	return render(request, "tienda/proveedores/registrarProveedor.html")
 
 def listar_proveedores(request):
-	# SELECT * FROM categoria
 	q = Proveedores.objects.all()
 	contexto = {"data": q}
 	return render(request, "tienda/proveedores/listarProveedor.html", contexto)
@@ -543,26 +557,31 @@ def citaRegistrar(request):
             data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
             hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
             citas = Citas.objects.all()
+
             
-            if data_customer.month >= today.month and data_customer.year >= today.year:
-                if data_customer.day >= today.day:
-                    cita = Citas(
-                        fechaServicio=fecha_servicio,
-                        hora = hora,
-                        cliente = u,
-                        servicio = servicio ,
-                        empleado = empleado,
-                        hora_fin = hora_fin
-                    )
-
-                    cita.save()
-                    
-                    messages.success(request, "Cita guardada correctamente!!")
-                else:
-                    messages.warning(request, "Error en el dia !!")
+            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
+                messages.error('No se permiten campos vacios')
             else:
-                messages.warning(request, "Error en la fecha!!")
+                if data_customer.month >= today.month and data_customer.year >= today.year:
+                    if data_customer.day >= today.day:
+                        
+                        cita = Citas(
+                            fechaServicio=fecha_servicio,
+                            hora = hora,
+                            cliente = u,
+                            servicio = servicio ,
+                            empleado = empleado,
+                            hora_fin = hora_fin
+                        )
 
+                        cita.save()
+                        
+                        messages.success(request, "Cita guardada correctamente!!")
+                    else:
+                        messages.warning(request, "Error en el dia !!")
+                else:
+                    messages.warning(request, "Error en la fecha!!")
+                
             if u.rol == 1:
                 return redirect("listarCita")
     else:
@@ -802,20 +821,25 @@ def calificacionActualizar(request):
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
         
+        if servicio == "" or cantidad_estrellas == "":
+            messages.error(request, f"No puede haber campos vacios")
+        elif int(cantidad_estrellas) < 0:
+            messages.error(request,f'El precio no puede ser negativo')
+        else:
 
-        try:
-            calificacion = Calificaciones.objects.get(pk=id)
-            calificacion.cliente = usuario
-            calificacion.servicios = servicio
-            calificacion.cantidad_estrellas = cantidad_estrellas
+            try:
+                calificacion = Calificaciones.objects.get(pk=id)
+                calificacion.cliente = usuario
+                calificacion.servicios = servicio
+                calificacion.cantidad_estrellas = cantidad_estrellas
 
-            calificacion.save()
+                calificacion.save()
 
-            messages.success(request, "Calificación actualizada correctamente!!")
-        except Calificaciones.DoesNotExist:
-            messages.error(request, "Calificación no encontrada.")
-        except Exception as e:
-            messages.error(request, f'Error: {e}')
+                messages.success(request, "Calificación actualizada correctamente!!")
+            except Calificaciones.DoesNotExist:
+                messages.error(request, "Calificación no encontrada.")
+            except Exception as e:
+                messages.error(request, f'Error: {e}')
     else:
         messages.warning(request, 'Error: No se enviaron los datos!!')
 
@@ -924,20 +948,25 @@ def servicioActualizar(request):
         precio = request.POST.get('precio')
         foto = request.FILES.get("foto_new")
         
+        if nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
+            messages.error(request,f'Campos Vacios!')
+        elif int(precio) <= 0:
+            messages.error(request,f'El precio no puede ser negativo')
+        else:
+                
+            try:
+                servicio = Servicios.objects.get(pk=id)
+                servicio.nombre = nombre
+                servicio.descripcion_servicio = descripcion_servicio
+                servicio.precio = precio
+                foto = foto
+                servicio.save()
 
-        try:
-            servicio = Servicios.objects.get(pk=id)
-            servicio.nombre = nombre
-            servicio.descripcion_servicio = descripcion_servicio
-            servicio.precio = precio
-            foto = foto
-            servicio.save()
-
-            messages.success(request, "Servicio actualizada correctamente!!")
-        except Calificaciones.DoesNotExist:
-            messages.error(request, "Servicio no encontrada.")
-        except Exception as e:
-            messages.error(request, f'Error: {e}')
+                messages.success(request, "Servicio actualizada correctamente!!")
+            except Calificaciones.DoesNotExist:
+                messages.error(request, "Servicio no encontrada.")
+            except Exception as e:
+                messages.error(request, f'Error: {e}')
     else:
         messages.warning(request, 'Error: No se enviaron los datos!!')
 
@@ -973,10 +1002,10 @@ def logueo(request):
                     messages.success(request, f"Bienvenido {u.nombre}!!")
                     return redirect("index")
                 else:
-                    messages.error(request, "Error: Usuario o contraseña incorrectos...")
+                    messages.error(request, "Error: Contrasena incorrecta")
                     return redirect("login")
             except Exception as e:
-                messages.error(request, "Error: Usuario o contraseña incorrectos...")
+                messages.error(request, "Error: Datos incorrecto")
                 return redirect("login")
         else:
             messages.error(request,'Error, debes aceptar los terminos y condiciones')

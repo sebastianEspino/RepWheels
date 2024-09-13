@@ -102,8 +102,8 @@ class Vehiculos(models.Model):
 
 class Citas(models.Model):
     fechaServicio = models.DateField(null=True)
-    hora = models.TimeField(null=True)
-    hora_fin = models.TimeField()
+    hora = models.DateTimeField(null=True)
+    hora_fin = models.DateTimeField()
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True,related_name='cliente')
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=False)
     empleado = models.ForeignKey(Usuarios, on_delete=models.DO_NOTHING,blank=False,null=True,related_name='empleado')
@@ -126,7 +126,7 @@ class DetalleFactura(models.Model):
     precio = models.IntegerField()
     
     def __str__(self):
-        return f'{self.total}'
+        return f'{self.factura}'
 
     
     
