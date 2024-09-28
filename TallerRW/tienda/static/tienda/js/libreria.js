@@ -173,3 +173,56 @@ function stars() {
 
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var marker;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            if (marker) {
+                marker.setLatLng([lat, lng]);
+            } else {
+                marker = L.marker([lat, lng]).addTo(map);
+            }
+            map.setView([lat, lng], 13);
+
+            // Populate the form fields with current location
+            document.querySelector('input[name="latitude"]').value = lat;
+            document.querySelector('input[name="longitude"]').value = lng;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('input[name="address"]').value = data.display_name;
+                    console.log(data)
+                });
+        });
+    }
+
+    document.getElementById('send-location').addEventListener('click', function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                
+
+                document.querySelector('input[name="latitude"]').value = lat;
+                document.querySelector('input[name="longitude"]').value = lng;
+
+                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('input[name="address"]').value = data.display_name;
+                        
+                    });
+            });
+        }
+    });
+});

@@ -13,8 +13,7 @@
         </div><br>
         <div class="opc">
             <h3>¿Te encuentras varado?</h3>
-            <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal"
-                data-bs-target="#emergence">Emergencia</button>
+            <a class="btn btn-outline-danger btn-lg" href="{% url 'map' %}">Emergencia</a>
         </div>
     </div>
 </div>
@@ -153,4 +152,45 @@
             <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
         </div>
     </section>
+</main>
+    <div class="modal" id="emergence">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">{{ q.nombre }}</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Envía tu Ubicación</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button id="send-location" type="button">Obtener Ubicación</button><br>
+                    <input type="text" name="longitude"><br>
+                    <input type="text" name="latitude"><br>
+                    <input type="text" name="address" style="width:400px;"><br>
+                    
+                    <button type="submit">Enviar</button>
+                </form>
+
+                <div id="map"></div>
+                    
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+      
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+      
+          </div>
+        </div>
+    </div>
+
+      
+   
     {% endblock %}

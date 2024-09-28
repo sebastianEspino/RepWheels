@@ -14,8 +14,6 @@ import re
 import pytz
 est = pytz.timezone('America/Bogota')
 
-
-
 # API with rest framework 
 
 class CategoriaViewSet(viewsets.ModelViewSet):
@@ -104,11 +102,15 @@ class RegistrarUsuario(APIView):
         return Response(data={'message': f'Usuario creado correctamente tu nick es: {nick}', 'respuesta': 201}, status=201)
 
 
+
+import folium
+
 def index(request):
+    initialMap = folium.Map(location=[6.1817678,-75.6071863],zoom_start=11)
     logueo = request.session.get("logueo", False)
     q = Calificaciones.objects.all()
     s = Servicios.objects.all()
-    contexto = {"data":q,"servicios":s}
+    contexto = {"data":q,"servicios":s,"map":initialMap}
     return render(request, "tienda/index.html",contexto)
 
 
@@ -689,7 +691,7 @@ def categoriaRegistrar(request):
 	if request.method == "POST":
             n = request.POST.get("nombre")
             d = request.POST.get("descripcion")     
-            if n == "" or d == "" or correo == "":
+            if n == "" or d == "":
                 messages.error(request,f'Campos Vacios!')
                 return redirect('registrarCategoria')
             else:     
@@ -824,7 +826,7 @@ def calificacionActualizar(request):
         if servicio == "" or cantidad_estrellas == "":
             messages.error(request, f"No puede haber campos vacios")
         elif int(cantidad_estrellas) < 0:
-            messages.error(request,f'El precio no puede ser negativo')
+            messages.error(request,f'El numero de estrellas no puede ser negativo')
         else:
 
             try:
@@ -1522,7 +1524,9 @@ def details_buy(request,id):
     det = DetalleFactura.objects.filter(factura=id)
     context = {"data":det,"data1":vent}
     return render(request,"tienda/ventas/detalleVentas.html", context)
-    
+
+
+
 
 
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -1567,3 +1571,17 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
 
 
+import folium
+
+
+def map(request):
+    initialMap = folium.Map(location=[6.1817678,-75.6071863],zoom_start=11)
+    context = {"map":initialMap}
+    return render(request, "tienda/maps/maps.html",context)
+
+def emergencia(request):
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        telefono = request.POST.get('telefono')
+        descripcion = request.POST.get('descripcion_problema')
+        ubicacion = request.POST.get('address')

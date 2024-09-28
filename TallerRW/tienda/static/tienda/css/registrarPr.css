@@ -1,8 +1,16 @@
 main{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     height: 100%; 
     padding: 5%;
+}
+
+#sectionEmergence{
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%; 
+    padding: 5%;
+    gap: 20px;
 }
 
 .form1{
@@ -106,6 +114,19 @@ li{
     border: black 1px solid;
     
 }
+
+#emergence{
+    height: 300px;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+#map { height: 500px; width: 80% }
+
 
 
 

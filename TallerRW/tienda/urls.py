@@ -134,8 +134,10 @@ urlpatterns = [
     path("actualizarCarrito/<int:id>",views.updateAmountCar,name="actualizarCarrito"),
     path("pagar",views.payment,name="pagar"),
     path('compras',views.compras,name='compras'),
-     path('detalleInfo/<int:id>',views.details_buy,name="detalleInfo"),
-
+    path('detalleInfo/<int:id>',views.details_buy,name="detalleInfo"),
+    
+    path('map',views.map,name='map'),
+    path('emergencia',views.emergencia,name="emergencia")
 
 
 
