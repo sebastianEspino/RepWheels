@@ -169,3 +169,9 @@ class RegistrarUsuario(models.Model):
 	correo = models.EmailField(max_length=254, unique=True)
 	clave1 = models.CharField(max_length=254)
 	clave2 = models.CharField(max_length=254)
+
+class Emergencia(models.Model):
+    nombre = models.CharField(max_length=50)    
+    telefono = models.CharField(max_length=20)
+    descripcion = models.CharField(max_length=254)
+    ubicacion = models.CharField(max_length=254)

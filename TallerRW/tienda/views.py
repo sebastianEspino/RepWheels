@@ -690,8 +690,10 @@ def listarCategoria(request):
 def categoriaRegistrar(request):
 	if request.method == "POST":
             n = request.POST.get("nombre")
-            d = request.POST.get("descripcion")     
-            if n == "" or d == "":
+            d = request.POST.get("descripcion")    
+            if n.isnumeric() or d.isnumeric():
+                messages.error(request,f'No se permite numeros en el nombre!') 
+            elif n == "" or d == "":
                 messages.error(request,f'Campos Vacios!')
                 return redirect('registrarCategoria')
             else:     
@@ -723,6 +725,11 @@ def categoriaActualizar(request):
         id = request.POST.get("id")
         n = request.POST.get("categoria")
         d = request.POST.get("descripcion")   
+        if n.isnumeric() or d.isnumeric():
+                messages.error(request,f'No se permite numeros en el nombre!') 
+        elif n == "" or d == "":
+            messages.error(request,f'Campos Vacios!')
+            return redirect('registrarCategoria')
         try:
             q  = Categoria.objects.get(pk=id)
             q.nombre = n
@@ -901,7 +908,10 @@ def registroServicio(request):
         descripcion_servicio = request.POST.get("descripcion_servicio")
         precio = request.POST.get('precio')
         foto = request.FILES.get("foto_new") 
-        if nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
+
+        if nombre.isnumeric() or descripcion_servicio.isnumeric():
+            messages.error(request,f'No se permite numeros en el nombre!')
+        elif nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
             messages.error(request,f'Campos Vacios!')
         elif int(precio) <= 0:
             messages.error(request,f'El precio no puede ser negativo')
@@ -949,8 +959,9 @@ def servicioActualizar(request):
         descripcion_servicio = request.POST.get('descripcion_servicio')
         precio = request.POST.get('precio')
         foto = request.FILES.get("foto_new")
-        
-        if nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
+        if nombre.isnumeric() or descripcion_servicio.isnumeric():
+            messages.error(request,f'No se permite numeros en el nombre!')
+        elif nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
             messages.error(request,f'Campos Vacios!')
         elif int(precio) <= 0:
             messages.error(request,f'El precio no puede ser negativo')
@@ -1045,22 +1056,27 @@ def completeInformation(request):
             cedula = request.POST.get("cedula")
             telefono = request.POST.get("telefono")
             direccion = request.POST.get("direccion")
-            if Usuarios.objects.get(pk=p['id']).rol == 4:
-                cliente = Usuarios.objects.get(pk=p["id"])
-                cliente.cedula = cedula
-                cliente.telefono = telefono
-                cliente.direccion = direccion
-                cliente.n = n
-                cliente.save()
+            if cedula == '' or telefono == '' or direccion == '':
+                 messages.error(request,'No se permite campos vacios')
+            elif int(cedula) < 0 or int(telefono) < 0:
+                 messages.error(request,'No pueden ser numeros negativos')
             else:
-                cargo = request.POST.get('cargo')
-                empleado = Usuarios.objects.get(pk=p["id"])
-                empleado.cargo = cargo
-                empleado.cedula = cedula
-                empleado.telefono = telefono
-                empleado.direccion = direccion
-                empleado.n = n
-                empleado.save()
+                if Usuarios.objects.get(pk=p['id']).rol == 4:
+                    cliente = Usuarios.objects.get(pk=p["id"])
+                    cliente.cedula = cedula
+                    cliente.telefono = telefono
+                    cliente.direccion = direccion
+                    cliente.n = n
+                    cliente.save()
+                else:
+                    cargo = request.POST.get('cargo')
+                    empleado = Usuarios.objects.get(pk=p["id"])
+                    empleado.cargo = cargo
+                    empleado.cedula = cedula
+                    empleado.telefono = telefono
+                    empleado.direccion = direccion
+                    empleado.n = n
+                    empleado.save()
                  
             
 
@@ -1080,8 +1096,9 @@ def registerUser(request):
             email = request.POST.get('email')
             clave = request.POST.get('pswd')
             t = request.POST.get('terminos')
-
-            if name == "" or clave == "" or clave == "":
+            if name.isnumeric():
+                messages.error(request,f'No se permite numeros en el nombre!') 
+            elif name == "" or clave == "" or clave == "":
                 messages.error(request,f'Campos Vacios!')
             elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                 messages.error(request,f'El correo no es valido')
@@ -1585,3 +1602,23 @@ def emergencia(request):
         telefono = request.POST.get('telefono')
         descripcion = request.POST.get('descripcion_problema')
         ubicacion = request.POST.get('address')
+
+        if nombre == "" or telefono == "" or descripcion == "" or ubicacion == "":
+            messages.warning(request,'No se puede campos vacios')
+        else:
+            try:
+                e = Emergencia(
+                     nombre = nombre,
+                     telefono = telefono,
+                     descripcion = descripcion,
+                     ubicacion = ubicacion
+
+                     
+                )
+
+                e.save()
+                messages.success(request,'Ya se ha realizado el envio de su emergencia!!')
+            except Exception as e:
+                 messages.error(request, f"Error: {e}")
+
+    return redirect('index')
