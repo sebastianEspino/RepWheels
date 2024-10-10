@@ -633,6 +633,7 @@ def registroServicio(request):
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         descripcion_servicio = request.POST.get("descripcion_servicio")
+<<<<<<< Updated upstream
         producto = Productos.objects.get(pk=request.POST.get("producto"))
         servicios = Servicios(
             nombre=nombre,
@@ -643,6 +644,30 @@ def registroServicio(request):
 
         messages.success(request, "Servicio guardada correctamente!!")
         return redirect("listarServicio")
+=======
+        precio = request.POST.get('precio')
+        foto = request.FILES.get("foto_new") 
+        if nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
+            messages.error(request,f'No se permite cmapos vacios!')
+        elif int(precio) <= 0:
+            messages.error(request,f'El precio no puede ser negativo')
+        else:
+            try:
+                
+                servicios = Servicios(
+                    nombre=nombre,
+                    descripcion_servicio=descripcion_servicio,
+                    precio = precio,
+                    foto = foto
+                )
+                servicios.save()
+
+                messages.success(request, "Servicio guardada correctamente!!")
+                return redirect("listarServicio")
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
+    return redirect('registrarServicio') 
+>>>>>>> Stashed changes
 
 def servicioEliminar(request,id):
     try:
@@ -759,6 +784,7 @@ def register(request):
     return render(request,"tienda/registro/registro.html")
 
 def registerUser(request):
+<<<<<<< Updated upstream
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -773,6 +799,98 @@ def registerUser(request):
 
         messages.success(request,'Usuario creado exitosamente')
         return redirect('login')
+=======
+        if request.method == "POST":
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            clave = request.POST.get('pswd')
+            t = request.POST.get('terminos')
+            if name.isnumeric(): 
+                messages.error(request,f'El nombre tiene numeros!')
+            elif  name == "" or clave == "" or clave == "":
+                messages.error(request,f'Campos vacios!')
+            elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+                messages.error(request,f'El correo no es valido')
+            elif Usuarios.objects.get(email=email):
+                messages.error(request,f'El usuario ya existe')
+            elif t == 'on':
+
+                try:
+                    user = Usuarios(
+                        nombre = name,
+                        email = email,
+                        password = hash_password(clave)
+                    )
+
+                    user.save()       
+                    messages.success(request,'Usuario creado exitosamente')
+                    return redirect('login')
+                except Exception  as e :
+                    messages.error(request,f'Campos vacios o Usuario ya existe !!')
+                    return redirect('register')
+                else:
+                    messages.warning(request,f'Usuario ya existe !!') 
+            else:
+                messages.warning(request,'Debes aceptar los terminos y condiciones') 
+    
+        return redirect('register')
+   
+
+def add_car(request):
+     l = request.session.get("logueo",False)
+     u = Usuarios.objects.get(pk=l["id"])
+     cliente = Usuarios.objects.get(email = u.email)
+     q = Vehiculos.objects.filter(cliente=cliente)
+     contexto = {
+        "data": q
+     }
+     return render(request,'tienda/login/vehiculos.html',contexto)
+
+def add_car_profile(request):
+    l = request.session.get('logueo',False)
+    cliente = Usuarios.objects.get(pk=l["id"])
+    if request.method == 'POST':
+        try:
+    
+            vehiculo = request.POST.get("vehiculo")
+            modelo = request.POST.get("modelo")
+            placa = request.POST.get("placa")
+            kilometraje = request.POST.get("km")
+            linea = request.POST.get("linea")
+
+
+            vehiculos = Vehiculos(
+                cliente = cliente, 
+                vehiculo = vehiculo,
+                modelo = modelo,
+                placa = placa,
+                kilometraje = kilometraje,
+                linea = linea
+
+            )
+
+            vehiculos.save()
+
+            messages.success(request,'Vehiculo agregado correctamente')
+            return redirect('add_car')
+        except Exception as e:
+             messages.error(request, f"Error: {e}")
+             return redirect('add_car')
+    else:
+        messages.warning(request,'Error')
+        return redirect('perfil')
+    
+
+def deleteCar(request, id):
+	try:
+		q = Vehiculos.objects.get(pk=id)
+		q.delete()
+		messages.success(request, "Eliminado, Exitosamiente!")
+	except Exception as e:
+		messages.error(request, f"Error: {e}")
+        
+	return redirect("add_car")
+>>>>>>> Stashed changes
     
 
 def change_password(request):
