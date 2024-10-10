@@ -183,9 +183,6 @@ def crearProducto(request):
 		foto = request.FILES.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
         
-
-        
-        
 		try:
 			q = Productos(
                 nombre = nombre,
@@ -354,7 +351,7 @@ def empleado_actualizar(request):
 		telefono = request.POST.get("telefono")
 		cargo = request.POST.get("cargo")
 
-        
+           
 		try:
 			q = Usuarios.objects.get(pk=id)
 			q.nombre = nombre
@@ -877,9 +874,13 @@ def eliminarCalificacion(request):
     l = request.session.get('logueo',False)
     usuario = Usuarios.objects.get(pk=l['id'])
 
-    calificaciones = Calificaciones.objects.filter(cliente=usuario)
-
+    if usuario.rol != 1: 
+        calificaciones = Calificaciones.objects.filter(cliente=usuario)
+    else:
+        calificaciones = Calificaciones.objects.all()
+    
     contexto = {"data":calificaciones}
+        
     
     return render(request,'tienda/calificaciones/calificaciones_personal.html',contexto)
     
@@ -1000,7 +1001,9 @@ def logueo(request):
         user = request.POST.get('correo')
         pss = request.POST.get('clave')
         t = request.POST.get('terminos')
-        if t == 'on':
+        if user == '' or pss == '':
+            messages.error(request,'Error, No se permite campos vacios')
+        else:
             try:
                 u = Usuarios.objects.get(email=user)
                 if verify_password(pss,u.password):
@@ -1020,9 +1023,6 @@ def logueo(request):
             except Exception as e:
                 messages.error(request, "Error: Datos incorrecto")
                 return redirect("login")
-        else:
-            messages.error(request,'Error, debes aceptar los terminos y condiciones')
-            return redirect("login")
     else:
         messages.warning(request,"Error: No se enviaron los datos")
         return redirect('login')
@@ -1051,7 +1051,6 @@ def completeInformation(request):
     if request.method == "POST":
 
         try:
-                
             n = request.POST.get("info")
             cedula = request.POST.get("cedula")
             telefono = request.POST.get("telefono")
@@ -1078,8 +1077,6 @@ def completeInformation(request):
                     empleado.n = n
                     empleado.save()
                  
-            
-
             messages.success(request,"La informacion se cuardo correctamente")
             return redirect("perfil")
         except Exception as e:
@@ -1141,35 +1138,43 @@ def add_car_profile(request):
     l = request.session.get('logueo',False)
     cliente = Usuarios.objects.get(pk=l["id"])
     if request.method == 'POST':
-        try:
-    
-            vehiculo = request.POST.get("vehiculo")
-            modelo = request.POST.get("modelo")
-            placa = request.POST.get("placa")
-            kilometraje = request.POST.get("km")
-            linea = request.POST.get("linea")
+        vehiculo = request.POST.get("vehiculo")
+        modelo = request.POST.get("modelo")
+        placa = request.POST.get("placa")
+        kilometraje = request.POST.get("km")
+        linea = request.POST.get("linea")
 
+        if vehiculo == '' or modelo == '' or placa == '' or kilometraje == '' or linea == '':
+            messages.success(request,'No se permite campos vacios')
+        elif len(modelo) > 4:
+            messages.success(request,'No puede tener mas de 4 digitos')
+        elif kilometraje < 0 or modelo < 0:
+            messages.success(request,'No pueden ser numeros negativos')
+        else:
+            try:
+                vehiculos = Vehiculos(
+                    cliente = cliente, 
+                    vehiculo = vehiculo,
+                    modelo = modelo,
+                    placa = placa,
+                    kilometraje = kilometraje,
+                    linea = linea
 
-            vehiculos = Vehiculos(
-                cliente = cliente, 
-                vehiculo = vehiculo,
-                modelo = modelo,
-                placa = placa,
-                kilometraje = kilometraje,
-                linea = linea
+                )
 
-            )
+                vehiculos.save()
 
-            vehiculos.save()
+                messages.success(request,'Vehiculo agregado correctamente')
+                return redirect('add_car')
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
 
-            messages.success(request,'Vehiculo agregado correctamente')
-            return redirect('add_car')
-        except Exception as e:
-             messages.error(request, f"Error: {e}")
-             return redirect('add_car')
+        return redirect('add_car')
+                
     else:
         messages.warning(request,'Error')
-        return redirect('perfil')
+    
+    return redirect('perfil')
     
 
 def deleteCar(request, id):
@@ -1194,15 +1199,18 @@ def change(request):
         a = request.POST.get("anteriorP")
         n1 = request.POST.get("nuevaP")
         n2 = request.POST.get("repetirP")
-        
-        if verify_password(a,q.password):
-             if n1 == n2:
-                q.password = hash_password(n1)
-                q.save()
-                
-                messages.success(request,"Cambio de contraseña exitoso!!!")
+
+        if a == '' or n1 == '' or n2 == '':
+            messages.success(request,"No se puede enviar campos vacios")
         else:
-             messages.warning(request,"La clave no son iguales")
+            if verify_password(a,q.password):
+                if n1 == n2:
+                    q.password = hash_password(n1)
+                    q.save()
+                    
+                    messages.success(request,"Cambio de contraseña exitoso!!!")
+            else:
+                messages.warning(request,"La clave no son iguales")
 
     return redirect("index")
 
@@ -1221,18 +1229,25 @@ def updateInfoProfile(request):
         direccion = request.POST.get('direccion')
         telefono = request.POST.get('telefono')
         email = request.POST.get("email")
+
+        if direccion == "" or telefono == "" or email == "":
+            messages.success(request,"No se permite campos vacios")
+        elif len(telefono) > 10:
+            messages.success(request,"El telefono no puede tener mas de 10 digitos")
+        elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            messages.error(request,f'El correo no es valido')
+        else:
+            try:
+                q = request.session.get("logueo",False)
+                c = Usuarios.objects.get(pk=q["id"])
         
-        try:
-            q = request.session.get("logueo",False)
-            c = Usuarios.objects.get(pk=q["id"])
-    
-            c.email = email
-            c.direccion = direccion
-            c.telefono = telefono
-            c.save()
-            messages.success(request,"Informacion actualizada correctamente!!")
-        except Exception as e:
-            messages.error(request,f'Error: {e}')
+                c.email = email
+                c.direccion = direccion
+                c.telefono = telefono
+                c.save()
+                messages.success(request,"Informacion actualizada correctamente!!")
+            except Exception as e:
+                messages.error(request,f'Error: {e}')
     else:
         messages.warning(request,f'Error:No se enviaron los datos!!')
     return redirect('index')
@@ -1263,39 +1278,43 @@ def formPassword(request):
 def emailToPassword(request):
     if request.method == "POST":
         correo = request.POST.get("correo")
-
-        try:
-            q = Usuarios.objects.get(email=correo)     
-            from random import randint
-            import base64
-            token = base64.b64encode(str(randint(100000, 999999)).encode("ascii")).decode("ascii")
-            print(token)
-            q.token_recuperar = token
-            q.save()
-
-            destinatario = correo
-            mensaje = f"""
-					<h1 style='color:blue;'>RepWheels</h1>
-					<p>Usted ha solicitado recuperar su contraseña, haga clic en el link y digite el token.</p>
-					<p>Token: <strong>{token}</strong></p>
-					"""
+        if correo == '':
+            messages.error(request, "Debes enviar el correo")
+        elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+            messages.error(request,f'El correo no es valido')
+        else:
             try:
-                msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
-                msg.content_subtype = "html"  # Habilitar contenido html
-                msg.send()
-                messages.success(request,"Correo enviado!!")
-            except BadHeaderError:
-                messages.error(request, "Encabezado no válido")
-            except Exception as e:
-                messages.error(request, f"Error: {e}")
+                q = Usuarios.objects.get(email=correo)     
+                from random import randint
+                import base64
+                token = base64.b64encode(str(randint(100000, 999999)).encode("ascii")).decode("ascii")
+                print(token)
+                q.token_recuperar = token
+                q.save()
 
-        except Usuarios.DoesNotExist:
-            messages.error(request, "No existe el usuario....")
-        
-        context = {
-             'correo':correo
-        }
-        return render(request, "tienda/login/restablecimiento.html",context)
+                destinatario = correo
+                mensaje = f"""
+                        <h1 style='color:blue;'>RepWheels</h1>
+                        <p>Usted ha solicitado recuperar su contraseña, haga clic en el link y digite el token.</p>
+                        <p>Token: <strong>{token}</strong></p>
+                        """
+                try:
+                    msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+                    msg.content_subtype = "html"  # Habilitar contenido html
+                    msg.send()
+                    messages.success(request,"Correo enviado!!")
+                except BadHeaderError:
+                    messages.error(request, "Encabezado no válido")
+                except Exception as e:
+                    messages.error(request, f"Error: {e}")
+
+            except Usuarios.DoesNotExist:
+                messages.error(request, "No existe el usuario....")
+            
+            context = {
+                'correo':correo
+            }
+            return render(request, "tienda/login/restablecimiento.html",context)
     else:
         return render(request, "tienda/login/restablecerPassword.html")
 
@@ -1306,9 +1325,9 @@ def restablecimiento(request):
 		if request.POST.get("check"):
 			correo = request.POST.get("correo")
 			q = Usuarios.objects.get(email=correo)
-
 			c1 = request.POST.get("nueva1")
 			c2 = request.POST.get("nueva2")
+            
 
 			if c1 == c2:
 				q.password = hash_password(c1)
@@ -1544,6 +1563,40 @@ def details_buy(request,id):
 
 
 
+import folium
+
+
+def map(request):
+    initialMap = folium.Map(location=[6.1817678,-75.6071863],zoom_start=11)
+    context = {"map":initialMap}
+    return render(request, "tienda/maps/maps.html",context)
+
+def emergencia(request):
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        telefono = request.POST.get('telefono')
+        descripcion = request.POST.get('descripcion_problema')
+        ubicacion = request.POST.get('address')
+
+        if nombre == "" or telefono == "" or descripcion == "" or ubicacion == "":
+            messages.warning(request,'No se puede campos vacios')
+        else:
+            try:
+                e = Emergencia(
+                     nombre = nombre,
+                     telefono = telefono,
+                     descripcion = descripcion,
+                     ubicacion = ubicacion
+
+                     
+                )
+
+                e.save()
+                messages.success(request,'Ya se ha realizado el envio de su emergencia!!')
+            except Exception as e:
+                 messages.error(request, f"Error: {e}")
+
+    return redirect('index')
 
 
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -1585,40 +1638,3 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 	queryset = Usuarios.objects.all()
 	serializer_class = UsuariosSerializers
 
-
-
-
-import folium
-
-
-def map(request):
-    initialMap = folium.Map(location=[6.1817678,-75.6071863],zoom_start=11)
-    context = {"map":initialMap}
-    return render(request, "tienda/maps/maps.html",context)
-
-def emergencia(request):
-    if request.method == "POST":
-        nombre = request.POST.get('nombre')
-        telefono = request.POST.get('telefono')
-        descripcion = request.POST.get('descripcion_problema')
-        ubicacion = request.POST.get('address')
-
-        if nombre == "" or telefono == "" or descripcion == "" or ubicacion == "":
-            messages.warning(request,'No se puede campos vacios')
-        else:
-            try:
-                e = Emergencia(
-                     nombre = nombre,
-                     telefono = telefono,
-                     descripcion = descripcion,
-                     ubicacion = ubicacion
-
-                     
-                )
-
-                e.save()
-                messages.success(request,'Ya se ha realizado el envio de su emergencia!!')
-            except Exception as e:
-                 messages.error(request, f"Error: {e}")
-
-    return redirect('index')
