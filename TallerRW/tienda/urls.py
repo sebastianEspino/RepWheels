@@ -137,7 +137,8 @@ urlpatterns = [
     path('detalleInfo/<int:id>',views.details_buy,name="detalleInfo"),
     
     path('map',views.map,name='map'),
-    path('emergencia',views.emergencia,name="emergencia")
+    path('emergencia',views.emergencia,name="emergencia"),
+    path('listarEmergencias',views.listarEmergencias,name='listarEmergencias')
 
 
 

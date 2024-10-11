@@ -144,6 +144,10 @@
           </tbody>
           
         </table>
+        <p class="text-center">
+          Tenga en cuenta que esta cita tiene una duracion de 1 hora por lo cual su cita termina a las
+          <h5 id="hora_final" class="text-center"></h5> 
+        </p>
         <form action="{% url 'eliminarCita' %}" method='post' class="delete" style="display: block;">
           {% csrf_token %}
           <input type="text" id="id_Date" name="idDate" hidden>
@@ -181,6 +185,8 @@
     rol = document.querySelector('#rol')
     const rol1 = rol.value
     id_date = document.getElementById('id_Date')
+    hora_final = document.getElementById('hora_final')
+
     id_date.value = id
     $('#infor').modal('show');
     const x = location.origin
@@ -198,7 +204,8 @@
     url_empleado = await fetch(data.empleado)
     data_empleado = await url_empleado.json()
 
-    
+    hora_final.innerText = data.hora_fin
+
 
     if(rol1 == 4 ){
 

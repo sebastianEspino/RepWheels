@@ -107,7 +107,17 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        
+                        {% if request.session.logueo.rol == 1 %}
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Emergencias</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'listarEmergencias' %}">Usuarios</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                    
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" style="color: black;">Servicios</a>

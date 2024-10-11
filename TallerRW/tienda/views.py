@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 import re
 import pytz
 est = pytz.timezone('America/Bogota')
+from django.db.models import Q
 
 # API with rest framework 
 
@@ -555,29 +556,41 @@ def citaRegistrar(request):
             hora = datetime.datetime.strptime(hora, '%H:%M')
             data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
             hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
-            citas = Citas.objects.all()
+
+            citas = Citas.objects.filter(Q(fechaServicio=fecha_servicio) | Q(empleado=empleado))
+            print(citas)
 
             
             if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
                 messages.error('No se permiten campos vacios')
             else:
-                if data_customer.month >= today.month and data_customer.year >= today.year:
-                    if data_customer.day >= today.day:
-                        
-                        cita = Citas(
-                            fechaServicio=fecha_servicio,
-                            hora = hora,
-                            cliente = u,
-                            servicio = servicio ,
-                            empleado = empleado,
-                            hora_fin = hora_fin
-                        )
-
-                        cita.save()
-                        
-                        messages.success(request, "Cita guardada correctamente!!")
+                if data_customer.month >= today.month and data_customer.year >= today.year:   
+                    
+                    for agenda in citas:
+                        x = str(agenda.hora)
+                        f = str(agenda.hora_fin)
+                    
+                        if (hora >= datetime.datetime.strptime(x, '%H:%M:%S') and datetime.datetime.strptime(x, '%H:%M:%S') <= hora_fin ) or  (hora_fin >= datetime.datetime.strptime(f, '%H:%M:%S') and datetime.datetime.strptime(f, '%H:%M:%S') <= hora_fin ):                
+                            print('Aqui estoy yoooo !!')
+                            if (agenda.fechaServicio == fecha_servicio):
+                                print('Aqui fecha !!')
+                                messages.error(request,'Esta ocupado por otro usuario')
+                                break
                     else:
-                        messages.warning(request, "Error en el dia !!")
+                            print('Se puede agendar')
+                            cita = Citas(
+                                    fechaServicio=fecha_servicio,
+                                    hora = hora,
+                                    cliente = u,
+                                    servicio = servicio ,
+                                    empleado = empleado,
+                                    hora_fin = hora_fin
+                                )
+
+                            cita.save()
+                                
+                            messages.success(request, "Cita guardada correctamente!!")
+                    
                 else:
                     messages.warning(request, "Error en la fecha!!")
                 
@@ -1099,8 +1112,7 @@ def registerUser(request):
                 messages.error(request,f'Campos Vacios!')
             elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                 messages.error(request,f'El correo no es valido')
-            elif Usuarios.objects.get(email=email):
-                messages.error(request,f'El usuario ya existe')
+            
             elif t == 'on':
 
                 try:
@@ -1571,6 +1583,10 @@ def map(request):
     context = {"map":initialMap}
     return render(request, "tienda/maps/maps.html",context)
 
+def listarEmergencias(request):
+    e = Emergencia.objects.all()
+    context = {'user_locations':e}
+    return render(request,"tienda/maps/admin_view.html",context)
 def emergencia(request):
     if request.method == "POST":
         nombre = request.POST.get('nombre')
