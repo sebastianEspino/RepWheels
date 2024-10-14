@@ -1,6 +1,6 @@
 {% extends 'tienda/base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block titulo %}Servicios{% endblock %}
 
 {% block contenedor %}
@@ -44,7 +44,7 @@
 
                                 <div class="card-body">
                                   <h5 class="card-title">{{ p.nombre }}</h5>
-                                  <p class="card-text"><br> <strong>Precio: {{ p.precio }}</strong></p>
+                                  <p class="card-text"><br> <strong>Precio: {{ p.precio|floatformat:0|intcomma }}</strong></p>
                                 </div>
                                 <div>
                                   <div class="card-body">

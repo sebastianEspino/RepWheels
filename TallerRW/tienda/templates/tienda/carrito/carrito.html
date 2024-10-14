@@ -1,3 +1,5 @@
+{% load humanize %}
+
 {% if request.session.carrito %}
     <h1>Comprar {{ items }}</h1>
     <table class="table">
@@ -14,13 +16,13 @@
                 <tr>
                     <td>
                         <img src="{{ p.foto }}" width="70%" alt=""><br>
-                        Nombre: <strong>{{ p.producto }}</strong> <br>Precio: $ {{ p.precio }}
+                        Nombre: <strong>{{ p.producto }}</strong> <br>Precio: ${{ p.precio|floatformat:0|intcomma }}
                     </td>
                     <td>
                         <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
                         <input oninput="updateAmountCar(`{% url 'actualizarCarrito' p.id %}`, {{ p.id }});" type="number" name="cantidad" id="cantidad_carrito_{{ p.id }}"  min="1" max="{{ p.inventario }}" value="{{ p.cantidad }}" style="width: 45px;"/>
                     </td>
-                    <td class="text-end">${{ p.subtotal }}</td>
+                    <td class="text-end">${{ p.subtotal|floatformat:0|intcomma }}</td>
                     <td><a href="javascript:removeone(`{% url 'eliminarProductoCarrito' p.id %}`)" class="btn btn-danger">x</a></td>
                 </tr>
                 

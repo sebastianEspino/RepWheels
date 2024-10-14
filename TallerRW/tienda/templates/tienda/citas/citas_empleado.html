@@ -21,7 +21,7 @@
                                     <br> {{ p.servicio }} 
                                     <br> {{ p.cliente }} 
                                 </p>
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#agg">Cancelar</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#agg{{p.id}}">Cancelar</button>
                                 <a class="btn btn-success" href="{% url 'terminar' p.id %}">Terminada</a>
                               </div>
                           </div>
@@ -35,8 +35,8 @@
       </section>
   </main>
 
-
-  <div class="modal" id="agg">
+  {% for p in citas %}
+  <div class="modal" id="agg{{p.id}}">
     <div class="modal-dialog">
       <div class="modal-content">
   
@@ -48,7 +48,7 @@
   
         <!-- Modal body -->
         <div class="modal-body">
-          {% for p in citas %}
+         
           <form class="form1" action="{% url 'cancelar' %}" method="post">
             {% csrf_token %}
             <h1 style="text-align: center;">Observacion de la cancelacion</h1>
@@ -62,7 +62,7 @@
               <button type="submit" class="btn btn-primary">Cancelar</button>
             </div>
           </form>
-          {% endfor %}
+          
         </div>
   
         <!-- Modal footer -->
@@ -74,7 +74,7 @@
       </div>
     </div>
   </div>
-
+{% endfor %}
 
 
 {% endblock %}

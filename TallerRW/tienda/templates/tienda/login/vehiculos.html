@@ -31,7 +31,7 @@
                   <td>{{ r.linea }}</td>
                   
                   <td>
-                      <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                      <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#edite_{{r.id}}">Editar</a>
                       <a class="btn btn-danger"
                           href="javascript:eliminar('{% url 'delete_car' r.id %}')">Eliminar</a>
                   </td>
@@ -61,7 +61,7 @@
   </div>
 </main>
 
-  <div class="modal" id="agg">
+<div class="modal" id="agg">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -116,5 +116,65 @@
 
 </div>
 
+{% for r in data %}
+<div class="modal" id="edite_{{r.id}}">
+  <div class="modal-dialog">
+      <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+      <h4 class="modal-title">Mis vehiculos</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form   action="{% url 'edite_car_profile' %}" method='post'>
+          {% csrf_token %}
+          <h1 style="text-align: center;">Editar vehiculo</h1>
+          <div class="datos">
+              <input type="text" hidden value="{{ r.id }}" name="id">
+              <input type="text" hidden value="{{ r.cliente }}" name="usuario">
+              
+              <div class="mb-3 mt-3">
+                <label for="marca" class="form-label">Marca del vehiculo:</label>
+                <input type="text" class="form-control" id="vehiculo" placeholder="Ejemplo: Mazda" name="vehiculo" value="{{ r.vehiculo }}"  >
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="placa" class="form-label">Placa del vehiculo:</label>
+                <input type="text" class="form-control" id="placa" placeholder="Ejemplo: WXM332" name="placa" value="{{ r.placa }}">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="mod" class="form-label">Modelo del vehiculo:</label>
+                <input type="number" class="form-control" id="modelo" placeholder="Ejemplo:2000" name="modelo" value="{{ r.modelo }}">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="linea" class="form-label">Kilometraje del vehiculo:</label>
+                <input type="text" class="form-control" id="km" placeholder="Ejemplo:45000" name="km" value="{{ r.kilometraje }}">
+              </div>
+              <div class="mb-3 mt-3">
+                <label for="marca" class="form-label">Linea del vehiculo:</label>
+                <input type="text" class="form-control" id="linea" placeholder="Ejemplo: Mazda 3" name="linea" value="{{ r.linea }}">
+              </div>
+              
+          <br>
+           <button id="cotizar" class="btn btn-danger">Añadir</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+      </div>
+  </div>
+</div>
+
+</div>
+
+{% endfor %}
 
 {% endblock %}

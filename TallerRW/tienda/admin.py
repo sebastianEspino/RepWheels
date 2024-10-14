@@ -39,7 +39,7 @@ class Proveedores(admin.ModelAdmin):
 class Usuario(admin.ModelAdmin):
     list_display=['id','nombre','email','password','rol','foto','ver_foto','token_recuperar']
     search_fields = ['nombre']
-    list_editable = ["rol"]
+    list_editable = ["rol",'password','email']
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tienda',
+    'django.contrib.humanize',
     'rest_framework',
     'rest_framework.authtoken'
     

@@ -143,6 +143,7 @@ def actualizarProductos(request):
 		cantidad = request.POST.get("cantidad")
 		foto = request.FILES.get("foto_new")
 		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+
 		try:
 			q = Productos.objects.get(pk=id)
 			q.nombre = nombre
@@ -448,7 +449,10 @@ def proveedores_delete(request,id):
 def citas(request):
     l = request.session.get("logueo",False)
     if l == False:
-        return render(request, "tienda/citas/cita.html")
+         c = Servicios.objects.all()
+         e = Usuarios.objects.filter(rol=3)  
+         contexto = {"data1": c , "data2":e}
+         return render(request, "tienda/citas/cita.html",contexto)
     else:
         now = date.today()
         q = Citas.objects.all() 
@@ -530,7 +534,8 @@ def finish(request,id):
 def registrarCita(request):
     e = Usuarios.objects.filter(rol=3)
     c = Servicios.objects.all()
-    contexto = {"data": e ,"data1":c}
+    u = Usuarios.objects.all()
+    contexto = {"data": e ,"data1":c,"usuarios":u}
     return render(request, "tienda/citas/registrarCita.html",contexto)
 
 def listarCita(request):
@@ -547,6 +552,12 @@ def citaRegistrar(request):
         u = Usuarios.objects.get(pk=logueo["id"])
         if request.method == "POST":
             import datetime
+
+            if u.rol == 4:
+                usuario = request.POST.get('usuario')
+            else:
+                usuario = u
+
             fecha_servicio = request.POST.get('fechaServicio')
             hora = request.POST.get('hora')
             servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
@@ -581,7 +592,7 @@ def citaRegistrar(request):
                             cita = Citas(
                                     fechaServicio=fecha_servicio,
                                     hora = hora,
-                                    cliente = u,
+                                    cliente = usuario,
                                     servicio = servicio ,
                                     empleado = empleado,
                                     hora_fin = hora_fin
@@ -1160,7 +1171,7 @@ def add_car_profile(request):
             messages.success(request,'No se permite campos vacios')
         elif len(modelo) > 4:
             messages.success(request,'No puede tener mas de 4 digitos')
-        elif kilometraje < 0 or modelo < 0:
+        elif int(kilometraje) < 0 or int(modelo) < 0:
             messages.success(request,'No pueden ser numeros negativos')
         else:
             try:
@@ -1188,6 +1199,48 @@ def add_car_profile(request):
     
     return redirect('perfil')
     
+def edite_car_profile(request):
+    l = request.session.get('logueo',False)
+    cliente = Usuarios.objects.get(pk=l["id"])
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        vehiculo = request.POST.get("vehiculo")
+        modelo = request.POST.get("modelo")
+        placa = request.POST.get("placa")
+        kilometraje = request.POST.get("km")
+        linea = request.POST.get("linea")
+
+        if vehiculo == '' or modelo == '' or placa == '' or kilometraje == '' or linea == '':
+            messages.success(request,'No se permite campos vacios')
+        elif len(modelo) > 4:
+            messages.success(request,'No puede tener mas de 4 digitos')
+        elif int(kilometraje) < 0 or int(modelo) < 0:
+            messages.success(request,'No pueden ser numeros negativos')
+        else:
+            try:
+                q = Vehiculos.objects.get(pk=id)
+                q.vehiculo = vehiculo
+                q.modelo = modelo
+                q.placa = placa
+                q.kilometraje = kilometraje
+                q.linea = linea
+
+                
+
+                q.save()
+
+                messages.success(request,'Vehiculo editado correctamente')
+                return redirect('add_car')
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
+
+        return redirect('add_car')
+                
+    else:
+        messages.warning(request,'Error')
+    
+    return redirect('perfil')
+
 
 def deleteCar(request, id):
 	try:
@@ -1267,17 +1320,19 @@ def updateInfoProfile(request):
 def updatePictureProfile(request):
     if request.method == 'POST':
         foto = request.FILES.get('foto_new')
-        print(foto)
-        try:
-            q = request.session.get("logueo",False)
-            c = Usuarios.objects.get(pk=q["id"])
-    
-            c.foto = foto
-            
+        q = request.session.get("logueo",False)
+        c = Usuarios.objects.get(pk=q["id"])
+        if foto == "":
+            c.foto = "media/user.png"
             c.save()
             messages.success(request,"Foto actualizada correctamente!!")
-        except Exception as e:
-            messages.error(request,f'Error: {e}')
+        else:   
+            try:
+                c.foto = foto
+                c.save()
+                messages.success(request,"Foto actualizada correctamente!!")
+            except Exception as e:
+                messages.error(request,f'Error: {e}')
     else:
         messages.warning(request,f'Error:No se enviaron los datos!!')
     return redirect('index')
@@ -1587,6 +1642,7 @@ def listarEmergencias(request):
     e = Emergencia.objects.all()
     context = {'user_locations':e}
     return render(request,"tienda/maps/admin_view.html",context)
+
 def emergencia(request):
     if request.method == "POST":
         nombre = request.POST.get('nombre')

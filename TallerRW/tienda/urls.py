@@ -120,6 +120,7 @@ urlpatterns = [
     path("recuperacionCorreo",views.emailToPassword,name="recuperacionCorreo"),
     path("completarInformacion",views.completeInformation,name="completarInformacion"),
     path("add_car_profile",views.add_car_profile,name="add_car_profile"),
+    path("edite_car_profile",views.edite_car_profile,name="edite_car_profile"),
     path("add_car",views.add_car,name="add_car"),
     path("delete_car/<int:id>",views.deleteCar,name="delete_car"),
     path('restablecimiento',views.restablecimiento,name='restablecimiento'),

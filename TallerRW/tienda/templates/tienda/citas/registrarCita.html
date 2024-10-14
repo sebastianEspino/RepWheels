@@ -18,7 +18,16 @@
           <label for="inputCantidad">Hora</label>
           <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
         </div>
-    </div>
+      </div><br>
+      <div class="form-group col-md-12">
+        <label for="">Usuario</label>
+        <select class="form-control" name="usuario">
+          <option value="">Seleccione</option>
+          {% for c in usuarios %}
+          <option value="{{ c.id }}">{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <br>
       <div class="form-group col-md-12">
         <label for="">Servicio</label>
@@ -28,7 +37,6 @@
           <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
           {% endfor %}
         </select>
-
       </div>
       <br>
       <div class="form-group col-md-12">

@@ -113,7 +113,7 @@
                             </ul>
                         </li>
                         {% endif %}
-                    
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" style="color: black;">Servicios</a>
@@ -125,6 +125,18 @@
                                 <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
                             </ul>
                         </li>
+                        {% if request.session.logueo %}
+                            <li class="nav-item dropdown" >
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" style="color: black;">Historiales</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'compras' %}">Compras</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'listarCategoria' %}">Citas</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'eliminarCalificacion' %}">Calificaciones</a></li>
+                                    
+                                </ul>
+                            </li>
+                        {% endif %}
                         
                     </ul>
                     <form id='botones' class="d-flex">
@@ -139,8 +151,6 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" style="color: black;" href="{% url 'perfil' %}">Perfil</a></li>
                                         <li><a class="dropdown-item" style="color: black;" href="{% url 'add_car' %}">Mis vehiculos</a></li>
-                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'compras' %}">Mis compras</a></li>
-                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'eliminarCalificacion' %}">Mis calificaciones</a></li>                
                                     </ul>
                                 </li>
                             </ul>
@@ -203,12 +213,7 @@
                     <li>Electricidad</li>
                 </ul>
             </div>
-            <div>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Buscar">
-                    <button class="btn btn-outline-danger me-2" type="button">Buscar</button>
-                </form>
-            </div>
+            
         </div>
         <div id="infer" class="fixed-bottom">
             <h3>Redes Sociales</h3>

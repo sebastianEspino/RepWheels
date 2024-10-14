@@ -12,11 +12,6 @@
         <input type="hidden" name="id" value="{{ data.id }}">
         <div class="form-row p-5">
           <div class="form-group col-md-12">
-            <label for="inputEmail4">Cedula</label>
-            <input type="text" class="form-control" id="Cedula" name="cedula" placeholder="Cedula" value="{{ data.cedula }}">
-          </div>
-          <br>
-          <div class="form-group col-md-12">
             <label for="inputPassword4">Nombres y apellidos</label>
             <input type="Text" class="form-control" id="NombreC" name="nombre" placeholder="Nombre completo" value="{{ data.nombre }}">
           </div>
@@ -24,17 +19,18 @@
           <div class="form-group col-md-12">
             <label for="inputAddress2">Correo electronico</label>
             <input type="text" class="form-control" id="inputAddress2" name="correo" placeholder="Correo" value="{{ data.email }}">
-          </div>
+          </div><br>
           <div class="form-group col-md-12">
             <label for="inputAddress2">Telefono</label>
             <input type="Text" class="form-control" id="inputAddress2" name="telefono" placeholder="Telefono" value="{{ data.telefono }}">
           </div>
+          <br>
           <div class="form-group col-md-12">
             <label for="inputAddress2">Cargo</label>
             <input type="Text" class="form-control" id="inputAddress2" name="cargo" placeholder="cargo" value="{{ data.cargo }}">
-          </div>
+          </div><br>
           
-          <button type="submit" class="btn btn-success">Actualizar</button>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
         </div>
       </form>
 </main>m>
