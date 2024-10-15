@@ -15,9 +15,18 @@
             <select class="form-control" name="servicio">
                 <option value="">Seleccione</option>
                 {% for s in servicios %}
-                    <option value="{{ s.id }}" {% if data.servicio.id == s.id %}selected{% endif %}>{{ s.nombre }}</option>
+                    <option value="{{ s.id }}" {% if data.servicios.id == s.id %}selected{% endif %}>{{ s.nombre }}</option>
                 {% endfor %}
             </select>
+    </div><br>
+    <div class="form-group col-md-12">
+      <label for="">Usuario</label>
+      <select class="form-control" name="usuario">
+        <option value="">Seleccione</option>
+        {% for c in usuarios %}
+             <option value="{{ c.id }}"{% if data.cliente.id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+        {% endfor %}
+      </select>
     </div>
     <br>
     <div class="form-group col-md">

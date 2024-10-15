@@ -15,7 +15,7 @@ class Producto(admin.ModelAdmin):
     list_editable = ['cantidad']
 
     def ver_foto(self, obj):
-        return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
+        return mark_safe(f"<a href='{obj.foto}'><img src='{obj.foto}' width='25%'></a>")
 
     
 @admin.register(Servicios)

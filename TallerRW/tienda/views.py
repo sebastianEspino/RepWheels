@@ -136,26 +136,35 @@ def editarProductos(request, id):
 
 def actualizarProductos(request):
 	if request.method == "POST":
-		id = request.POST.get("id")
-		nombre = request.POST.get("nombre")
-		Precio = request.POST.get("precio")
-		descripcion_producto = request.POST.get("descripcion_producto")
-		cantidad = request.POST.get("cantidad")
-		foto = request.FILES.get("foto_new")
-		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+            id = request.POST.get("id")
+            nombre = request.POST.get("nombre")
+            Precio = request.POST.get("precio")
+            descripcion_producto = request.POST.get("descripcion_producto")
+            cantidad = request.POST.get("cantidad")
+            foto = request.FILES.get("foto_new")
+            categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
+        
+        
 
-		try:
-			q = Productos.objects.get(pk=id)
-			q.nombre = nombre
-			q.Precio = Precio
-			q.descripcion_producto = descripcion_producto
-			q.cantidad = cantidad
-			q.foto = foto
-			q.categoria = categoria
-			q.save()
-			messages.success(request, "Producto actualizado correctamente!!")
-		except Exception as e:
-			messages.error(request, f"Error: {e}")
+            if nombre == "" or Precio == "" or descripcion_producto == "" or cantidad == "" or foto == "" or categoria == "":
+                messages.error(request,'No se permite campos vacios')
+            elif nombre.isnumeric():
+                messages.error(request,'No se permite numeros en el nombre del producto')
+            elif int(Precio) <= 0 or int(cantidad) <= 0:
+                messages.error(request,'No se permite numeros negativos ni valores a cero')
+            else: 
+                try:
+                    q = Productos.objects.get(pk=id)
+                    q.nombre = nombre
+                    q.Precio = Precio
+                    q.descripcion_producto = descripcion_producto
+                    q.cantidad = cantidad
+                    q.foto = foto
+                    q.categoria = categoria
+                    q.save()
+                    messages.success(request, "Producto actualizado correctamente!!")
+                except Exception as e:
+                    messages.error(request, f"Error: {e}")
 	else:
 		messages.warning(request, "Error: No se enviaron datos...")
 
@@ -176,34 +185,48 @@ def crearProductoform(request):
 	contexto = {"data": q}
 	return render(request, "tienda/productos/registrarRepuestos.html", contexto)
 
+
+
 def crearProducto(request):
-	if request.method == "POST":
-		nombre = request.POST.get("nombre")
-		precio = request.POST.get("precio")
-		descripcion_producto = request.POST.get("descripcion_producto")
-		cantidad = request.POST.get("cantidad")
-		foto = request.FILES.get("foto_new")
-		categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
-        
-		try:
-			q = Productos(
-                nombre = nombre,
-                Precio = precio,
-                descripcion_producto = descripcion_producto,
-                cantidad = cantidad,
-                foto = foto,
-                categoria = categoria
-			)
-			q.save()
-			messages.success(request, "Guardado correctamente!!")
-		except Exception as e:
-			messages.error(request, f"Error: {e}")
-		return redirect("listarProductos")
+    if request.method == "POST":
+            nombre = request.POST.get("nombre")
+            precio = request.POST.get("precio")
+            descripcion_producto = request.POST.get("descripcion_producto")
+            cantidad = request.POST.get("cantidad")
+            foto = request.FILES.get("foto_new")
+            
+            categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 
-	else:
-		messages.warning(request, "Error: No se enviaron datos...")
-	return redirect("listarProductos")
+            if nombre == "" or precio == "" or descripcion_producto == "" or cantidad == "" or categoria == "":
+                messages.error(request,'No se permite campos vacios')
+            elif nombre.isnumeric():
+                messages.error(request,'No se permite numeros en el nombre del producto')
+            elif int(precio) <= 0 or int(cantidad) <= 0:
+                messages.error(request,'No se permite numeros negativos ni valores a cero')
+            else: 
+                
+                try:
+                    q = Productos(
+                        nombre = nombre,
+                        Precio = precio,
+                        descripcion_producto = descripcion_producto,
+                        cantidad = cantidad,
+                        foto = foto,
+                        categoria = categoria
+                    )
+                    q.save()
+                    messages.success(request, "Guardado correctamente!!")
+                except Exception as e:
+                    messages.error(request, f"Error: {e}")
+                return redirect("listarProductos")
+    else:
+	    messages.warning(request, "Error: No se enviaron datos...")
+    
+    return redirect("listarProductos")
+	
+    
 
+          
 #crud de clientes
 
 def registrarCliente(request):
@@ -227,6 +250,8 @@ def clientesCrear(request):
             messages.error(request,f'La cedula no puede ser un numeor negativo')
         elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
             messages.error(request,f'El correo no es valido')
+        elif len(password) <= 6:
+            messages.error(request,f'La clave es demasiado corta')
         else:
 
             try:
@@ -254,7 +279,7 @@ def clientesEliminar(request,id):
         q.delete()
         messages.success(request,"Cliente eliminado Correctamente!")
     except Exception as e:
-        messages.error(request,f"Error:{e}")
+        messages.error(request,f"El usuario ya tiene procesos pendientes")
     return redirect('listarCliente')
 
 def clientesEditar(request,id):
@@ -272,10 +297,13 @@ def clientesActualizar(request):
 
         if nombre_completo == "" or cedula == "" or correo == "" or telefono == "":
             messages.error(request,f'Campos Vacios!')
+            return redirect("listarCliente")
         elif int(cedula) <= 0 or int(telefono) < 0:
             messages.error(request,f'La cedula no puede ser un numeor negativo')
+            return redirect("listarCliente")
         elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
             messages.error(request,f'El correo no es valido')
+            return redirect("listarCliente")
         else:
             try:
                 q=Usuarios.objects.get(pk=id)
@@ -319,6 +347,8 @@ def newempleado(request):
             messages.error(request,f'Los datos numericos no pueden ser negativos')
         elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
                 messages.error(request,f'El correo no es valido')
+        elif len(password) <= 6:
+            messages.error(request,f'La clave es demasiado corta')
         else:
             try:
                 q = Usuarios(
@@ -346,25 +376,30 @@ def empleados_formulario_editar(request, id):
 
 def empleado_actualizar(request):
 	if request.method == "POST":
-		id = request.POST.get("id")
-		nombre = request.POST.get("nombre")
-		cedula = request.POST.get("cedula")
-		correo = request.POST.get("correo")
-		telefono = request.POST.get("telefono")
-		cargo = request.POST.get("cargo")
+            id = request.POST.get("id")
+            nombre = request.POST.get("nombre")
+            correo = request.POST.get("correo")
+            telefono = request.POST.get("telefono")
+            cargo = request.POST.get("cargo")
 
+            if nombre == ""  or correo == "" or telefono == "" or cargo == "":
+                messages.error(request,f'Campos Vacios!')
+            elif int(telefono) <= 0:
+                messages.error(request,f'Los datos numericos no pueden ser negativos')
+            elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+                    messages.error(request,f'El correo no es valido')
+            else:
            
-		try:
-			q = Usuarios.objects.get(pk=id)
-			q.nombre = nombre
-			q.cedula = cedula
-			q.email = correo
-			q.telefono = telefono
-			q.cargo = cargo
-			q.save()
-			messages.success(request, "Producto actualizado correctamente!!")
-		except Exception as e:
-			messages.error(request, f"Error: {e}")
+                try:
+                    q = Usuarios.objects.get(pk=id)
+                    q.nombre = nombre
+                    q.email = correo
+                    q.telefono = telefono
+                    q.cargo = cargo
+                    q.save()
+                    messages.success(request, "Empleado actualizado correctamente!!")
+                except Exception as e:
+                    messages.error(request, f"Error: {e}")
 	else:
 		messages.warning(request, "Error: No se enviaron datos...")
 
@@ -563,7 +598,7 @@ def citaRegistrar(request):
             import datetime
 
             if u.rol == 1:
-                usuario = request.POST.get('usuario')
+                usuario = Usuarios.objects.get(pk=request.POST.get("usuario"))
             else:
                 usuario = u
 
@@ -827,7 +862,8 @@ def agregar_calificacion_form(request):
 
 def registrarCalificacion(request):
     s = Servicios.objects.all()
-    contexto = {"data":s}
+    u = Usuarios.objects.all()
+    contexto = {"data":s,"usuarios":u}
     return render(request, "tienda/calificaciones/registrarCalificacion.html",contexto)
 
 def listarCalificacion(request):
@@ -839,15 +875,18 @@ def calificacionRegistrar(request):
     if request.method == "POST":
         logueo = request.session.get("logueo",False)
         usuario =  Usuarios.objects.get(pk=logueo["id"])
-        nombre = usuario
+        if usuario.rol == 1:
+            usuario = Usuarios.objects.get(pk=request.POST.get("usuario"))
+        else:
+            usuario = usuario
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
-        if servicio == "" or cantidad_estrellas == "" or nombre == "":
+        if servicio == "" or cantidad_estrellas == "" or usuario == "":
             messages.error(request,f'Campos Vacios!')
         try:
         
             calificacion = Calificaciones(
-                cliente=nombre,
+                cliente=usuario,
                 servicios = servicio,
                 cantidad_estrellas=cantidad_estrellas,
             )
@@ -863,7 +902,8 @@ def calificacionRegistrar(request):
 def calificacion_formulario_editar(request, id):
     r = Calificaciones.objects.get(pk=id)
     s = Servicios.objects.all()
-    contexto = {"data": r,"servicios":s}
+    u = Usuarios.objects.all()
+    contexto = {"data": r,"servicios":s,"usuarios":u}
     return render(request, "tienda/calificaciones/editarCalificacion.html", contexto)
 
 def calificacionActualizar(request):
@@ -871,11 +911,14 @@ def calificacionActualizar(request):
         id = request.POST.get("id")
         logueo = request.session.get("logueo",False)
         usuario =  Usuarios.objects.get(pk=logueo["id"])
-        nombre = usuario
+        if usuario.rol == 1:
+            usuario = Usuarios.objects.get(pk=request.POST.get("usuario"))
+        else:
+            usuario = usuario
         servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
         cantidad_estrellas = request.POST.get("cantidad_estrellas")
         
-        if servicio == "" or cantidad_estrellas == "":
+        if servicio == "" or cantidad_estrellas == "" or usuario=="":
             messages.error(request, f"No puede haber campos vacios")
         elif int(cantidad_estrellas) < 0:
             messages.error(request,f'El numero de estrellas no puede ser negativo')
@@ -1143,11 +1186,12 @@ def registerUser(request):
             t = request.POST.get('terminos')
             if name.isnumeric():
                 messages.error(request,f'No se permite numeros en el nombre!') 
-            elif name == "" or clave == "" or clave == "":
+            elif name == "" or clave == "":
                 messages.error(request,f'Campos Vacios!')
             elif not re.fullmatch(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
                 messages.error(request,f'El correo no es valido')
-            
+            elif len(clave) <= 6:
+                messages.error(request,f'La clave es demasiado corta')
             elif t == 'on':
 
                 try:

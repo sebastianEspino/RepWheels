@@ -17,8 +17,16 @@
             <option value="{{ s.id }}">{{ s.nombre }}</option>
         {% endfor %}
         </select>
+      </div><br>
+      <div class="form-group col-md-12">
+        <label for="">Usuario</label>
+        <select class="form-control" name="usuario">
+          <option value="">Seleccione</option>
+          {% for c in usuarios %}
+          <option value="{{ c.id }}">{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
       </div>
-    
       <br>
       <div class="form-group col-md">
         <label for="inputAddress2">Cantidad estrellas</label>
