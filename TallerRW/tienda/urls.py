@@ -67,8 +67,9 @@ urlpatterns = [
     path("citaActualizar", views.citaActualizar, name="citaActualizar"),
     path('citaEmpleado',views.citasEmpleado,name='citaEmpleado'),
     path('cancelar/',views.cancell,name='cancelar'),
-    path('terminar/<int:id>',views.finish,name='terminar'),
+    path('terminar/',views.finish,name='terminar'),
     path('eliminarCita',views.deleteDateFromCustomer,name='eliminarCita'),
+    path('historialCita',views.historialCita,name='historialCita'),
     
     
     #CRUD calificaciones

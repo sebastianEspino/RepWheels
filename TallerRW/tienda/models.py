@@ -114,7 +114,7 @@ class Citas(models.Model):
 
     )
     estado = models.IntegerField(choices=estados,default=1)
-    
+    observacion = models.CharField(max_length=254,null=False,blank=True)
     def __str__(self):
         return f'{self.fechaServicio}'
 

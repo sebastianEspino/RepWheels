@@ -468,7 +468,7 @@ def citas(request):
 def citasEmpleado(request):
     l = request.session.get('logueo',False)
     u = Usuarios.objects.get(pk=l["id"])
-    q = Citas.objects.filter(empleado=u)
+    q = Citas.objects.filter(empleado=u )
     
     context = {'citas':q}
     return render(request, "tienda/citas/citas_empleado.html",context)
@@ -481,9 +481,9 @@ def cancell(request):
 
         c = Citas.objects.get(pk=id)
         u = Usuarios.objects.get(nombre = c.cliente)
-
-        c.delete()
-
+        c.estado = 2
+        c.observacion = obs
+        c.save()
         destinatario = u.email
         mensaje = f"""
                         <h1 style='color:blue;'>RepWheels</h1>
@@ -495,6 +495,7 @@ def cancell(request):
             msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
             msg.content_subtype = "html"  # Habilitar contenido html
             msg.send()
+
         except BadHeaderError:
             messages.error(request, "Encabezado no válido")
         except Exception as e:
@@ -505,30 +506,38 @@ def cancell(request):
     return redirect('citaEmpleado')
 
     
-def finish(request,id):
-    c = Citas.objects.get(pk=id)
+def finish(request):
     
-    u = Usuarios.objects.get(nombre=c.cliente)
+    if request.method == "POST":
+        id = request.POST.get('id')
+        obs = request.POST.get('observacion')
+        c = Citas.objects.get(pk=id)
+        
+        u = Usuarios.objects.get(nombre=c.cliente)
+        c.estado = 3
+        c.observacion = obs
+        c.save()
 
-    destinatario = u.email
-    mensaje = f"""
-					<h1 style='color:blue;'>RepWheels</h1>
-					<p>Su cita que adquirio ya ha finalizado</p>
-					"""
-    try:
-        msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
-        msg.content_subtype = "html"  # Habilitar contenido html
-        msg.send()
-        messages.success(request,"Correo enviado!!")
-    except BadHeaderError:
-        messages.error(request, "Encabezado no válido")
-    except Exception as e:
-        messages.error(request, f"Error: {e}")
+        destinatario = u.email
+        mensaje = f"""
+                        <h1 style='color:blue;'>RepWheels</h1>
+                        <p>Su cita que adquirio ya ha finalizado</p>
+                        """
+        try:
+            msg = EmailMessage("RepWheels", mensaje, settings.EMAIL_HOST_USER, [destinatario])
+            msg.content_subtype = "html"  # Habilitar contenido html
+            msg.send()
+            messages.success(request,"Correo enviado!!")
+        except BadHeaderError:
+            messages.error(request, "Encabezado no válido")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
 
-    c.delete()
+        
 
-    messages.success(request,'La cita se ha terminado correctamente!!')
-    redirect('citaEmpleado')
+        messages.success(request,'La cita se ha terminado correctamente!!')
+
+    return redirect('citaEmpleado')
       
 
 def registrarCita(request):
@@ -553,7 +562,7 @@ def citaRegistrar(request):
         if request.method == "POST":
             import datetime
 
-            if u.rol == 4:
+            if u.rol == 1:
                 usuario = request.POST.get('usuario')
             else:
                 usuario = u
@@ -689,6 +698,21 @@ def deleteDateFromCustomer(request):
     except Exception as e:
         messages.error(request, f'Error: {e}')
     return redirect('citas')
+
+
+def historialCita(request):
+     logueo = request.session.get("logueo",False)
+     usuario = Usuarios.objects.get(pk=logueo["id"])
+
+     if usuario.rol == 4 :
+        c = Citas.objects.filter(cliente = usuario)
+     elif usuario.rol == 1:
+        c = Citas.objects.all()
+     else:
+        c = Citas.objects.filter(empleado=usuario)
+
+     contexto = {"data":c}
+     return render(request,'tienda/citas/historialCitas.html',contexto)
 
 #CRUD cotizaciones
 

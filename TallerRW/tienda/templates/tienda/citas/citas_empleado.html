@@ -22,7 +22,7 @@
                                     <br> {{ p.cliente }} 
                                 </p>
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#agg{{p.id}}">Cancelar</button>
-                                <a class="btn btn-success" href="{% url 'terminar' p.id %}">Terminada</a>
+                                <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#terminar{{p.id}}">Terminada</a>
                               </div>
                           </div>
                   {% endfor %}
@@ -35,7 +35,7 @@
       </section>
   </main>
 
-  {% for p in citas %}
+{% for p in citas %}
   <div class="modal" id="agg{{p.id}}">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -74,6 +74,47 @@
       </div>
     </div>
   </div>
+{% endfor %}
+
+{% for p in citas %}
+<div class="modal" id="terminar{{p.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Citas</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+       
+        <form class="form1" action="{% url 'terminar' %}" method="post">
+          {% csrf_token %}
+          <h1 style="text-align: center;">Observacion de la cita</h1>
+          <div class="form-row">
+            <input type="text" value="{{ p.id }}" hidden name="id">
+            <div class="form-group col-md-12">
+              <label for="inputPassword4">Descripcion de la cita: </label>
+              <input type="text" class="form-control" id="text"  name="observacion">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </div>
+        </form>
+        
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endfor %}
 
 

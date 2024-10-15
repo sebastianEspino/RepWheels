@@ -190,7 +190,7 @@
     id_date.value = id
     $('#infor').modal('show');
     const x = location.origin
-    url = await fetch(`${x}/api/1.0/Citas/${id}`)
+    url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
     data = await url.json()
 
     console.log(data)
