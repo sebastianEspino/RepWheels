@@ -111,7 +111,8 @@ def index(request):
     logueo = request.session.get("logueo", False)
     q = Calificaciones.objects.all()
     s = Servicios.objects.all()
-    contexto = {"data":q,"servicios":s,"map":initialMap}
+    p = Promociones.objects.all()
+    contexto = {"data":q,"servicios":s,"map":initialMap, "Promociones":p}
     return render(request, "tienda/index.html",contexto)
 
 
