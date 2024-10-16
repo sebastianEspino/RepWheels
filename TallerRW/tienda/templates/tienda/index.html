@@ -19,49 +19,17 @@
 </div>
 </header>
 <main>
-    <section id="section1">
-        <div class="tit">
-            <h1>Servicios</h1>
-        </div>
-        <article class="tarjetas">
-                {% for i in servicios %}
-                    
-                        <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
-                            <div class="col-md-4">
-                                <img src="{{ i.foto.url }}" class="img-fluid rounded-start" alt="{{ i.nombre }}" style="width:86%; height: 200px;">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ i.nombre }}</h5>
-                                    <p class="card-text">{{ i.descripcion_servicio }}</p>
-                                    <p class="card-text">$ {{ i.precio|floatformat:0|intcomma }}</p>
-                                </div>  
-                            </div>
-                        </div>
-                        
-                
-                {% endfor %}
-            
-        </article>
-        <div class="text-center mb-4">
-            <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>
-        </div>
-        
-    </section>
-    <section id="section2">
-        <div class="tit">
-            <h1>Procesos automotrices</h1>
-        </div>
+    <section  id="section1" >
         <div id="carrusel">
             <div id="carouselExampleDark" class="carousel carousel-dark slide">
                 <div class="carousel-inner">
-                    {% for i in servicios %}
+                    {% for p in Promociones %}
                   
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                       <div class="d-flex align-items-center">
-                        <img src="{{ i.foto.url }}" class="d-block mx-auto" width="100%" height="400px"
+                        <img src="{{ p.foto.url }}" class="d-block mx-auto" height="600px"
                           alt="imagen descuentos">
-
+    
                       </div>
                     </div>
                 {% endfor %} 
@@ -78,6 +46,72 @@
                 </button>
             </div>
         </div>
+    </section>
+    
+    <section id="section1">
+        <div class="tit">
+            <h1>Servicios</h1>
+        </div>
+        <article class="tarjetas">
+            {% for i in servicios|slice:":4" %}
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{ i.foto.url }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.nombre }}</h5>
+                                <p class="card-text">{{ i.descripcion_servicio }}</p>
+                                <p class="card-text">$ {{ i.precio|floatformat:0|intcomma }}</p>
+                            </div>
+                        </div>
+                
+                {% endfor %}
+            
+        </article>
+        <div class="text-center mb-4">
+            <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>
+        </div>
+        <section class="section3">
+            <div class="tit">
+                <h1>Calificaciones de nuestro servicios</h1>
+            </div>
+            <article class="tarjetas">
+                {% if data %}
+                {% for e in data %}
+                    {% if forloop.counter > 0 and forloop.counter <= 3 %}
+                        <div class="card align-items-center text-center p-10" style="width:20%; padding: 2%;">
+                            <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
+                            <div class="card-body">
+                            <strong>Calificaciones: </strong>
+                            <form id="form_calificaciones">
+            
+                                <p class="clasificacion">
+                                <input type="radio" name="estrellas" class="star" value="5" {% if e.cantidad_estrellas == 5 %}checked="true"{% endif%}>
+                                <label for="radio1">★</label>
+                                <input type="radio" name="estrellas" class="star" value="4" {% if e.cantidad_estrellas == 4 %}checked="true"{% endif%}>
+                                <label for="radio2">★</label>
+                                <input type="radio" name="estrellas" class="star" value="3" {% if e.cantidad_estrellas == 3 %}checked="true"{% endif%}>
+                                <label for="radio3">★</label>
+                                <input type="radio" name="estrellas" class="star" value="2" {% if e.cantidad_estrellas == 2 %}checked="true"{% endif%}>
+                                <label class="st">★</label>
+                                <input type="radio" name="estrellas" class="star" value="1" {% if e.cantidad_estrellas == 1 %}checked="true"{% endif%}>
+                                <label for="radio5">★</label>
+                                </p>
+                            </form>
+                            <p class="card-text">{{ e.nombre }} </p>
+                            <p class="text"><strong>Hecho por: </strong> {{ e.cliente }}</p>
+                            <p class="text"><strong>Servicio: </strong>{{ e.servicios }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %} 
+                {% else %}
+                        <h2>No hay calificaciones</h2>
+                {% endif %}             
+            </article><br>
+            <div class="text-center mb-4">
+                <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
+            </div>
+        </section>
+        
     </section>
     <section class="section3">
         <div class="tit">
@@ -110,48 +144,7 @@
             </div>
         </div>
     </section>
-    <section class="section3">
-        <div class="tit">
-            <h1>Calificaciones de nuestro servicios</h1>
-        </div>
-        <article class="tarjetas">
-            {% if data %}
-            {% for e in data %}
-                {% if forloop.counter > 0 and forloop.counter <= 3 %}
-                    <div class="card align-items-center text-center p-10" style="width:20%; padding: 2%;">
-                        <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
-                        <div class="card-body">
-                        <strong>Calificaciones: </strong>
-                        <form id="form_calificaciones">
-        
-                            <p class="clasificacion">
-                            <input type="radio" name="estrellas" class="star" value="5" {% if e.cantidad_estrellas == 5 %}checked="true"{% endif%}>
-                            <label for="radio1">★</label>
-                            <input type="radio" name="estrellas" class="star" value="4" {% if e.cantidad_estrellas == 4 %}checked="true"{% endif%}>
-                            <label for="radio2">★</label>
-                            <input type="radio" name="estrellas" class="star" value="3" {% if e.cantidad_estrellas == 3 %}checked="true"{% endif%}>
-                            <label for="radio3">★</label>
-                            <input type="radio" name="estrellas" class="star" value="2" {% if e.cantidad_estrellas == 2 %}checked="true"{% endif%}>
-                            <label class="st">★</label>
-                            <input type="radio" name="estrellas" class="star" value="1" {% if e.cantidad_estrellas == 1 %}checked="true"{% endif%}>
-                            <label for="radio5">★</label>
-                            </p>
-                        </form>
-                        <p class="card-text">{{ e.nombre }} </p>
-                        <p class="text"><strong>Hecho por: </strong> {{ e.cliente }}</p>
-                        <p class="text"><strong>Servicio: </strong>{{ e.servicios }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %} 
-            {% else %}
-                    <h2>No hay calificaciones</h2>
-            {% endif %}             
-        </article><br>
-        <div class="text-center mb-4">
-            <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
-        </div>
-    </section>
+    
 </main>
     <div class="modal" id="emergence">
         <div class="modal-dialog">
