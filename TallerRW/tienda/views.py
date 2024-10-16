@@ -132,7 +132,7 @@ def listarProductos(request):
     contexto = {"data":q}
     return render(request, "tienda/productos/listarProductos.html",contexto)
 
-@login_requerido_admin
+
 def editarProductos(request, id):
 	q = Productos.objects.get(pk=id)
 	c = Categoria.objects.all()
@@ -148,10 +148,12 @@ def actualizarProductos(request):
             descripcion_producto = request.POST.get("descripcion_producto")
             cantidad = request.POST.get("cantidad")
             foto = request.FILES.get("foto_new")
+            if not foto:
+                foto = 'tienda/media/default.png'
+        
             categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
         
-        
-
+    
             if nombre == "" or Precio == "" or descripcion_producto == "" or cantidad == "" or foto == "" or categoria == "":
                 messages.error(request,'No se permite campos vacios')
             elif nombre.isnumeric():
@@ -202,6 +204,10 @@ def crearProducto(request):
             descripcion_producto = request.POST.get("descripcion_producto")
             cantidad = request.POST.get("cantidad")
             foto = request.FILES.get("foto_new")
+
+            if not foto:
+                foto = 'tienda/media/default.png'
+            
             
             categoria = Categoria.objects.get(pk=request.POST.get("categoria"))
 
@@ -211,8 +217,8 @@ def crearProducto(request):
                 messages.error(request,'No se permite numeros en el nombre del producto')
             elif int(precio) <= 0 or int(cantidad) <= 0:
                 messages.error(request,'No se permite numeros negativos ni valores a cero')
+            
             else: 
-                
                 try:
                     q = Productos(
                         nombre = nombre,
@@ -221,7 +227,7 @@ def crearProducto(request):
                         cantidad = cantidad,
                         foto = foto,
                         categoria = categoria
-                    )
+                    )   
                     q.save()
                     messages.success(request, "Guardado correctamente!!")
                 except Exception as e:
@@ -1037,6 +1043,9 @@ def registroServicio(request):
         descripcion_servicio = request.POST.get("descripcion_servicio")
         precio = request.POST.get('precio')
         foto = request.FILES.get("foto_new") 
+        if not foto:
+            foto = 'tienda/media/servicio.jpg'
+            
 
         if nombre.isnumeric() or descripcion_servicio.isnumeric():
             messages.error(request,f'No se permite numeros en el nombre!')
@@ -1090,6 +1099,10 @@ def servicioActualizar(request):
         descripcion_servicio = request.POST.get('descripcion_servicio')
         precio = request.POST.get('precio')
         foto = request.FILES.get("foto_new")
+
+        if not foto:
+            foto = 'tienda/media/servicio.jpg'
+        
         if nombre.isnumeric() or descripcion_servicio.isnumeric():
             messages.error(request,f'No se permite numeros en el nombre!')
         elif nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
@@ -1439,8 +1452,8 @@ def updatePictureProfile(request):
         foto = request.FILES.get('foto_new')
         q = request.session.get("logueo",False)
         c = Usuarios.objects.get(pk=q["id"])
-        if foto:
-            c.foto = foto
+        if not foto:
+            c.foto = 'tienda/media/user.png'
             c.save()
             messages.success(request,"Foto actualizada correctamente!!")
         else:   

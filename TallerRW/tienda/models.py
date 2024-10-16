@@ -24,7 +24,7 @@ class Productos(models.Model):
     cantidad=models.IntegerField()
     #fecha_Creacion=models.DateField()
     categoria=models.ForeignKey(Categoria,on_delete=models.DO_NOTHING,blank=False,null=True)
-    foto = models.ImageField(upload_to="media/", default="media/default.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/default.png")
     
     def __str__(self):
         return self.nombre
@@ -32,7 +32,7 @@ class Productos(models.Model):
 class Servicios(models.Model):
     nombre=models.CharField(max_length=254)
     descripcion_servicio = models.TextField()
-    foto = models.ImageField(upload_to="media/", default="media/servicio.jpg")
+    foto = models.ImageField(upload_to="media/", default="media/media/servicio.jpg")
     precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
@@ -40,7 +40,7 @@ class Servicios(models.Model):
 class Promociones(models.Model):
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=True)
     descripcion = models.CharField(max_length=254)
-    foto = models.ImageField(upload_to="media/", default="media/servicio.jpg")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/servicio.jpg")
 
 class Usuarios(AbstractUser):
     username = None
@@ -49,7 +49,7 @@ class Usuarios(AbstractUser):
     email = models.EmailField(max_length=254, unique=True,blank=False,null=True)
 	# Custom model authentication: paso 5, el campo password para django es obligatorio, cambiar clave -> password
     password = models.CharField(max_length=254,blank=False,null=True)
-    foto = models.ImageField(upload_to="media/", default="media/user.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/user.png")
     token_recuperar = models.CharField(max_length=254,blank=False,null=False,default=0)
     telefono=models.IntegerField(null=False,blank=True,default='0')
     #fecha_contratacion=models.DateField(blank=True,null=False)
@@ -133,7 +133,7 @@ class DetalleFactura(models.Model):
 class Calificaciones(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicios = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=True)
-    foto = models.ImageField(upload_to="media/", default="media/user.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/user.png")
     Estrellas= (
         (1, "1"),
         (2,"2"),
