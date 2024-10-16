@@ -123,6 +123,7 @@
               </select><br>
               <button type="submit" class="btn btn-success">Editar</button>
               <input type="hidden" id="id_cita" name="id_cita">
+              
             </form>
          
         </div>
@@ -134,25 +135,29 @@
               <th>Hora</th>
               <th>Cliente</th>
               <th>Empleado</th>
-              <th>Acciones</th>
             </tr>
           </thead>
             <input type="text" value="{{ request.session.logueo.rol }}" hidden id="rol" name="rol">
           <tbody class="details">
             
-            <td></td>
+            
+            
           </tbody>
           
         </table>
-        <p class="text-center">
+        <p class="text-center" id="texto_hora">
           Tenga en cuenta que esta cita tiene una duracion de 1 hora por lo cual su cita termina a las
-          <h5 id="hora_final" class="text-center"></h5> 
+          <h5 id="hora_final" class="text-center" id="texto_hora"></h5> 
         </p>
-        <form action="{% url 'eliminarCita' %}" method='post' class="delete" style="display: block;">
-          {% csrf_token %}
-          <input type="text" id="id_Date" name="idDate" hidden>
-          <button class="btn btn-danger cerrarModal">Eliminar</button>
-        </form>
+        <div style="display: flex; justify-content: center; gap: 20px;" id="opciones" >
+          <form action="{% url 'eliminarCita' %}" method='post' class="delete" style="display: block;">
+            {% csrf_token %}
+            <input type="text" id="id_Date" name="idDate" hidden>
+            <input type="text" name="usuario" hidden id="usuario" value="{{request.session.logueo.nombre }}">
+            <button class="btn btn-danger cerrarModal" id="delete">Eliminar</button>
+          </form>
+          <button  type="button" class="btn btn-info cerrarModal" id="update">Editar</button>
+      </div>
       </div>
 
       <!-- Modal footer -->
@@ -168,14 +173,20 @@
 
 <script>
   d = document.querySelector('.details')
-
+  opc  = document.querySelector('#opciones')
+  const update = document.getElementById('update')
   function cambiar_estado(id) {
     edit = document.querySelector(".editar_fecha")
+    texto_hora = document.querySelector("#texto_hora")
     remove = document.querySelector(".delete")
     table = document.querySelector(".tl")
+    hora_final = document.getElementById('hora_final')
     edit.style.display = "block"
     table.style.display = "none"
     remove.style.display = "none"
+    texto_hora.style.display = "none"
+    hora_final.style.display = "none"
+    update.style.display = "none"
     
   }
 
@@ -187,17 +198,20 @@
     id_date = document.getElementById('id_Date')
     hora_final = document.getElementById('hora_final')
 
+    dele = document.getElementById('delete')
+    usu = document.getElementById('usuario').value  
+
     id_date.value = id
     $('#infor').modal('show');
     const x = location.origin
-    url = await fetch(`http://127.0.0.1:8000/api/1.0/Citas/${id}`)
+    
+    url = await fetch(`${x}/api/1.0/Citas/${id}`)
     data = await url.json()
 
-    console.log(data)
+    console.log(`${x}/api/1.0/Citas/${id}`)
+
     url_servicio = await fetch(data.servicio)
     data_servicio = await url_servicio.json()
-    console.log(data_servicio)
-
     url_cliente = await fetch(data.cliente)
     data_cliente = await url_cliente.json()
     
@@ -206,33 +220,49 @@
 
     hora_final.innerText = data.hora_fin
 
-
-    if(rol1 == 4 ){
-
-      d.innerHTML = `
-                  <tr>
-                    <th>${data_servicio.nombre}</th>
-                    <td>${data.hora}</td>
-                    <td>${data_cliente.nombre}</td>
-                    <td>${data_empleado.nombre}</td>
-                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick="cambiar_estado(${id})">Editar</button>
-                   
-                  </tr>
-        `
-
-    }else{
-
-      d.innerHTML = `
-      
-                    <tr>
-                    <th>${data_servicio.nombre}</th>
-                    <td>${data.hora}</td>
-                    <td>${data_cliente.nombre}</td>
-                    <td> <button  type="button" class="btn btn-info cerrarModal" onclick='cancelar(${id})'>Cancelar</button>
+    update.addEventListener('click', function() {
+            cambiar_estado(id)
+            
+        })
   
-                  </tr>
-      `
+
+          if(rol1 == 4 ){
+
+            d.innerHTML = `
+                        <tr>
+                          <th>${data_servicio.nombre}</th>
+                          <td>${data.hora}</td>
+                          <td>${data_cliente.nombre}</td>
+                          <td>${data_empleado.nombre}</td>
+                          
+                        </tr>
+          `
+
+      }else{
+
+            d.innerHTML = `
+
+                          <tr>
+                          <th>${data_servicio.nombre}</th>
+                          <td>${data.hora}</td>
+                          <td>${data_cliente.nombre}</td>
+                          <td> <button  type="button" class="btn btn-info cerrarModal" onclick='cancelar(${id})'>Cancelar</button>
+
+                        </tr>
+            `
+      }
+
+
+    if(data_cliente.nombre != usu){
+        update.style.display = "none"
+        dele.style.display = "none"
+    }else if(data_cliente.nombre === usu){
+        update.style.display = "block"
+        dele.style.display = "block"
     }
+
+
+    
     
   }
 

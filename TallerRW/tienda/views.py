@@ -15,6 +15,8 @@ import pytz
 est = pytz.timezone('America/Bogota')
 from django.db.models import Q
 
+from .autorizacion import * 
+
 # API with rest framework 
 
 class CategoriaViewSet(viewsets.ModelViewSet):
@@ -111,12 +113,12 @@ def index(request):
     logueo = request.session.get("logueo", False)
     q = Calificaciones.objects.all()
     s = Servicios.objects.all()
-    p = Promociones.objects.all()
-    contexto = {"data":q,"servicios":s,"map":initialMap, "Promociones":p}
+    contexto = {"data":q,"servicios":s,"map":initialMap}
     return render(request, "tienda/index.html",contexto)
 
 
 # crud de  productos.
+
 
 def productos(request):
     p = Productos.objects.all()
@@ -124,16 +126,19 @@ def productos(request):
     return render(request,"tienda/productos/producto.html",contexto)
 
 
+@login_requerido_admin
 def listarProductos(request):
     q = Productos.objects.all()
     contexto = {"data":q}
     return render(request, "tienda/productos/listarProductos.html",contexto)
 
+@login_requerido_admin
 def editarProductos(request, id):
 	q = Productos.objects.get(pk=id)
 	c = Categoria.objects.all()
 	contexto = {"data": q, "categoria": c}
 	return render(request, "tienda/productos/editarProductos.html", contexto)
+
 
 def actualizarProductos(request):
 	if request.method == "POST":
@@ -171,6 +176,7 @@ def actualizarProductos(request):
 
 	return redirect("listarProductos")
 
+
 def eliminarProductos(request, id):
 	try:
 		q = Productos.objects.get(pk=id)
@@ -181,6 +187,7 @@ def eliminarProductos(request, id):
         
 	return redirect("listarProductos")
 
+@login_requerido_admin
 def crearProductoform(request):
 	q = Categoria.objects.all()
 	contexto = {"data": q}
@@ -229,14 +236,16 @@ def crearProducto(request):
 
           
 #crud de clientes
-
+@login_requerido_admin
 def registrarCliente(request):
     return render(request, "tienda/clientes/registrarCliente.html")
 
+@login_requerido_admin
 def listarCliente(request):
     q = Usuarios.objects.filter(rol=4)
     contexto = {"data" : q}
     return render(request, "tienda/clientes/listarCliente.html",contexto)
+
 
 def clientesCrear(request):
     if request.method == 'POST':
@@ -274,6 +283,7 @@ def clientesCrear(request):
 
     return redirect('listarCliente')
 
+
 def clientesEliminar(request,id):
     try:
         q = Usuarios.objects.get(pk = id)
@@ -283,6 +293,7 @@ def clientesEliminar(request,id):
         messages.error(request,f"El usuario ya tiene procesos pendientes")
     return redirect('listarCliente')
 
+@login_requerido_admin
 def clientesEditar(request,id):
     q = Usuarios.objects.get(pk = id)
     contexto = {"data" : q}
@@ -322,11 +333,13 @@ def clientesActualizar(request):
         return redirect("listarCliente")
         
 #Crud empleados
+@login_requerido_admin
 def empleados(request):
 	q = Usuarios.objects.filter(rol=3)
 	contexto = {"data": q}
 	return render(request, "tienda/empleados/listarempleados.html", contexto)
 
+@login_requerido_admin
 def nuevoempleado(request):
     u = Usuarios.objects.all()
     contexto = {"data":u}
@@ -368,6 +381,7 @@ def newempleado(request):
                 messages.error(request, f"Error: {e}")
     return redirect('empleado')
 
+@login_requerido_admin
 def empleados_formulario_editar(request, id):
 	q = Usuarios.objects.get(pk=id)
 	c = Usuarios.objects.filter(rol=3)
@@ -500,7 +514,7 @@ def citas(request):
         contexto = {"data": q,"data1": c , "data2":e}
         return render(request, "tienda/citas/cita.html",contexto)
     
-
+@login_requerido_emplo
 def citasEmpleado(request):
     l = request.session.get('logueo',False)
     u = Usuarios.objects.get(pk=l["id"])
@@ -575,7 +589,7 @@ def finish(request):
 
     return redirect('citaEmpleado')
       
-
+@login_requerido_admin
 def registrarCita(request):
     e = Usuarios.objects.filter(rol=3)
     c = Servicios.objects.all()
@@ -583,6 +597,7 @@ def registrarCita(request):
     contexto = {"data": e ,"data1":c,"usuarios":u}
     return render(request, "tienda/citas/registrarCita.html",contexto)
 
+@login_requerido_admin
 def listarCita(request):
     q = Citas.objects.all()
     contexto = {"data": q}
@@ -661,7 +676,7 @@ def citaRegistrar(request):
         
 
         
-
+@login_requerido_admin
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
     e = Usuarios.objects.filter(rol=3)
@@ -722,6 +737,7 @@ def citaEliminar(request, id):
         messages.error(request, f'Error: {e}')
     return redirect('listarCita')
 
+@login_requerido
 def deleteDateFromCustomer(request):
     try:
         if request.method == "POST":
@@ -735,7 +751,7 @@ def deleteDateFromCustomer(request):
         messages.error(request, f'Error: {e}')
     return redirect('citas')
 
-
+@login_requerido
 def historialCita(request):
      logueo = request.session.get("logueo",False)
      usuario = Usuarios.objects.get(pk=logueo["id"])
@@ -751,7 +767,7 @@ def historialCita(request):
      return render(request,'tienda/citas/historialCitas.html',contexto)
 
 #CRUD cotizaciones
-
+@login_requerido
 def cotizaciones(request):
     e = Usuarios.objects.all()
     s = Servicios.objects.all()
@@ -759,14 +775,18 @@ def cotizaciones(request):
     return render(request, "tienda/categorias/cotizacion.html",contexto)
 
 
+@login_requerido_admin
 def registrarCategoria(request):
     return render(request,'tienda/categorias/registrarCategoria.html')
 
 
+@login_requerido_admin
 def listarCategoria(request):
     q = Categoria.objects.all()
     context = {"data": q}
     return render(request, "tienda/categorias/listarCategoria.html", context)
+
+
 
 def categoriaRegistrar(request):
 	if request.method == "POST":
@@ -786,7 +806,8 @@ def categoriaRegistrar(request):
                 messages.success(request, "Guardado correctamente!!")
             
             return redirect("listarCategoria")
-        
+
+
 def categoriaEliminar(request,id):
     try:
         q = Categoria.objects.get(pk=id)
@@ -796,10 +817,13 @@ def categoriaEliminar(request,id):
         messages.error(request,f'Error:{e}')
     return redirect('listarCategoria')
 
+@login_requerido_admin
 def categoriaEditar(request,id):
     q = Categoria.objects.get(pk=id)
     context = {"data":q}
     return render(request,'tienda/categorias/registrarCategoriaEditar.html',context)
+
+
 
 def categoriaActualizar(request):
     if request.method == 'POST':
@@ -861,16 +885,19 @@ def agregar_calificacion_form(request):
     
     return redirect('calificaciones')
 
+@login_requerido_admin
 def registrarCalificacion(request):
     s = Servicios.objects.all()
     u = Usuarios.objects.all()
     contexto = {"data":s,"usuarios":u}
     return render(request, "tienda/calificaciones/registrarCalificacion.html",contexto)
 
+@login_requerido_admin
 def listarCalificacion(request):
     r = Calificaciones.objects.all()
     contexto = {"data": r}
     return render(request, "tienda/calificaciones/listarCalificacion.html", contexto)
+
 
 def calificacionRegistrar(request):
     if request.method == "POST":
@@ -898,14 +925,19 @@ def calificacionRegistrar(request):
         except Exception as e:
              messages.error(request, f"Error: {e}")
              return redirect('registrarCalificacion')
+    return redirect('registrarCalificacion')
         
 
+@login_requerido_admin
 def calificacion_formulario_editar(request, id):
     r = Calificaciones.objects.get(pk=id)
     s = Servicios.objects.all()
     u = Usuarios.objects.all()
     contexto = {"data": r,"servicios":s,"usuarios":u}
     return render(request, "tienda/calificaciones/editarCalificacion.html", contexto)
+
+
+
 
 def calificacionActualizar(request):
     if request.method == "POST":
@@ -943,6 +975,7 @@ def calificacionActualizar(request):
 
     return redirect('calificacionListar')
 
+
 def calificacion_eliminar(request, id):
     l = request.session.get('logueo',False)
     usuario = Usuarios.objects.get(pk=l['id'])
@@ -961,6 +994,7 @@ def calificacion_eliminar(request, id):
     else:
         return redirect('calificaciones')
     
+
 
 def eliminarCalificacion(request):
     l = request.session.get('logueo',False)
@@ -986,14 +1020,16 @@ def servicio(request):
     return render(request, "tienda/servicios/servicio.html",context)
      
 
+@login_requerido_admin
 def registrarServicio(request):
     return render(request,'tienda/servicios/registrarServicio.html')
 
-
+@login_requerido_admin
 def listarServicio(request):
     q = Servicios.objects.all()
     contexto = {"data":q}
     return render(request,'tienda/servicios/listarServicio.html',contexto)
+
 
 def registroServicio(request):
     if request.method == "POST":
@@ -1025,6 +1061,7 @@ def registroServicio(request):
                 messages.error(request, f"Error: {e}")
     return redirect('registrarServicio') 
 
+
 def servicioEliminar(request,id):
     try:
         servicios = Servicios.objects.get(pk=id)
@@ -1038,12 +1075,13 @@ def servicioEliminar(request,id):
 
     return redirect('listarServicio')
 
-
+@login_requerido_admin
 def servicio_form_editar(request,id):
     s = Servicios.objects.get(pk=id)
 
     context = {"data": s}
     return render(request,'tienda/servicios/editarServicio.html',context)
+
 
 def servicioActualizar(request):
     if request.method == "POST":
@@ -1128,6 +1166,7 @@ def logout(request):
         messages.warning(request,'Error!')
         return redirect('index')
 
+@login_requerido
 def profile(request):
     p = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=p["id"])
@@ -1137,6 +1176,7 @@ def profile(request):
     else:
         contexto = {"data":u}
     return render(request,'tienda/login/profile.html',contexto)
+
 
 def completeInformation(request):
     p = request.session.get("logueo",False)    
@@ -1216,6 +1256,7 @@ def registerUser(request):
         return redirect('register')
    
 
+@login_requerido
 def add_car(request):
      l = request.session.get("logueo",False)
      u = Usuarios.objects.get(pk=l["id"])
@@ -1225,6 +1266,7 @@ def add_car(request):
         "data": q
      }
      return render(request,'tienda/login/vehiculos.html',contexto)
+
 
 def add_car_profile(request):
     l = request.session.get('logueo',False)
@@ -1267,7 +1309,8 @@ def add_car_profile(request):
         messages.warning(request,'Error')
     
     return redirect('perfil')
-    
+
+
 def edite_car_profile(request):
     l = request.session.get('logueo',False)
     cliente = Usuarios.objects.get(pk=l["id"])
@@ -1321,9 +1364,10 @@ def deleteCar(request, id):
         
 	return redirect("add_car")
     
-
+@login_requerido
 def change_password(request):
     return render(request,'tienda/login/restablecer.html')
+
 
 def change(request):
     
@@ -1349,6 +1393,7 @@ def change(request):
     return redirect("index")
 
 
+@login_requerido
 def editeFormProfile(request):
     q = request.session.get("logueo",False)
     p = Usuarios.objects.get(pk=q["id"])
@@ -1356,6 +1401,7 @@ def editeFormProfile(request):
     contexto = {"data":p}
 
     return render(request,"tienda/login/editeProfile.html",contexto)
+
 
 def updateInfoProfile(request):
     
@@ -1385,14 +1431,16 @@ def updateInfoProfile(request):
     else:
         messages.warning(request,f'Error:No se enviaron los datos!!')
     return redirect('index')
-        
+    
+
+
 def updatePictureProfile(request):
     if request.method == 'POST':
         foto = request.FILES.get('foto_new')
         q = request.session.get("logueo",False)
         c = Usuarios.objects.get(pk=q["id"])
-        if foto == "":
-            c.foto = "media/user.png"
+        if foto:
+            c.foto = foto
             c.save()
             messages.success(request,"Foto actualizada correctamente!!")
         else:   
@@ -1679,7 +1727,7 @@ def payment(request):
 
     return redirect("productos")
 
-
+@login_requerido
 def compras(request):
     q = request.session.get("logueo",False)
     u = Usuarios.objects.get(pk=q["id"])
@@ -1690,7 +1738,7 @@ def compras(request):
     context = {"data":v}
     return render(request,"tienda/ventas/ventas.html", context)
     
-
+@login_requerido
 def details_buy(request,id):
     vent = Facturas.objects.get(pk=id)
     det = DetalleFactura.objects.filter(factura=id)
@@ -1707,6 +1755,7 @@ def map(request):
     context = {"map":initialMap}
     return render(request, "tienda/maps/maps.html",context)
 
+@login_requerido
 def listarEmergencias(request):
     e = Emergencia.objects.all()
     context = {'user_locations':e}
