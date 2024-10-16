@@ -629,32 +629,36 @@ def citaRegistrar(request):
             servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
             today = date.today()
-
+            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
+                messages.error(request,'No se permiten campos vacios')
+                return redirect("citas")
             hora = datetime.datetime.strptime(hora, '%H:%M')
             data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
             hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
 
             citas = Citas.objects.filter(Q(fechaServicio=fecha_servicio) | Q(empleado=empleado))
-            print(citas)
 
-            
-            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
-                messages.error('No se permiten campos vacios')
+        
+            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "" or data_customer == None:
+                messages.error(request,'No se permiten campos vacios')
+                return redirect("citas")
             else:
                 if data_customer.month >= today.month and data_customer.year >= today.year:   
                     
                     for agenda in citas:
-                        x = str(agenda.hora)
-                        f = str(agenda.hora_fin)
-                    
-                        if (hora >= datetime.datetime.strptime(x, '%H:%M:%S') and datetime.datetime.strptime(x, '%H:%M:%S') <= hora_fin ) or  (hora_fin >= datetime.datetime.strptime(f, '%H:%M:%S') and datetime.datetime.strptime(f, '%H:%M:%S') <= hora_fin ):                
-                            print('Aqui estoy yoooo !!')
-                            if (agenda.fechaServicio == fecha_servicio):
-                                print('Aqui fecha !!')
-                                messages.error(request,'Esta ocupado por otro usuario')
+                        hora_inicio_existente = agenda.hora
+                        hora_fin_existente = agenda.hora_fin
+
+                        
+                        if agenda.empleado == empleado and agenda.fechaServicio == datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d').date():
+                            if (hora.time() < hora_fin_existente and hora_fin.time() > hora_inicio_existente):
+                                messages.error(request, f"HORAS CRUZADAS No puedes agendar citas a esta hora: {hora} con este servicio: {servicio} y con este empleado: {empleado}")
                                 break
+                        if (agenda.fechaServicio == fecha_servicio):
+                            print('Aqui fecha !!')
+                            messages.error(request,'Esta ocupado por otro usuario')
+                            break
                     else:
-                            print('Se puede agendar')
                             cita = Citas(
                                     fechaServicio=fecha_servicio,
                                     hora = hora,
