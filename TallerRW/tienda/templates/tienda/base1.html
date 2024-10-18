@@ -151,12 +151,6 @@
         </nav>
 
     </header>
-    
-    <div>
-        {% block contenedor %}
-
-        {% endblock %}
-    </div>
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
@@ -165,6 +159,12 @@
             </div>
         {% endfor %}
     {% endif %}
+    <div>
+        {% block contenedor %}
+
+        {% endblock %}
+    </div>
+    
     <footer>
         <div id="super">
             <div>

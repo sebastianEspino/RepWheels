@@ -299,7 +299,6 @@ def clientesEliminar(request,id):
         messages.error(request,f"El usuario ya tiene procesos pendientes")
     return redirect('listarCliente')
 
-@login_requerido_admin
 def clientesEditar(request,id):
     q = Usuarios.objects.get(pk = id)
     contexto = {"data" : q}
@@ -387,7 +386,7 @@ def newempleado(request):
                 messages.error(request, f"Error: {e}")
     return redirect('empleado')
 
-@login_requerido_admin
+
 def empleados_formulario_editar(request, id):
 	q = Usuarios.objects.get(pk=id)
 	c = Usuarios.objects.filter(rol=3)
@@ -685,7 +684,7 @@ def citaRegistrar(request):
     return redirect("citas")        
 
         
-@login_requerido_admin
+
 def cita_formulario_editar(request, id):
     q = Citas.objects.get(pk=id)
     e = Usuarios.objects.filter(rol=3)
@@ -901,7 +900,7 @@ def registrarCalificacion(request):
     contexto = {"data":s,"usuarios":u}
     return render(request, "tienda/calificaciones/registrarCalificacion.html",contexto)
 
-@login_requerido_admin
+
 def listarCalificacion(request):
     r = Calificaciones.objects.all()
     contexto = {"data": r}
@@ -1118,7 +1117,7 @@ def registrarDetalles(request):
     
     return redirect('listarServicio')
 
-@login_requerido_admin
+
 def servicio_form_editar(request,id):
     s = Servicios.objects.get(pk=id)
 
