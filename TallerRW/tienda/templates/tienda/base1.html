@@ -150,7 +150,10 @@
                                     <li><a class="dropdown-item" href="{% url 'compras' %}">Compras</a></li>
                                     <li><a class="dropdown-item" href="{% url 'historialCita' %}">Citas</a></li>
                                     <li><a class="dropdown-item" href="{% url 'historialCalificacion' %}">Calificaciones</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'historialEmergencias' %}">Emergencias</a></li>
+                                    {% if request.session.logueo.rol != 4 %}
+                                        <li><a class="dropdown-item" href="{% url 'historialEmergencias' %}">Emergencias</a></li>
+                                    {% endif  %}
+
                                     
                                 </ul>
                             </li>
