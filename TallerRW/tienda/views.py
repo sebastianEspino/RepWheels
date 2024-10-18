@@ -1818,6 +1818,61 @@ def details_buy(request,id):
     return render(request,"tienda/ventas/detalleVentas.html", context)
 
 
+# PDF convert
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def pdfCalificaciones(request):
+    r = Calificaciones.objects.all()
+    template_path = 'tienda/reportes/reporteCalificacion.html'
+    context = {'data': r }
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reportCalificacion.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+    
+
+def pdfCitas(request):
+    logueo = request.session.get("logueo",False)
+    usuario = Usuarios.objects.get(pk=logueo["id"])
+    c = Citas.objects.filter(cliente = usuario)
+    template_path = 'tienda/reportes/reporteCita.html'
+    context = {'data': c }
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reportCita.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+
+def pdfCompras(request):
+    q = request.session.get("logueo",False)
+    #Compra
+    u = Usuarios.objects.get(pk=q["id"])
+    v = Facturas.objects.filter(cliente=u)
+    #Detalle de la compra
+    template_path = 'tienda/reportes/reporteVenta.html'
+    context = {'data': v}
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporteCompras.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
 
 import folium
 
