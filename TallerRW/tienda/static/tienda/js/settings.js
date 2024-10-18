@@ -1,7 +1,8 @@
     
 function cargar(){
 
-    fetch(`http://127.0.0.1:8000/api/1.0/Configuracion/`)
+    let x = location.origin
+    fetch(`${x}/api/1.0/Configuracion/`)
     .then(data => data.json())
     .then(data => {
     let company = document.getElementById('company')
