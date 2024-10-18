@@ -14,7 +14,7 @@ import re
 import pytz
 est = pytz.timezone('America/Bogota')
 from django.db.models import Q
-
+import folium
 from .autorizacion import * 
 
 # API with rest framework 
@@ -105,15 +105,13 @@ class RegistrarUsuario(APIView):
         return Response(data={'message': f'Usuario creado correctamente tu nick es: {nick}', 'respuesta': 201}, status=201)
 
 
-
-import folium
-
 def index(request):
     initialMap = folium.Map(location=[6.1817678,-75.6071863],zoom_start=11)
     logueo = request.session.get("logueo", False)
     q = Calificaciones.objects.all()
     s = Servicios.objects.all()
-    contexto = {"data":q,"servicios":s,"map":initialMap}
+    p = Promociones.objects.all()
+    contexto = {"data":q,"servicios":s,"map":initialMap,"Promociones":p}
     return render(request, "tienda/index.html",contexto)
 
 
@@ -122,14 +120,15 @@ def index(request):
 
 def productos(request):
     p = Productos.objects.all()
-    contexto = {'data':p}
+    q = Promociones.objects.all()
+    contexto = {'data':p,"Promociones":q}
     return render(request,"tienda/productos/producto.html",contexto)
 
 
 @login_requerido_admin
 def listarProductos(request):
     q = Productos.objects.all()
-    contexto = {"data":q}
+    contexto = {"data":q,"Promociones":p}
     return render(request, "tienda/productos/listarProductos.html",contexto)
 
 

@@ -7,29 +7,33 @@
 {% block contenedor %}
       <main>
         <section style="background-color: black;">
-            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentoproducto.jpg' %}" class="d-block mx-auto" width="80%" height="400px"
-                      alt="imagen descuentos">
-                  </div>
+          <div id="carrusel">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                <div class="carousel-inner">
+                    {% for p in Promociones %}
+                  
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <div class="d-flex align-items-center">
+                        <img src="{{ p.foto.url }}" class="d-block mx-auto" 
+                          alt="imagen descuentos">
+    
+                      </div>
+                    </div>
+
+                {% endfor %} 
                 </div>
-                <div class="carousel-item">
-                  <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentomanodeobra.jpg' %}" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
-                  </div>
-                </div>
-              </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterios</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
-                <span class="carousel-control-next-icon" ariahidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-              </button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
+        </div>
           </section>
           <section class="servicios">
             <h1>Productos</h1>
