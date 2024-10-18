@@ -147,7 +147,14 @@ urlpatterns = [
     path('asignarEmpleado',views.asignarEmpleado,name='asignarEmpleado'),
     path('listarEmergenciasEmpleado',views.listarEmergenciasEmpleado,name='listarEmergenciasEmpleado'),
     path('estadoEmergenciaEnProceso/<int:id>',views.estadoEmergenciaEnProceso,name='estadoEmergenciaEnProceso'),
-    path('estadoEmergenciaTerminado/<int:id>',views.estadoEmergenciaTerminado,name='estadoEmergenciaTerminado')
+    path('estadoEmergenciaTerminado/<int:id>',views.estadoEmergenciaTerminado,name='estadoEmergenciaTerminado'),
+
+
+    #PDF-reportes
+    path("pdfCalificaciones/", views.pdfCalificaciones, name="pdfCalificaciones"),
+    path("pdfCitas/", views.pdfCitas, name="pdfCitas"),
+    path("pdfCompras/", views.pdfCompras, name="pdfCompras"),
+    path("pdfFactura/<int:id>", views.pdfFactura, name="pdfFactura"),
     
 
 

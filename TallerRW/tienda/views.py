@@ -1840,7 +1840,7 @@ def pdfCalificaciones(request):
 def pdfCitas(request):
     logueo = request.session.get("logueo",False)
     usuario = Usuarios.objects.get(pk=logueo["id"])
-    c = Citas.objects.filter(cliente = usuario)
+    c = Citas.objects.filter()
     template_path = 'tienda/reportes/reporteCita.html'
     context = {'data': c }
     response = HttpResponse(content_type='application/pdf')
@@ -1858,10 +1858,27 @@ def pdfCompras(request):
     q = request.session.get("logueo",False)
     #Compra
     u = Usuarios.objects.get(pk=q["id"])
-    v = Facturas.objects.filter(cliente=u)
+    v = Facturas.objects.filter()
     #Detalle de la compra
     template_path = 'tienda/reportes/reporteVenta.html'
     context = {'data': v}
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporteCompras.pdf"'
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+def pdfFactura(request,id):
+    q = request.session.get("logueo",False)
+    vent = Facturas.objects.get(pk=id)
+    det = DetalleFactura.objects.filter(factura=id)
+    context = {"data":det,"data1":vent}
+    #Detalle de la compra
+    template_path = 'tienda/reportes/facturaCompra.html'
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="reporteCompras.pdf"'
     template = get_template(template_path)

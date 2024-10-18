@@ -26,11 +26,17 @@
             
             <td>
               <a type="button" class="btn btn-danger" href="{% url 'detalleInfo' r.id %}">Ver detalles</a>
+              <a class="btn btn-primary m-2" href="{% url 'pdfFactura' r.id %}">CrearPDF</a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+      {% if request.session.logueo.rol == 1 %}
+        <div style="display: flex; justify-content: center; align-content: center;">
+          <a class="btn btn-primary m-2" href="{% url 'pdfCompras' %}">CrearPDF</a>
+      </div>
+      {% endif %}
 
       {% else %}
       <h1 >No hay informacion de compras realizadas</h1>

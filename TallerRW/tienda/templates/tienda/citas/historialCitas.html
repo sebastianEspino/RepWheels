@@ -31,7 +31,12 @@
           {% endfor %}
         </tbody>
       </table>
-
+      {% if request.session.logueo.rol == 1 %}
+        <div style="display: flex; justify-content: center; align-content: center;">
+          <a class="btn btn-primary m-2" href="{% url 'pdfCitas' %}">CrearPDF</a>
+      </div>
+      {% endif %}
+      
       {% else %}
       <h1 >No hay citas</h1>
     {% endif %}
