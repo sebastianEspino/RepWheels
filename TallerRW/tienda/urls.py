@@ -105,7 +105,7 @@ urlpatterns = [
     path("registrarDetalles",views.registrarDetalles,name="registrarDetalles"),
     
     
-
+    #comentario
     #Login and Register
     path("login",views.login,name="login"),
     path("logueo",views.logueo,name="logueo"),

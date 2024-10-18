@@ -48,19 +48,16 @@
                 <th>idServicio</th>
                 <th>Nombre del servicio</th>
                 <th>Descripcion</th>
-                <th>Precio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            {% for r in data %}
+            {% for r in data1 %}
                 <tr>
                     <td>{{ r.id }}</td>
-                    <td>{{ r.nombre }}</td>
-                    <td>{{ r.descripcion_servicio }}</td>
-                    <td>$ {{ r.precio|floatformat:0|intcomma }}</td>
+                    <td>{{ r.servicio }}</td>
+                    <td>{{ r.descripcion_proceso }}</td>
                     <td>
-                        <a class="btn btn-info" href="{% url 'servicioEditar' r.id %}"><i class="bi bi-pencil-square"></i></a>
                         <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a> 
                         <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agg_{{ r.id }}" ><i class="bi bi-plus"></i></a>   
                     </td>
@@ -68,10 +65,6 @@
             {% endfor %}
         </tbody>
         </table>
-        <div style="display: flex; justify-content: center; align-content: center;">
-            <a href="{% url 'registrarServicio' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
-        </div>
-    
         
         </div>
 </main>

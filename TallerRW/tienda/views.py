@@ -1036,8 +1036,10 @@ def registrarServicio(request):
 @login_requerido_admin
 def listarServicio(request):
     q = Servicios.objects.all()
+    s = DetallesServicio.objects.all()
+    
     productos = Productos.objects.all()
-    contexto = {"data":q,"productos": productos}
+    contexto = {"data":q,"productos": productos,"data1":s}
     return render(request,'tienda/servicios/listarServicio.html',contexto)
 
 
