@@ -12,7 +12,6 @@
       <div class="form-group col-md-12">
         <label for="">Servicio</label>
         <select class="form-control" name="servicio">
-        <option value="">Seleccione</option>
         {% for s in data %}
             <option value="{{ s.id }}">{{ s.nombre }}</option>
         {% endfor %}
@@ -21,7 +20,7 @@
       <div class="form-group col-md-12">
         <label for="">Usuario</label>
         <select class="form-control" name="usuario">
-          <option value="">Seleccione</option>
+          
           {% for c in usuarios %}
           <option value="{{ c.id }}">{{ c.nombre }}</option>
           {% endfor %}
