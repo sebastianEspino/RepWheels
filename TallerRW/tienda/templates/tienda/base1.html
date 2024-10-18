@@ -28,7 +28,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="trasnnav" >
             <div class="container" >
                 <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'tienda/img/Logo.png' %}" alt=""
-                        width="50px" height="50px"></a>
+                        width="51px" height="50px"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -64,7 +64,7 @@
                                 <li><a class="dropdown-item" href="{% url 'empleado' %}">Listar</a></li>
                             </ul>
                         </li>
-                    <!--    
+                        <!--
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" style="color: black;">Proveedores</a>
@@ -94,10 +94,12 @@
                                 <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarCita' %}">Listar</a></li>
                                 {% endif %}
+                                {% if request.session.logueo.rol == 3 %}
+                                <li><a class="dropdown-item" href="{% url 'citaEmpleado' %}">Listar</a></li>
+                                {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'citas' %}">Citas</a></li>
                             </ul>
                         </li>
-                        
                         {% if request.session.logueo.rol == 1 %}
                             <li class="nav-item dropdown" >
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
@@ -118,7 +120,17 @@
                             </ul>
                         </li>
                         {% endif %}
-                    
+                        {% if request.session.logueo.rol == 3 %}
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Emergencias</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'listarEmergenciasEmpleado' %}">Emergencia</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" style="color: black;">Servicios</a>
@@ -130,15 +142,36 @@
                                 <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
                             </ul>
                         </li>
+                        {% if request.session.logueo %}
+                            <li class="nav-item dropdown" >
+                                <a class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" style="color: black;">Historiales</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'compras' %}">Compras</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'historialCita' %}">Citas</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'historialCalificacion' %}">Calificaciones</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'historialEmergencias' %}">Emergencias</a></li>
+                                    
+                                </ul>
+                            </li>
+                        {% endif %}
                         
                     </ul>
                     <form id='botones' class="d-flex">
                         {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
                             <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
-                            <a href="{% url 'perfil' %}" class="btn btn-outline-danger" ><i class="bi bi-person-fill" style="color: black;"></i></a>
                             <a class="btn btn-outline-danger" href="{% url 'logout' %}"><i class="bi bi-door-open-fill" style="color: black;"></i></a>
                             <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-outline-danger"><i class="bi bi-cart-fill" style="color: black;"></i></a>
-                            
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle btn btn-outline-danger"  href="#" role="button"
+                                        data-bs-toggle="dropdown"><i class="bi bi-list" style="color: black;"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'perfil' %}">Perfil</a></li>
+                                        <li><a class="dropdown-item" style="color: black;" href="{% url 'add_car' %}">Mis vehiculos</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         {% else %}
                             <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'login' %}">Iniciar Sesion</a>
                             <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'register' %}">Registrarse</a>
@@ -149,22 +182,34 @@
                 </div>
             </div>
         </nav>
-
     </header>
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
+            <div style="margin-top: 80px; margin-bottom: 4px;" class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
     {% endif %}
-    <div>
-        {% block contenedor %}
 
+    <div >
+        
+        {% block contenedor %}
         {% endblock %}
     </div>
-    
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                <div class="spinner-border text-primary d-block" role="status" id="loader">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="respuesta_carrito">
+        </div>
+    </div>
+
     <footer>
         <div id="super">
             <div>
@@ -195,12 +240,12 @@
             <a href="#"><i class="bi bi-whatsapp"></i></a>
         </div>
     </footer>
-    <script src="{% static 'tienda/js/libreria.js' %}"></script>
-    <script src="{% static 'tienda/js/bootstrap.bundle.min.js' %}"></script>
-    <script>
-        $(document).ready(function (){
-            $('#tableR').DataTable();
-        });
-    </script>
+
 </body>
+
+<script src="{% static 'tienda/js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'tienda/js/libreria.js' %}"></script>
+<script src="{% static 'tienda/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </html>

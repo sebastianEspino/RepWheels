@@ -116,6 +116,9 @@ class Citas(models.Model):
     observacion = models.CharField(max_length=254,null=False,blank=True)
     def __str__(self):
         return f'{self.fechaServicio}'
+    
+    def get_estado_display(self):
+        return dict(self.estados).get(self.estado)
 
 
 class DetalleFactura(models.Model):
@@ -182,3 +185,7 @@ class Emergencia(models.Model):
 
     )
     estado = models.IntegerField(choices=estados,default=1)
+
+
+    def get_estado_display(self):
+        return dict(self.estados).get(self.estado)

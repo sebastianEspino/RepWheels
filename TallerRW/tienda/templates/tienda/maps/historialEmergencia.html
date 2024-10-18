@@ -1,0 +1,85 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Compras{% endblock %}
+
+{% block contenedor %}
+<main class="mainly">
+  <div class="container-fluid m-3" style="padding:7%;">
+    {% if data %}
+    <h1 class="h1">Emergencias</h1><br>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Numero de emergencia</th>
+            <th>Ubicacion</th>
+            <th>Descripcion</th>
+            <th>Encargado</th>
+            <th>Estado</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in data %}
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.ubicacion }}</td>
+            <td>{{ r.descripcion }}</td>
+            <td>{{ r.empleado }}</td>
+            {% if r.estado == 1 %}
+                <td>Solicitado</td>
+            {% endif %}
+            {% if r.estado == 2 %}
+              <td>En proceso</td>
+            {% endif %}
+            {% if r.estado == 3 %}
+                <td>Terminado</td>
+            {% endif %}
+          
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <h1 >No hay emergencias</h1>
+    {% endif %}
+  </div>
+</main>
+
+{% for p in data %}
+<div class="modal" id="detail{{p.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Citas</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <img src="{% static 'tienda/img/Logo.png' %}" alt=""
+        width="51px" height="50px">
+        <h1>Observacion</h1>
+        <p>{{ p.observacion }}</p>
+        <h2>Empleado</h2>
+        <p>{{ p.empleado }}</p>
+
+
+        
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -11,9 +11,9 @@
             <thead class="table-dark">
                 <tr>
                     <th>Usuario</th>
-                    <th>Dirección</th>
                     <th>Descripcion</th>
                     <th>Telefono</th>
+                    <th>Estado</th>
                     <th>Accion</th>
                 </tr>
             </thead>
@@ -21,9 +21,17 @@
                 {% for location in user_locations %}
                     <tr>
                         <td>{{ location.nombre }}</td>
-                        <td>{{ location.ubicacion }}</td>
                         <td>{{ location.descripcion }}</td>
                         <td>{{ location.telefono }}</td>
+                        {% if location.estado == 1 %}
+                            <td>Solicitado</td>
+                        {% endif %}
+                        {% if location.estado == 2 %}
+                            <td>En proceso</td>
+                        {% endif %}
+                        {% if location.estado == 3 %}
+                            <td>Terminado</td>
+                        {% endif %}
                         <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#agg{{location.id}}">Enviar ayuda</a></td>
                     </tr>
                 {% endfor %}

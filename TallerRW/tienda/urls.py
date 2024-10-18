@@ -81,7 +81,8 @@ urlpatterns = [
     path("calificacionActualizar", views.calificacionActualizar, name="calificacionActualizar"),
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
     path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
-    path("eliminarCalificacion",views.eliminarCalificacion, name="eliminarCalificacion"),
+    path("historialCalificacion",views.historialCalificacion, name="historialCalificacion"),
+    path("historialEmergencias",views.historialEmergencias, name="historialEmergencias"),
     
 
 
@@ -105,7 +106,8 @@ urlpatterns = [
     path("registrarDetalles",views.registrarDetalles,name="registrarDetalles"),
     
     
-    #comentario
+    #Detalles Servicios
+    path('detalleServicioEliminar/<int:id>',views.detalleServicioEliminar,name='detalleServicioEliminar'),
     #Login and Register
     path("login",views.login,name="login"),
     path("logueo",views.logueo,name="logueo"),
@@ -143,6 +145,9 @@ urlpatterns = [
     path('emergencia',views.emergencia,name="emergencia"),
     path('listarEmergencias',views.listarEmergencias,name='listarEmergencias'),
     path('asignarEmpleado',views.asignarEmpleado,name='asignarEmpleado'),
+    path('listarEmergenciasEmpleado',views.listarEmergenciasEmpleado,name='listarEmergenciasEmpleado'),
+    path('estadoEmergenciaEnProceso/<int:id>',views.estadoEmergenciaEnProceso,name='estadoEmergenciaEnProceso'),
+    path('estadoEmergenciaTerminado/<int:id>',views.estadoEmergenciaTerminado,name='estadoEmergenciaTerminado')
     
 
 

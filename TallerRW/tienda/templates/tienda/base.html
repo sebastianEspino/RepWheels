@@ -113,6 +113,16 @@
                             </ul>
                         </li>
                         {% endif %}
+                        {% if request.session.logueo.rol == 3 %}
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Emergencias</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'listarEmergenciasEmpleado' %}">Emergencia</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
                         
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
@@ -132,7 +142,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'compras' %}">Compras</a></li>
                                     <li><a class="dropdown-item" href="{% url 'historialCita' %}">Citas</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'eliminarCalificacion' %}">Calificaciones</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'historialCalificacion' %}">Calificaciones</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'historialEmergencias' %}">Emergencias</a></li>
                                     
                                 </ul>
                             </li>

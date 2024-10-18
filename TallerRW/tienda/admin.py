@@ -78,3 +78,8 @@ class Promociones(admin.ModelAdmin):
 @admin.register(Configuracion)
 class Configuracion (admin.ModelAdmin):
     list_display = ["id","nombre","contacto","ubicacion"]
+
+
+@admin.register(Emergencia)
+class Emergencias(admin.ModelAdmin):
+    list_display = ["id","ubicacion","nombre","estado","empleado"]

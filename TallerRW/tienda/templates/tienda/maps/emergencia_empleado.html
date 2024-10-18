@@ -1,0 +1,39 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Trabajos{% endblock %}
+
+{% block contenedor %}
+<main>
+      <section class="servicios" style="padding: 6%;">
+        {% if emergencias %}
+        <div>
+          <h1>Emergencias pendientes</h1>
+         
+          <div class="product">
+              
+                  {% for p in emergencias %}
+                          <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
+                              <div class="card-body">
+                                <h4 class="card-text">{{ p.nombre }}</h4>
+                                <p class="card-text">
+                                    Ubicacion: {{ p.ubicacion }} <br>
+                                    <br> Telefono: {{ p.telefono }} 
+                                    <br> Problema: {{ p.descripcion }} 
+                                </p>
+                                <a class="btn btn-danger" href="{% url 'estadoEmergenciaEnProceso' p.id %}">En proceso</a>
+                                <a class="btn btn-success" href="{% url 'estadoEmergenciaTerminado' p.id %}">Finalizada</a>
+                              </div>
+                          </div>
+                  {% endfor %}
+          </div>
+          
+      </div>
+      {% else %}
+              <h1>No hay citas pendientes</h1>
+      {% endif %}
+      </section>
+  </main>
+
+
+{% endblock %}

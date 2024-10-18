@@ -9,6 +9,7 @@
   {% csrf_token %}
   <h1 style="text-align: center;">Editar cita</h1>
   <div class="form-row">
+    <input type="text" name="id" hidden value="{{ data.id }}">
     <div class="row">
       <div class="col">
         <label for="inputPassword4">Fecha</label>

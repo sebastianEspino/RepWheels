@@ -523,7 +523,7 @@ def citas(request):
 def citasEmpleado(request):
     l = request.session.get('logueo',False)
     u = Usuarios.objects.get(pk=l["id"])
-    q = Citas.objects.filter(empleado=u )
+    q = Citas.objects.filter(empleado=u).exclude(estado=3)
     
     context = {'citas':q}
     return render(request, "tienda/citas/citas_empleado.html",context)
@@ -825,7 +825,7 @@ def categoriaEliminar(request,id):
         messages.error(request,f'Error:{e}')
     return redirect('listarCategoria')
 
-@login_requerido_admin
+
 def categoriaEditar(request,id):
     q = Categoria.objects.get(pk=id)
     context = {"data":q}
@@ -936,14 +936,13 @@ def calificacionRegistrar(request):
     return redirect('registrarCalificacion')
         
 
-@login_requerido_admin
+
 def calificacion_formulario_editar(request, id):
     r = Calificaciones.objects.get(pk=id)
     s = Servicios.objects.all()
     u = Usuarios.objects.all()
     contexto = {"data": r,"servicios":s,"usuarios":u}
     return render(request, "tienda/calificaciones/editarCalificacion.html", contexto)
-
 
 
 
@@ -1004,7 +1003,7 @@ def calificacion_eliminar(request, id):
     
 
 
-def eliminarCalificacion(request):
+def historialCalificacion(request):
     l = request.session.get('logueo',False)
     usuario = Usuarios.objects.get(pk=l['id'])
 
@@ -1019,6 +1018,21 @@ def eliminarCalificacion(request):
     return render(request,'tienda/calificaciones/calificaciones_personal.html',contexto)
     
 
+def historialEmergencias(request):
+    l = request.session.get('logueo',False)
+    usuario = Usuarios.objects.get(pk=l['id'])
+
+    if usuario.rol != 1: 
+        emergencia = Emergencia.objects.filter(empleado=usuario)
+    else:
+        emergencia = Emergencia.objects.all()
+    
+    contexto = {"data":emergencia}
+        
+    
+    return render(request,'tienda/maps/historialEmergencia.html',contexto)
+    
+
 #Crud Servicio
 
 def servicio(request):
@@ -1027,6 +1041,18 @@ def servicio(request):
     context = {"data":q , 'promociones' : p}
     return render(request, "tienda/servicios/servicio.html",context)
      
+def detalleServicioEliminar(request,id):
+    try:
+        servicios = DetallesServicio.objects.get(pk=id)
+        servicios.delete()
+
+        messages.success(request, "Detalle servicio eliminado eliminado correctamente!!!")
+    except Calificaciones.DoesNotExist:
+        messages.error(request, "Servicio no encontrada.")
+    except Exception as e:
+        messages.error(request, f'Error: Error')
+
+    return redirect('listarServicio')
 
 @login_requerido_admin
 def registrarServicio(request):
@@ -1784,7 +1810,7 @@ def compras(request):
     context = {"data":v}
     return render(request,"tienda/ventas/ventas.html", context)
     
-@login_requerido
+
 def details_buy(request,id):
     vent = Facturas.objects.get(pk=id)
     det = DetalleFactura.objects.filter(factura=id)
@@ -1807,6 +1833,16 @@ def listarEmergencias(request):
     empleados = Usuarios.objects.filter(rol=3)
     context = {'user_locations':e,"empleados":empleados}
     return render(request,"tienda/maps/admin_view.html",context)
+
+@login_requerido_emplo
+def listarEmergenciasEmpleado(request):
+    l = request.session.get('logueo',False)
+    u = Usuarios.objects.get(pk=l["id"])
+    q = Emergencia.objects.filter(empleado=u).exclude(estado=3)
+    
+    context = {"emergencias":q}
+    return render(request, "tienda/maps/emergencia_empleado.html",context)
+    
 
 def emergencia(request):
     if request.method == "POST":
@@ -1854,6 +1890,30 @@ def asignarEmpleado(request):
 
 
     return redirect('listarEmergencias')
+
+
+def estadoEmergenciaEnProceso(request,id):
+    try:
+        q = Emergencia.objects.get(pk=id)
+        q.estado = 2
+        q.save()
+        messages.success(request, "Estado cambiado, Exitosaamiente!")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+            
+    return redirect("listarEmergenciasEmpleado")
+
+def estadoEmergenciaTerminado(request,id):
+    try:
+        q = Emergencia.objects.get(pk=id)
+        q.estado = 3
+        q.save()
+        messages.success(request, "La emergencia finalizo xitosaamiente!")
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+            
+    return redirect("listarEmergenciasEmpleado")
+
 
 
 from rest_framework.authtoken.views import ObtainAuthToken

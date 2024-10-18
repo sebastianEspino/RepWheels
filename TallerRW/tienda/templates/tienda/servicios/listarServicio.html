@@ -40,33 +40,37 @@
 
     
     </div>
-    <div class="container-fluid m-3">
-        <h1 class="h1">Detalles de Servicios</h1>
-        <table class="table table-hover table-bordered" id="tableR">
-        <thead class="table-dark">
-            <tr>
-                <th>idServicio</th>
-                <th>Nombre del servicio</th>
-                <th>Descripcion</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in data1 %}
+    {% if data1 %}
+        <div class="container-fluid m-3">
+            <h1 class="h1">Detalles de Servicios</h1>
+            <table class="table table-hover table-bordered" id="tableR">
+            <thead class="table-dark">
                 <tr>
-                    <td>{{ r.id }}</td>
-                    <td>{{ r.servicio }}</td>
-                    <td>{{ r.descripcion_proceso }}</td>
-                    <td>
-                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a> 
-                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agg_{{ r.id }}" ><i class="bi bi-plus"></i></a>   
-                    </td>
+                    <th>DetallServicio</th>
+                    <th>Nombre del servicio</th>
+                    <th>Descripcion</th>
+                    <th>Acciones</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-        </table>
-        
-        </div>
+            </thead>
+            <tbody>
+                {% for r in data1 %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.servicio }}</td>
+                        <td>{{ r.descripcion_proceso }}</td>
+                        <td>
+                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'detalleServicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a> 
+                            <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agg_{{ r.id }}" ><i class="bi bi-plus"></i></a>   
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            
+            </div>
+        {% else %}
+            <h1 class="text-center">No hay detalles aun</h1>
+        {% endif %}
 </main>
 
 {% for r in data %}
