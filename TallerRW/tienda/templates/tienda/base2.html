@@ -20,7 +20,9 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="{% static 'tienda/js/settings.js' %}"></script>
+    <script src="{% static 'tienda/js/settings.js' %}"></script>
 </head>
+<body onload="cargar()">
 <body onload="cargar()">
     <header>
         <div class="container" id=" containerNav" style="height: 65px;">
@@ -167,9 +169,11 @@
 
         {% endblock %}
     </div>
+    
     <footer>
         <div id="super">
             <div>
+                <h1 class="h1" id="company"></h1>
                 <h1 class="h1" id="company"></h1>
             </div>
             <div>

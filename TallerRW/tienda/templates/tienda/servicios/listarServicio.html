@@ -27,7 +27,8 @@
                 <td>$ {{ r.precio|floatformat:0|intcomma }}</td>
                 <td>
                     <a class="btn btn-info" href="{% url 'servicioEditar' r.id %}"><i class="bi bi-pencil-square"></i></a>
-                    <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>   
+                    <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a> 
+                    <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agg_{{ r.id }}" ><i class="bi bi-plus"></i></a>   
                 </td>
             </tr>
         {% endfor %}
@@ -39,7 +40,95 @@
 
     
     </div>
+    <div class="container-fluid m-3">
+        <h1 class="h1">Detalles de Servicios</h1>
+        <table class="table table-hover table-bordered" id="tableR">
+        <thead class="table-dark">
+            <tr>
+                <th>idServicio</th>
+                <th>Nombre del servicio</th>
+                <th>Descripcion</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in data1 %}
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.servicio }}</td>
+                    <td>{{ r.descripcion_proceso }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="javascript:eliminar('{% url 'servicioEliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a> 
+                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agg_{{ r.id }}" ><i class="bi bi-plus"></i></a>   
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        
+        </div>
 </main>
 
+{% for r in data %}
+<div class="modal" id="agg_{{ r.id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{ r.nombre }}</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div style="display: flex; flex-direction: column; justify-content: space-around;">
+                    <form action="{% url 'registrarDetalles' %}"  method="post">
+                        {% csrf_token %}
+                        <h1 style="text-align: center;">Detalles de servicio</h1>
+                        <div class="form-row">
+                        <input type="text" name="id" value="{{ r.id }}" hidden>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Nombre del servicio</label>
+                            <input readonly type="Text" class="form-control" id="NombreC" placeholder="Nombre de servicio" name="nombre" value="{{ r.nombre}}">
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripcion de proceso</label>
+                            <input type="text" class="form-control" id="descripcion" placeholder="Descripcion" name="descripcion_proceso">
+                        </div>
+                        <br>
+                        <div class="row">
+
+                            <div class="col">
+                                <label for="" class="form-label">Productos</label><br>
+                                {% for producto in productos %}
+                                <input  type="checkbox" id="producto_{{ producto.id }}" name="productos" value="{{ producto.id   }}">
+                                <label for="producto_{{ producto.id }}">{{ producto.nombre }}</label><br>
+                                {% endfor %}
+                            </div><br><br>
+                            
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
+              
+
+            </div>
+            
+          
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+{% endfor %}
 
 {% endblock %}

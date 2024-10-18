@@ -16,11 +16,13 @@
     <link rel="stylesheet" href="{% static 'tienda/css/registrarPr.css' %}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="{% static 'tienda/js/settings.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
 </head>
+
 <body onload="cargar()">
     <header>
         <div class="container" id=" containerNav" style="height: 65px;">
@@ -46,114 +48,116 @@
                                 </ul>
                             </li>
 
-                            {% if request.session.logueo.rol == 1 %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Clientes</a>
-                                <ul class="dropdown-menu" style="color: black;">
-                                    <li><a class="dropdown-item" href="{% url 'registrarCliente' %}">Registrar</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'listarCliente' %}">Listar</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Empleados</a>
-                                <ul class="dropdown-menu" style="color: black;">
-                                    <li><a class="dropdown-item" href="{% url 'nuevoempleados' %}">Registrar</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'empleado' %}">Listar</a></li>
-                                </ul>
-                            </li>
-
-                            
-                            {% endif %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Calificaciones</a>
-                                <ul class="dropdown-menu">
-                                    {% if request.session.logueo.rol == 1 %}
-                                    <li><a class="dropdown-item" href="{% url 'registrarCalificacion' %}">Registrar</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'calificacionListar' %}">Listar</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'calificaciones' %}">Calificaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Citas</a>
-                                <ul class="dropdown-menu">
-                                    {% if request.session.logueo.rol == 1 %}
-                                    <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'listarCita' %}">Listar</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'citas' %}">Citas</a></li>
-                                </ul>
-                            </li>
-                            
-                            {% if request.session.logueo.rol == 1 %}
-                                <li class="nav-item dropdown" >
-                                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                                        data-bs-toggle="dropdown" style="color: black;">Categoria</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{% url 'registrarCategoria' %}">Registrar</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'listarCategoria' %}">Listar</a></li>
-                                    </ul>
-                                </li>
-                            {% endif %}
-                            {% if request.session.logueo.rol == 1 %}
+                        {% if request.session.logueo.rol == 1 %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Clientes</a>
+                            <ul class="dropdown-menu" style="color: black;">
+                                <li><a class="dropdown-item" href="{% url 'registrarCliente' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'listarCliente' %}">Listar</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Empleados</a>
+                            <ul class="dropdown-menu" style="color: black;">
+                                <li><a class="dropdown-item" href="{% url 'nuevoempleados' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'empleado' %}">Listar</a></li>
+                            </ul>
+                        </li>
+                    <!--    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Proveedores</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'registrarProveedores' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'listarProveedores' %}">Listar</a></li>
+                            </ul>
+                        </li>
+                    -->
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Calificaciones</a>
+                            <ul class="dropdown-menu">
+                                {% if request.session.logueo.rol == 1 %}
+                                <li><a class="dropdown-item" href="{% url 'registrarCalificacion' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'calificacionListar' %}">Listar</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'calificaciones' %}">Calificaciones</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Citas</a>
+                            <ul class="dropdown-menu">
+                                {% if request.session.logueo.rol == 1 %}
+                                <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'listarCita' %}">Listar</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'citas' %}">Citas</a></li>
+                            </ul>
+                        </li>
+                        
+                        {% if request.session.logueo.rol == 1 %}
                             <li class="nav-item dropdown" >
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Emergencias</a>
+                                    data-bs-toggle="dropdown" style="color: black;">Categoria</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'listarEmergencias' %}">Usuarios</a></li>
-                                    
+                                    <li><a class="dropdown-item" href="{% url 'registrarCategoria' %}">Registrar</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'listarCategoria' %}">Listar</a></li>
                                 </ul>
                             </li>
-                            {% endif %}
+                        {% endif %}
+                        {% if request.session.logueo.rol == 1 %}
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Emergencias</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'listarEmergencias' %}">Usuarios</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" style="color: black;">Servicios</a>
+                            <ul class="dropdown-menu">
+                                {% if request.session.logueo.rol == 1 %}
+                                <li><a class="dropdown-item" href="{% url 'registrarServicio' %}">Registrar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'listarServicio' %}">Listar</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
+                            </ul>
+                        </li>
                         
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" style="color: black;">Servicios</a>
-                                <ul class="dropdown-menu">
-                                    {% if request.session.logueo.rol == 1 %}
-                                    <li><a class="dropdown-item" href="{% url 'registrarServicio' %}">Registrar</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'listarServicio' %}">Listar</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{% url 'servicios' %}">Servicios</a></li>
-                                </ul>
-                            </li>
+                    </ul>
+                    <form id='botones' class="d-flex">
+                        {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
+                            <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
+                            <a href="{% url 'perfil' %}" class="btn btn-outline-danger" ><i class="bi bi-person-fill" style="color: black;"></i></a>
+                            <a class="btn btn-outline-danger" href="{% url 'logout' %}"><i class="bi bi-door-open-fill" style="color: black;"></i></a>
+                            <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-outline-danger"><i class="bi bi-cart-fill" style="color: black;"></i></a>
                             
-                        </ul>
-                        <form id='botones' class="d-flex">
-                            {% if request.session.logueo.rol > 0 and request.session.logueo.rol <= 5 %}
-                                <a class="btn btn-danger" hidden href="{% url 'login' %}">Iniciar</a>
-                                <a href="{% url 'perfil' %}" class="btn btn-outline-danger" ><i class="bi bi-person-fill" style="color: black;"></i></a>
-                                <a class="btn btn-outline-danger" href="{% url 'logout' %}"><i class="bi bi-door-open-fill" style="color: black;"></i></a>
-                                <a href="javascript:showCart(`{% url 'showCart' %}`);" class="btn btn-outline-danger"><i class="bi bi-cart-fill" style="color: black;"></i></a>
-                                <ul class="navbar-nav me-auto">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle btn btn-outline-danger" href="#" role="button"
-                                            data-bs-toggle="dropdown"><i class="bi bi-list" style="color: black;"></i></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" style="color: black;"
-                                                    href="{% url 'perfil' %}">Perfil</a></li>
-                                            <li><a class="dropdown-item" style="color: black;"
-                                                    href="{% url 'add_car' %}">Mis vehiculos</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            {% else %}
-                                <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'login' %}">Iniciar Sesion</a>
-                                <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'register' %}">Registrarse</a>
+                        {% else %}
+                            <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'login' %}">Iniciar Sesion</a>
+                            <a class="btn btn-outline-danger text-black rounded-4" href="{% url 'register' %}">Registrarse</a>
+                      
+                        {% endif %}
                         
-                            {% endif %}
-                            
-                        </form>
-                    </div>
+                    </form>
                 </div>
-            </nav>
-        </div>
+            </div>
+        </nav>
 
     </header>
+    
+    <div>
+        {% block contenedor %}
+
+        {% endblock %}
+    </div>
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
@@ -162,11 +166,6 @@
             </div>
         {% endfor %}
     {% endif %}
-    <div>
-        {% block contenedor %}
-
-        {% endblock %}
-    </div>
     <footer>
         <div id="super">
             <div>
@@ -177,9 +176,18 @@
                 <p id="cel"></p>
                 <p id="cor"></p>
                 <p id="ubi"></p>
-
+                
             </div>
-
+            <div>
+                <h3>Servicios</h3>
+                <ul>
+                    <li>Mecanica</li>
+                    <li>Pintura</li>
+                    <li>Latoneria</li>
+                    <li>Electricidad</li>
+                </ul>
+            </div>
+            
         </div>
         <div id="infer" class="fixed-bottom">
             <h3>Redes Sociales</h3>

@@ -18,6 +18,7 @@
 </head>
 
 <body onload="cargar()">
+<body onload="cargar()">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="trasnnav">
             <div class="container">
@@ -78,6 +79,9 @@
                                 {% if request.session.logueo.rol == 1 %}
                                 <li><a class="dropdown-item" href="{% url 'registrarCitar' %}">Registrar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listarCita' %}">Listar</a></li>
+                                {% endif %}
+                                {% if request.session.logueo.rol == 3 %}
+                                <li><a class="dropdown-item" href="{% url 'citaEmpleado' %}">Listar</a></li>
                                 {% endif %}
                                 {% if request.session.logueo.rol == 3 %}
                                 <li><a class="dropdown-item" href="{% url 'citaEmpleado' %}">Listar</a></li>
@@ -194,8 +198,10 @@
     </div>
 
     <footer>
+    <footer>
         <div id="super">
             <div>
+                <h1 class="h1" id="company"></h1>
                 <h1 class="h1" id="company"></h1>
             </div>
             <div>
@@ -219,6 +225,7 @@
 <script src="{% static 'tienda/js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'tienda/js/libreria.js' %}"></script>
 <script src="{% static 'tienda/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </html>
