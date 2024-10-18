@@ -96,21 +96,45 @@
 
       <script>
 
+        
+      
         async function info(id){
 
           const info = document.querySelector('#detalles')
           const x = location.origin
+
           
 
-          url_service = await fetch(`${x}/api/1.0/DetalleServicio/${id}`)
-          data = await url_service.json()
+          url_service1 = await fetch(`http://127.0.0.1:8000/api/1.0/Servicios/${id}/`)
+          url_details = await fetch(`http://127.0.0.1:8000/api/1.0/DetalleServicio/`)
+          data1 = await url_service1.json()
+          data_detalle = await url_details.json()
 
+          let detalle;
+
+          for(let i=0;i<=data_detalle.length;i++){
+
+            if(data_detalle[i].servicio == `http://127.0.0.1:8000/api/1.0/Servicios/${id}/`){
+              console.log('Encontradoo')
+              
+              detalle = data_detalle[i].id
+              break;
+              
+            }
+          }
+
+          url_service = await fetch(`http://127.0.0.1:8000/api/1.0/DetalleServicio/${detalle}/`)
+          data = await url_service.json()
+          console.log(detalle)
+
+          
+          
           url_name_service = await fetch(data.servicio)
           data_service = await url_name_service.json()
 
           let tamano = data.producto.length
 
-          /*
+          
           data.producto.forEach(async function(url) {
             url_prod = await fetch(url)
             data_product = await url_prod.json()
@@ -120,8 +144,7 @@
 
             info.appendChild(p)
          })
-
-         */
+         
         
          info.innerHTML = `
           

@@ -24,11 +24,58 @@
                         <td>{{ location.ubicacion }}</td>
                         <td>{{ location.descripcion }}</td>
                         <td>{{ location.telefono }}</td>
-                        <td><a class="btn btn-danger" href="">Enviar ayuda</a></td>
+                        <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#agg{{location.id}}">Enviar ayuda</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </main>
+
+{% for p in user_locations %}
+  <div class="modal" id="agg{{p.id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Asignar encargado</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+         
+          <form class="form1" action="{% url 'asignarEmpleado' %}" method="post">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Encargado</h1>
+            <div class="form-row">
+              <input type="text" value="{{ p.id }}" hidden name="id">
+              <div class="form-group col-md-12">
+                <label for="inputPassword4">Empleado</label>
+                <select class="form-control" name="empleado">
+                    <option value="">Seleccione</option>
+                    {% for q in empleados %}
+                        <option value="{{ q.id }}">{{ q.nombre }}</option>
+                    {% endfor %}
+                    </select>
+                    <br>      
+              </div>
+              <br>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          </form>
+          
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}

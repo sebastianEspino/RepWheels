@@ -629,32 +629,36 @@ def citaRegistrar(request):
             servicio = Servicios.objects.get(pk=request.POST.get("servicio"))
             empleado = Usuarios.objects.get(pk=request.POST.get("empleado"))
             today = date.today()
-
+            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
+                messages.error(request,'No se permiten campos vacios')
+                return redirect("citas")
             hora = datetime.datetime.strptime(hora, '%H:%M')
             data_customer = datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d')
             hora_fin = hora + datetime.timedelta(hours=0, minutes=59)
 
             citas = Citas.objects.filter(Q(fechaServicio=fecha_servicio) | Q(empleado=empleado))
-            print(citas)
 
-            
-            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "":
-                messages.error('No se permiten campos vacios')
+        
+            if fecha_servicio == "" or hora == "" or servicio == "" or empleado == "" or data_customer == None:
+                messages.error(request,'No se permiten campos vacios')
+                return redirect("citas")
             else:
                 if data_customer.month >= today.month and data_customer.year >= today.year:   
                     
                     for agenda in citas:
-                        x = str(agenda.hora)
-                        f = str(agenda.hora_fin)
-                    
-                        if (hora >= datetime.datetime.strptime(x, '%H:%M:%S') and datetime.datetime.strptime(x, '%H:%M:%S') <= hora_fin ) or  (hora_fin >= datetime.datetime.strptime(f, '%H:%M:%S') and datetime.datetime.strptime(f, '%H:%M:%S') <= hora_fin ):                
-                            print('Aqui estoy yoooo !!')
-                            if (agenda.fechaServicio == fecha_servicio):
-                                print('Aqui fecha !!')
-                                messages.error(request,'Esta ocupado por otro usuario')
+                        hora_inicio_existente = agenda.hora
+                        hora_fin_existente = agenda.hora_fin
+
+                        
+                        if agenda.empleado == empleado and agenda.fechaServicio == datetime.datetime.strptime(fecha_servicio, '%Y-%m-%d').date():
+                            if (hora.time() < hora_fin_existente and hora_fin.time() > hora_inicio_existente):
+                                messages.error(request, f"HORAS CRUZADAS No puedes agendar citas a esta hora: {hora} con este servicio: {servicio} y con este empleado: {empleado}")
                                 break
+                        if (agenda.fechaServicio == fecha_servicio):
+                            print('Aqui fecha !!')
+                            messages.error(request,'Esta ocupado por otro usuario')
+                            break
                     else:
-                            print('Se puede agendar')
                             cita = Citas(
                                     fechaServicio=fecha_servicio,
                                     hora = hora,
@@ -678,8 +682,7 @@ def citaRegistrar(request):
 
     
     
-    return redirect("citas")
-        
+    return redirect("citas")        
 
         
 @login_requerido_admin
@@ -1033,7 +1036,8 @@ def registrarServicio(request):
 @login_requerido_admin
 def listarServicio(request):
     q = Servicios.objects.all()
-    contexto = {"data":q}
+    productos = Productos.objects.all()
+    contexto = {"data":q,"productos": productos}
     return render(request,'tienda/servicios/listarServicio.html',contexto)
 
 
@@ -1045,8 +1049,7 @@ def registroServicio(request):
         foto = request.FILES.get("foto_new") 
         if not foto:
             foto = 'tienda/media/servicio.jpg'
-            
-
+    
         if nombre.isnumeric() or descripcion_servicio.isnumeric():
             messages.error(request,f'No se permite numeros en el nombre!')
         elif nombre == "" or precio == "" or descripcion_servicio == "" or precio == "":
@@ -1082,6 +1085,35 @@ def servicioEliminar(request,id):
     except Exception as e:
         messages.error(request, f'Error: {e}')
 
+    return redirect('listarServicio')
+
+
+def registrarDetalles(request):
+    if request.method == "POST":
+        id = request.POST.get("id")
+        servicio = Servicios.objects.get(pk=id)
+        descripcion_proceso = request.POST.get("descripcion_proceso")
+        productos_seleccionados = request.POST.getlist('productos')
+
+        if descripcion_proceso == "" or productos_seleccionados == "":
+            messages.error(request,'No se permite campos vacios')
+        else:
+            try:
+                
+                ds = DetallesServicio(
+                    servicio = servicio,
+                    descripcion_proceso=descripcion_proceso,
+                    
+                )
+                ds.save()
+                ds.producto.set(productos_seleccionados)
+            
+                messages.success(request, "Servicio guardada correctamente!!")
+                return redirect("listarServicio")
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
+                print(e)
+    
     return redirect('listarServicio')
 
 @login_requerido_admin
@@ -1771,7 +1803,8 @@ def map(request):
 @login_requerido
 def listarEmergencias(request):
     e = Emergencia.objects.all()
-    context = {'user_locations':e}
+    empleados = Usuarios.objects.filter(rol=3)
+    context = {'user_locations':e,"empleados":empleados}
     return render(request,"tienda/maps/admin_view.html",context)
 
 def emergencia(request):
@@ -1800,6 +1833,26 @@ def emergencia(request):
                  messages.error(request, f"Error: {e}")
 
     return redirect('index')
+
+def asignarEmpleado(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        empleado = Usuarios.objects.get(pk=request.POST.get('empleado'))
+
+        if empleado == "":
+            messages.error(request,'No se permite enviar sin un encargado !!')
+        else:
+            try:
+
+                q = Emergencia.objects.get(pk=id)
+                q.empleado = empleado
+                q.save()
+                messages.success(request,'Encargado enviado !!')
+            except Exception as e:
+                 messages.error(request, f"Error: {e}")
+
+
+    return redirect('listarEmergencias')
 
 
 from rest_framework.authtoken.views import ObtainAuthToken

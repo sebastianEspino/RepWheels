@@ -102,6 +102,7 @@ urlpatterns = [
     path("servicioEliminar/<int:id>",views.servicioEliminar,name="servicioEliminar"),
     path("servicioEditar/<int:id>",views.servicio_form_editar,name="servicioEditar"),
     path("servicioActualizar",views.servicioActualizar,name="servicioActualizar"),
+    path("registrarDetalles",views.registrarDetalles,name="registrarDetalles"),
     
     
 
@@ -140,7 +141,10 @@ urlpatterns = [
     
     path('map',views.map,name='map'),
     path('emergencia',views.emergencia,name="emergencia"),
-    path('listarEmergencias',views.listarEmergencias,name='listarEmergencias')
+    path('listarEmergencias',views.listarEmergencias,name='listarEmergencias'),
+    path('asignarEmpleado',views.asignarEmpleado,name='asignarEmpleado'),
+    
+
 
 
 

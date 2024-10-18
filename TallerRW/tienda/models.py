@@ -30,9 +30,9 @@ class Productos(models.Model):
         return self.nombre
     
 class Servicios(models.Model):
-    nombre=models.CharField(max_length=254)
+    nombre = models.CharField(max_length=254)
     descripcion_servicio = models.TextField()
-    foto = models.ImageField(upload_to="media/", default="media/media/servicio.jpg")
+    foto = models.ImageField(upload_to="media/", default="tienda/media/servicio.jpg")
     precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
@@ -84,10 +84,9 @@ class Facturas(models.Model):
 
 class DetallesServicio(models.Model):
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
+    producto = models.ManyToManyField(Productos,related_name='productos')
     descripcion_proceso = models.CharField(max_length=254,blank=False,null=True)
-    def __str__(self):
-        return self.descripcion_proceso
+    
 
 
 
@@ -175,3 +174,11 @@ class Emergencia(models.Model):
     telefono = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=254)
     ubicacion = models.CharField(max_length=254)
+    empleado = models.ForeignKey(Usuarios, on_delete=models.DO_NOTHING,blank=True,null=True)
+    estados = (
+        (1,"Solicitada"),
+        (2,"En proceso"),
+        (3,"Finalizada"),
+
+    )
+    estado = models.IntegerField(choices=estados,default=1)
