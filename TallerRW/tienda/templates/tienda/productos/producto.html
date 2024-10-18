@@ -1,34 +1,38 @@
+
 {% extends 'tienda/base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block titulo %}Productos{% endblock %}
 
 {% block contenedor %}
       <main>
         <section style="background-color: black;">
-            <div id="carouselServicios" class="carousel slide" style="max-width: 100%;">
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentoproducto.jpg' %}" class="d-block mx-auto" width="80%" height="400px"
-                      alt="imagen descuentos">
-                  </div>
+          <div id="carrusel">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                <div class="carousel-inner">
+                    {% for p in Promociones %}
+                  
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <div class="d-flex align-items-center">
+                        <img src="{{ p.foto.url }}" class="d-block mx-auto" 
+                          alt="imagen descuentos">
+    
+                      </div>
+                    </div>
+                {% endfor %} 
                 </div>
-                <div class="carousel-item">
-                  <div class="d-flex align-items-center">
-                    <img src="{% static 'tienda/img/descuentomanodeobra.jpg' %}" class="d-block mx-auto" width="80%" height="400px" alt="imagen combos">
-                  </div>
-                </div>
-              </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicios" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterios</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselServicios" data-bs-slide="next">
-                <span class="carousel-control-next-icon" ariahidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-              </button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
+        </div>
           </section>
           <section class="servicios">
             <h1>Productos</h1>
@@ -37,18 +41,21 @@
               <div class="product">
                   
                       {% for p in data %}
-                              <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
+                          {% if p.cantidad > 0 %}
+                              <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 4%;">
                                 <img src="{{ p.foto.url }}" class="card-img-top" alt="{{ p.nombre }}" style="width:86%; height: 130px;" >
                                   <div class="card-body">
-                                    <p class="card-text">{{ p.nombre }} <br> <strong>$ {{ p.Precio }} </strong> <br> {{ p.descripcion_producto }} </p>
+                                    <p class="card-text">{{ p.nombre }} <br> <strong>$ {{ p.Precio|floatformat:0|intcomma }} </strong> <br> {{ p.descripcion_producto }} </p>
                                     <form>
                                       {% csrf_token %}
                                       <input type="hidden" name="id" id="id_{{ p.id }}" value="{{ p.id }}" />
                                       <input type="number" name="cantidad" id="cantidad_{{ p.id }}" min="1" max="{{ p.cantidad }}" value="1" style="width: 50px;" /><br><br>
-                                      <button type="button" onclick="addCart(`{% url 'addCart' %}` , {{ p.id }});"  class="btn btn-info">Add Carrito</button>
+                                      <p class="card-text">Unidades disponibles: <strong>{{ p.cantidad }}</strong></p>
+                                      <button type="button" onclick="addCart(`{% url 'addCart' %}` , {{ p.id }});"  class="btn btn-danger">Añadir al carrito</button>
                                   </form>
                                   </div>
                               </div>
+                            {% endif %}
                       {% endfor %}
               </div>
               {% else %}

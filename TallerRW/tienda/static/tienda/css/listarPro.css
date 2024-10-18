@@ -3,7 +3,8 @@ main{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 500px;
+    height: 100%;
+    padding: 7%;
 }
 h1{
     font-style: italic;
@@ -38,6 +39,7 @@ footer{
     color: rgb(255, 255, 255);
     border:1px solid black ;
 }
+
 #super{
     margin-top: 50px;
     display: flex;
@@ -48,7 +50,7 @@ footer{
 }
 
 #infer{
-    background-color:rgb(55, 191, 240);
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +88,8 @@ li{
 
 
 nav li a:hover{
-    background-color: rgb(55, 191, 240);
+    background-color: grey;
+    border-radius: 30PX;
 
 }
 

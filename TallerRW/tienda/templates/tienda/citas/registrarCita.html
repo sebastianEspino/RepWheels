@@ -9,37 +9,47 @@
     {% csrf_token %}
     <h1 style="text-align: center;">Formulario de cita</h1>
     <div class="form-row">
+      <div class="row">
+        <div class="col">
+          <label for="inputPassword4">Fecha</label>
+          <input type="date" class="form-control" id="Fecha" placeholder="Fecha" name="fechaServicio">
+        </div><br>
+        <div class="col">
+          <label for="inputCantidad">Hora</label>
+          <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
+        </div>
+      </div><br>
       <div class="form-group col-md-12">
-        <label for="inputPassword4">Fecha</label>
-        <input type="date" class="form-control" id="Fecha"  placeholder="Fecha" name ="fechaServicio">
-      </div>
-      <div class="form-group col-md-12">
-        <label for="inputCantidad">Hora</label>
-        <input type="time" class="form-control" id="Hora de servicio" placeholder="Hora" name="hora">
+        <label for="">Usuario</label>
+        <select class="form-control" name="usuario">
+          <option value="">Seleccione</option>
+          {% for c in usuarios %}
+          <option value="{{ c.id }}">{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
       </div>
       <br>
       <div class="form-group col-md-12">
-        <label for="">Cotizacion</label>
-              <select class="form-control" name="servicio">
-              <option value="">Seleccione</option>
-              {% for c in data1 %}
-                  <option value="{{ c.id }}">{{ c.descripcion }}</option>
-              {% endfor %}
-              </select>
-              
+        <label for="">Servicio</label>
+        <select class="form-control" name="servicio">
+          <option value="">Seleccione</option>
+          {% for c in data1 %}
+          <option value="{{ c.id }}">{{ c.descripcion_servicio }}</option>
+          {% endfor %}
+        </select>
       </div>
       <br>
       <div class="form-group col-md-12">
         <label for="">Empleado</label>
-              <select class="form-control" name="empleado">
-              <option value="">Seleccione</option>
-              {% for e in data %}
-                  <option value="{{ e.id }}">{{ e.empleado }}</option>
-              {% endfor %}
-              </select>
+        <select class="form-control" name="empleado">
+          <option value="">Seleccione</option>
+          {% for e in data %}
+          <option value="{{ e.id }}">{{ e.nombre }}</option>
+          {% endfor %}
+        </select>
       </div>
       <br>
-      <button type="submit" class="btn btn-success">Agendar</button>
+      <button type="submit" class="btn btn-primary">Agendar</button>
     </div>
   </form>
 </main>  

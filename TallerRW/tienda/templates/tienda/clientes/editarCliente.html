@@ -5,23 +5,29 @@
 
 {% block contenedor %}
 <main>
-  <form class="form1" action="{% url 'clientesActualizar' %}" method="post">
+  <form class="form1" action="{% url 'clientesActualizar' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <h1>Actualizar Cliente</h1>
     <input type="hidden" name="id" value="{{ data.id }}">
     <div class="form-row">
-      <div class="form-group col-md-12">
-        <label for="inputEmail4">Cedula</label>
-        <input type="text" class="form-control" id="Cedula" name="cedula" value="{{ data.cedula }}"placeholder="Cedula">
-      </div>
-      <div class="form-group col-md-12">
-        <label for="inputPassword4">Nombre completo</label>
-        <input type="Text" class="form-control" id="NombreC" name="nombre_completo" value="{{ data.nombre_completo }}" placeholder="NombreC">
+      <div class="row">
+        <div class="col">
+          <div class="form-group col-md-12">
+            <label for="inputEmail4">Cedula</label>
+            <input type="number" class="form-control" id="Cedula" name="cedula" placeholder="Cedula" value="{{ data.cedula }}">
+          </div>
+        </div><br>
+        <div class="col">
+          <div class="form-group col-md-12">
+            <label for="inputPassword4">Nombre completo</label>
+            <input type="Text" class="form-control" id="NombreC" name="nombre_completo" placeholder="Nombre completo" value="{{ data.nombre }}">
+          </div>
+        </div>
       </div>
 
       <div class="form-group col-md-12">
         <label for="inputAddress2">Correo electronico</label>
-        <input type="text" class="form-control" id="inputAddress2" name="correo" value="{{ data.correo }}"  placeholder="Correo">
+        <input type="text" class="form-control" id="inputAddress2" name="correo" value="{{ data.email }}"  placeholder="Correo">
       </div>
       <div class="form-group col-md-12">
         <label for="inputAddress2">Telefono</label>

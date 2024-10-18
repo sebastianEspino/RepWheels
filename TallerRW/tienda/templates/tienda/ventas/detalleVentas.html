@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 7%;
+        }
+
+        #info {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h6 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #000;
+        }
+
+        .table td {
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        @media print {
+            body {
+                font-size: 12pt;
+            }
+
+            main {
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 18pt;
+            }
+
+            .table th, .table td {
+                padding: 6px;
+                font-size: 10pt;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div style="display: flex; justify-content: center; align-content: center; padding: 7%;">
+        <div id="info">
+            <article id="info_bill">
+                <h1>Factura</h1><br>
+                <h6>Fecha de compra: {{ data1.fecha }}</h6><br>
+
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ data.producto }}</td>
+                            <td>{{ data.cantidad }}</td>
+                            <td>{{ data.precio }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h6>Total de la compra: {{ data1.total }}</h6><br>
+            </article>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

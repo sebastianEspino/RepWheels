@@ -15,11 +15,16 @@ router.register(r'DetalleFactura',views.DetalleFacturaViewSet)
 router.register(r'DetalleServicio',views.DetalleServicioViewSet)
 router.register(r'Categorias',views.CategoriaViewSet)
 router.register(r'Vehiculos',views.VehiculosViewSet)
-
+router.register(r'Configuracion',views.ConfiguracionViewSet)
+router.register(r'RegistrarUsuarios',views.RegistrarUsuarioViewSet)
 
 urlpatterns = [
+
     path('',views.index, name = "index"),
     path('api/1.0/', include(router.urls)),
+    path('api/1.0/token-auth/', views.CustomAuthToken.as_view()),
+    path('api/1.0/api-auth/', include('rest_framework.urls')),
+    path('api/1.0/registrar_usuario/', views.RegistrarUsuario.as_view(), name='registrar_usuario'),
     #crud de productos
     path('productos',views.productos,name='productos'),
     path('listarProductos',views.listarProductos, name= "listarProductos"),
@@ -61,6 +66,12 @@ urlpatterns = [
     path("citaEliminar/<int:id>", views.citaEliminar, name="citaEliminar"),
     path("cita_formulario_editar/<int:id>", views.cita_formulario_editar, name="cita_formulario_editar"),
     path("citaActualizar", views.citaActualizar, name="citaActualizar"),
+    path('citaEmpleado',views.citasEmpleado,name='citaEmpleado'),
+    path('cancelar/',views.cancell,name='cancelar'),
+    path('terminar/',views.finish,name='terminar'),
+    path('eliminarCita',views.deleteDateFromCustomer,name='eliminarCita'),
+    path('historialCita',views.historialCita,name='historialCita'),
+    
     
     #CRUD calificaciones
     path('calificaciones',views.calificaciones,name='calificaciones'),
@@ -71,8 +82,18 @@ urlpatterns = [
     path("calificacionActualizar", views.calificacionActualizar, name="calificacionActualizar"),
     path("registrarCalificacion", views.registrarCalificacion, name="registrarCalificacion"),
     path("agregar_calificacion_form",views.agregar_calificacion_form, name="agregar_calificacion_form"),
+    path("eliminarCalificacion",views.eliminarCalificacion, name="eliminarCalificacion"),
+    
 
-	
+
+    #crud de categoria
+    path('cotizaciones',views.cotizaciones,name='cotizaciones'),
+    path('registrarCategoria',views.registrarCategoria,name='registrarCategoria'),
+    path('listarCategoria/',views.listarCategoria,name='listarCategoria'),
+    path('categoriaRegistrar/',views.categoriaRegistrar,name='categoriaRegistrar'),
+    path('categoriaActualizar/',views.categoriaActualizar,name='categoriaActualizar'),
+    path('categoriaEliminar/<int:id>',views.categoriaEliminar,name='categoriaEliminar'),
+    path('categoriaEditar/<int:id>',views.categoriaEditar,name='categoriaEditar'),
     
     #crud Servicios
     path('servicios',views.servicio,name='servicios'),
@@ -101,8 +122,11 @@ urlpatterns = [
     path("recuperacionCorreo",views.emailToPassword,name="recuperacionCorreo"),
     path("completarInformacion",views.completeInformation,name="completarInformacion"),
     path("add_car_profile",views.add_car_profile,name="add_car_profile"),
+    path("edite_car_profile",views.edite_car_profile,name="edite_car_profile"),
     path("add_car",views.add_car,name="add_car"),
     path("delete_car/<int:id>",views.deleteCar,name="delete_car"),
+    path('restablecimiento',views.restablecimiento,name='restablecimiento'),
+    path('updatePictureProfile',views.updatePictureProfile,name='updatePictureProfile'),
     
     #Cart - Shopping
 
@@ -111,9 +135,18 @@ urlpatterns = [
     path("eliminarProductoCarrito/<int:id>",views.removeOne,name="eliminarProductoCarrito"),
     path("vaciarCarrito",views.removeEvething,name="vaciarCarrito"),
     path("actualizarCarrito/<int:id>",views.updateAmountCar,name="actualizarCarrito"),
-    
     path("pagar",views.payment,name="pagar"),
+    path('compras',views.compras,name='compras'),
+    path('detalleInfo/<int:id>',views.details_buy,name="detalleInfo"),
+    
+    path('map',views.map,name='map'),
+    path('emergencia',views.emergencia,name="emergencia"),
+    path('listarEmergencias',views.listarEmergencias,name='listarEmergencias'),
 
+    #PDF-reportes
+    path("pdfCalificaciones/", views.pdfCalificaciones, name="pdfCalificaciones"),
+    path("pdfCitas/", views.pdfCitas, name="pdfCitas"),
+    path("pdfCompras/", views.pdfCompras, name="pdfCompras"),
 
 
 

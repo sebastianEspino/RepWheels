@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura Electrónica de Servicios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #333;
+            color: white;
+        }
+        .table td {
+            background-color: #f9f9f9;
+        }
+        .text-end {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="logo_url_aqui" alt="Logo de la Empresa">
+        </div>
+        
+        <h1>Historial Electrónico de Calificaciones</h1>
+        
+        <main class="mainly">
+            <div class="container-fluid m-3" style="padding:7%;">
+                {% if data %}
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Cantidad de estrellas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in data %}
+                        <tr>
+                            <td>{{ r.cliente }}</td>
+                            <td>{{ r.servicios }}</td>
+                            <td>{{ r.cantidad_estrellas }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+                {% else %}
+                <h1>No hay información de facturas disponibles</h1>
+                {% endif %}
+            </div>
+        </main>
+        
+        <div class="footer">
+            <p>Gracias por su preferencia</p>
+            <p>Este es un documento generado electrónicamente, no requiere firma.</p>
+        </div>
+    </div>
+
+</body>
+</html>

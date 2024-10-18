@@ -13,6 +13,16 @@ class VehiculosSerializers(serializers.HyperlinkedModelSerializer):
         fields = ['id','cliente','vehiculo','modelo','placa','kilometraje','linea']
 
 
+class ConfiguracionSerializers(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Configuracion
+        fields = ['id','nombre','contacto','ubicacion','correo']
+
+class RegistrarUsuarioSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RegistrarUsuario
+        fields = ['id', 'nombre', 'correo', 'clave1', 'clave2']
+
 
 class ProveedoresSerializers(serializers.ModelSerializer):
     class Meta:
@@ -34,7 +44,7 @@ class ProductosSerializers(serializers.HyperlinkedModelSerializer):
 class CitasSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Citas
-        fields = ['id','fechaServicio','hora','servicio','cliente','empleado']
+        fields = ['id','fechaServicio','hora','hora_fin','servicio','cliente','empleado','estado']
 
 class CalificacionesSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:

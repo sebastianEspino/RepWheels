@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid {
+            width: 90%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .table td {
+            background-color: #fff;
+            font-size: 13px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        h6 {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        @media print {
+            body {
+                font-size: 12pt;
+            }
+            .container-fluid {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                font-size: 18pt;
+            }
+            .table th, .table td {
+                padding: 6px;
+                font-size: 10pt;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main class="mainly">
+  <div class="container-fluid m-3" style="padding:7%;">
+    {% if data %}
+    <h1 class="h1">Mis Compras</h1><br>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Numero de Compra</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in data %}
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.fecha }}</td>
+            <td>{{ r.cliente }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <h1>No hay información de compras realizadas</h1>
+    {% endif %}
+  </div>
+</main>
+
+</body>
+</html>

@@ -5,45 +5,105 @@
 
 {% block contenedor %}
 <h1 class="text-center" style="padding-top: 5%;">Informacion de perfil</h1>
-<div id="info">
-    <article id="info_p">
-       <!-- <img src="{{ data.foto }}" alt="" height="100px" width="200px"><br><br> !-->
-        <p>
-            Nombre : {{ data.nombre }} <br>
-            Correo : {{ data.correo }} <br>
-        </p>
-        {% if request.session.rol != 4 %}
-            {% if data1.n == 0 %}
-                <form action="{% url 'completarInformacion' %}" method="post">
-                    {% csrf_token %}
-                    <input type="number" value="1" name="info" hidden>
-                    <label for="">Cedula:</label>
-                    <input type="number" name="cedula"><br>
-                    <label for="">Telefono</label>
-                    <input type="number" name="telefono"><br>
-                    <label for="">Direccion</label>
-                    <input type="text" name="direccion"><br>
-                    <button class="btn btn-danger">Enviar</button>
-                </form>
-            {% elif data1.n == 1 %}
-            <p>
-                Cedula : {{ data1.cedula }} <br>
-                Telefono : {{ data1.telefono }} <br>
-                Direccion : {{ data1.direccion }} <br>
-            </p>
+<div style="display: flex; justify-content: center; align-content: center;">
+    
+    <div id="info">
+        <article id="info_p">
+            <div style="display: flex; justify-content: center; flex-direction: column; gap: 20px;">
+                <img src="{{ data.foto.url  }}" alt="{{ data.foto  }}" height="100px" width="150px">
+                <p style="text-align: center; font-style: oblique;"><strong>({{ data.get_rol_display }})</strong></p>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#upload">Cambiar</button>
+            </div>
+            
+            {% if request.session.rol != 1 %}
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;" >
+            
+                {% if data1.n == 0 %}
+                    <form action="{% url 'completarInformacion' %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" value="1" name="info" hidden>
+                        <label for="">Cedula:</label>
+                        <input type="number" name="cedula"><br><br>
+                        <label for="">Telefono</label>
+                        <input type="number" name="telefono"><br><br>
+                        <label for="">Direccion</label>
+                        <input type="text" name="direccion"><br><br>
+                      
+                        {% if request.session.logueo.rol == 3 %}
+                            <label for="">Cargo</label>
+                            <input type="text" name="cargo"><br><br>
+                        {% endif %}
+
+                        <button class="btn btn-danger">Enviar</button>
+                    </form>
+                {% elif data1.n == 1 %}
+
+                <p style="text-align: center;">
+                    Nombre : {{ data.nombre }} <br>
+                    Correo : {{ data.email }} <br>
+                    Cedula : {{ data1.cedula }} <br>
+                    Telefono : {{ data1.telefono }} <br>
+                    Direccion : {{ data1.direccion }} <br>
+                    {% if request.session.logueo.rol == 3 %}
+                    Cargo : {{ data1.cargo }} <br>
+                    {% endif %}
+                </p>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        <br><br>
+            
+            {% if data1.n == 0 %}
+                <div hidden>
+                    <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
+                        
+                    <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+                </div>
+            {% elif data1.n == 1 %}
+                <div >
+                    <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
+                        
+                    <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+                </div>
+            {% endif %}
+            </div>
+        </article>
+        
+    
+    </div>
+    
 
-        <div>
-            <a class="btn btn-danger" href="{% url 'formEditeProfile' %}">Editar</a>
-                 
-            <a href="{% url 'change_password' %}"class="btn btn-danger">Cambiar contraseña</a>
+</div>
+
+
+<div class="modal" id="upload">
+    <div class="modal-dialog" style="height: 300px;">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Cambio de foto</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-    </article>
-
-</main>
-
-
+  
+        <!-- Modal body -->
+        <div class="modal-body" id='body_modal'>
+            <form action="{% url 'updatePictureProfile' %}" method="post" class="m-3 text-center" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" hidden value="{{ data.id }}" name="id">
+                <label for="">Foto de perfil: </label>
+                <input class="form-control" type="file" name="foto_new" placeholder="foto"><br>
+                <button type="submit" class="btn btn-danger">Guardar cambios</button>
+            </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
 
 {% endblock %}

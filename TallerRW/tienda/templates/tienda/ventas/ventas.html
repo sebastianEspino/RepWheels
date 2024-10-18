@@ -1,0 +1,41 @@
+{% extends 'tienda/base.html' %}
+{% load static %}
+
+{% block titulo %}Compras{% endblock %}
+
+{% block contenedor %}
+<main class="mainly">
+  <div class="container-fluid m-3" style="padding:7%;">
+    {% if data %}
+    <h1 class="h1">Mis compras</h1><br>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Numero de compra</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in data %}
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.fecha }}</td>
+            <td>{{ r.cliente }}</td>
+            
+            <td>
+              <a type="button" class="btn btn-danger" href="{% url 'detalleInfo' r.id %}">Ver detalles</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+<a class="btn btn-primary m-2" href="{% url 'pdfCompras' %}">CrearPDF</a>
+      {% else %}
+      <h1 >No hay informacion de compras realizadas</h1>
+    {% endif %}
+  </div>
+</main>
+
+{% endblock %}

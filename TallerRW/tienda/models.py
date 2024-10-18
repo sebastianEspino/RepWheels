@@ -22,9 +22,9 @@ class Productos(models.Model):
     Precio=models.IntegerField(null = False)
     descripcion_producto = models.TextField()
     cantidad=models.IntegerField()
-    fecha_Creacion=models.DateField()
+    #fecha_Creacion=models.DateField()
     categoria=models.ForeignKey(Categoria,on_delete=models.DO_NOTHING,blank=False,null=True)
-    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_productos/default.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/default.png")
     
     def __str__(self):
         return self.nombre
@@ -32,7 +32,7 @@ class Productos(models.Model):
 class Servicios(models.Model):
     nombre=models.CharField(max_length=254)
     descripcion_servicio = models.TextField()
-    foto = models.ImageField(upload_to="fotos_servicios/", default="fotos_servicios/servicio.jpg")
+    foto = models.ImageField(upload_to="media/", default="media/media/servicio.jpg")
     precio = models.IntegerField(null=False,blank=False,default=100000)
     def __str__(self):
         return self.nombre
@@ -40,7 +40,7 @@ class Servicios(models.Model):
 class Promociones(models.Model):
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=True)
     descripcion = models.CharField(max_length=254)
-    foto = models.ImageField(upload_to="fotos_servicios/", default="fotos_servicios/servicio.jpg")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/servicio.jpg")
 
 class Usuarios(AbstractUser):
     username = None
@@ -49,11 +49,11 @@ class Usuarios(AbstractUser):
     email = models.EmailField(max_length=254, unique=True,blank=False,null=True)
 	# Custom model authentication: paso 5, el campo password para django es obligatorio, cambiar clave -> password
     password = models.CharField(max_length=254,blank=False,null=True)
-    foto = models.ImageField(upload_to="fotos_usuarios/", default="fotos_usuarios/user.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/user.png")
     token_recuperar = models.CharField(max_length=254,blank=False,null=False,default=0)
     telefono=models.IntegerField(null=False,blank=True,default='0')
     #fecha_contratacion=models.DateField(blank=True,null=False)
-    cargo=models.CharField(max_length=254,null=False)
+    cargo = models.CharField(max_length=254,null=False)
     direccion=models.CharField(max_length=254)
     cedula=models.IntegerField(blank=True,null=False,default='0')
 
@@ -77,13 +77,14 @@ class Usuarios(AbstractUser):
 class Facturas(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     fecha = models.DateField(auto_now=True)
+    total = models.IntegerField(default=0)
     def __str__(self):
-        return self.cliente
+        return f'{self.cliente}'
     
 
 class DetallesServicio(models.Model):
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,default='1')
-    producto = models.ManyToManyField(Productos)
+    producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     descripcion_proceso = models.CharField(max_length=254,blank=False,null=True)
     def __str__(self):
         return self.descripcion_proceso
@@ -102,6 +103,7 @@ class Vehiculos(models.Model):
 class Citas(models.Model):
     fechaServicio = models.DateField(null=True)
     hora = models.TimeField(null=True)
+    hora_fin = models.TimeField()
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True,related_name='cliente')
     servicio = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=False)
     empleado = models.ForeignKey(Usuarios, on_delete=models.DO_NOTHING,blank=False,null=True,related_name='empleado')
@@ -112,26 +114,26 @@ class Citas(models.Model):
 
     )
     estado = models.IntegerField(choices=estados,default=1)
-
+    observacion = models.CharField(max_length=254,null=False,blank=True)
     def __str__(self):
         return f'{self.fechaServicio}'
 
 
 class DetalleFactura(models.Model):
-    fecha = models.DateField()
-    cita = models.ForeignKey(Citas,on_delete=models.DO_NOTHING,default='1')
+    factura = models.ForeignKey(Facturas,on_delete=models.DO_NOTHING,default='1')
     producto = models.ForeignKey(Productos,on_delete=models.DO_NOTHING,default='1')
     cantidad = models.IntegerField()
-    total = models.IntegerField()
+    precio = models.IntegerField()
+    
     def __str__(self):
-        return self.fecha
+        return f'{self.factura}'
 
     
     
 class Calificaciones(models.Model):
     cliente = models.ForeignKey(Usuarios,on_delete=models.DO_NOTHING,blank=False,null=True)
     servicios = models.ForeignKey(Servicios,on_delete=models.DO_NOTHING,blank=False,null=True)
-    foto = models.ImageField(upload_to="fotos_productos/", default="fotos_usuarios/user.png")
+    foto = models.ImageField(upload_to="tienda/media/", default="tienda/media/user.png")
     Estrellas= (
         (1, "1"),
         (2,"2"),
@@ -142,12 +144,13 @@ class Calificaciones(models.Model):
     )
     cantidad_estrellas = models.IntegerField(choices=Estrellas,default=5)
     def __str__(self):
-        return self.servicio
+        return f'{self.servicios}'
     
 class Configuracion(models.Model):
     nombre = models.CharField(max_length=254)
     contacto = models.CharField(max_length=254)
     ubicacion = models.CharField(max_length=254)
+    correo = models.CharField(max_length=254,blank=False,null=True)
     
 
 from django.conf import settings
@@ -159,3 +162,16 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+class RegistrarUsuario(models.Model):
+	nombre = models.CharField(max_length=254)
+	correo = models.EmailField(max_length=254, unique=True)
+	clave1 = models.CharField(max_length=254)
+	clave2 = models.CharField(max_length=254)
+
+class Emergencia(models.Model):
+    nombre = models.CharField(max_length=50)    
+    telefono = models.CharField(max_length=20)
+    descripcion = models.CharField(max_length=254)
+    ubicacion = models.CharField(max_length=254)

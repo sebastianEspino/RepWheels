@@ -10,8 +10,9 @@ class Categoria(admin.ModelAdmin):
 
 @admin.register(Productos)
 class Producto(admin.ModelAdmin):
-    list_display = ['id','nombre','Precio','descripcion_producto','cantidad','fecha_Creacion','foto','ver_foto']
+    list_display = ['id','nombre','Precio','descripcion_producto','cantidad','foto','ver_foto']
     search_fields = ['nombre']
+    list_editable = ['cantidad']
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
@@ -36,9 +37,9 @@ class Proveedores(admin.ModelAdmin):
     
 @admin.register(Usuarios)
 class Usuario(admin.ModelAdmin):
-    list_display=['id','nombre','email','password','rol','foto','ver_foto']
+    list_display=['id','nombre','email','password','rol','foto','ver_foto','token_recuperar']
     search_fields = ['nombre']
-    list_editable = ["rol"]
+    list_editable = ["rol",'password','email']
 
     def ver_foto(self, obj):
         return mark_safe(f"<a href='{obj.foto.url}'><img src='{obj.foto.url}' width='25%'></a>")
@@ -53,17 +54,17 @@ class Calificaciones(admin.ModelAdmin):
 
 @admin.register(Citas)
 class Citas(admin.ModelAdmin):
-     list_display=['id','fechaServicio','hora','cliente','servicio','empleado','estado']
-     search_fields = ['tipoServicio']
+     list_display=['id','fechaServicio','hora','cliente','servicio','empleado','estado','hora_fin','observacion']
+     search_fields = ['servicio']
 
 @admin.register(Facturas)
 class Facturas(admin.ModelAdmin):
-    list_display = ["id","cliente","fecha"]
+    list_display = ["id","cliente","fecha","total"]
 
 
 @admin.register(DetalleFactura)
 class DetalleFacturas(admin.ModelAdmin):
-    list_display = ["id","producto","cita","cantidad","total"]
+    list_display = ["id","factura","cantidad","precio"]
 
 
 @admin.register(DetallesServicio)

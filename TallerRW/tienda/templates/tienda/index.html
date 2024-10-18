@@ -1,6 +1,6 @@
 {% extends 'tienda/base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block titulo %}Inicio{% endblock %}
 
 {% block contenedor %}
@@ -13,66 +13,26 @@
         </div><br>
         <div class="opc">
             <h3>¿Te encuentras varado?</h3>
-            <button class="btn btn-outline-danger btn-lg" data-bs-toggle="modal"
-                data-bs-target="#emergence">Emergencia</button>
+            <a class="btn btn-outline-danger btn-lg" href="{% url 'map' %}">Emergencia</a>
         </div>
     </div>
 </div>
 </header>
 <main>
-    <section id="section1">
-        <div class="tit">
-            <h1>Servicios</h1>
-        </div>
-        <article class="tarjetas">
-                {% for i in servicios %}
-                    
-                        <div class="card align-items-center text-center p-10" style="width: 18rem; padding: 10px;">
-                            <div class="col-md-4">
-                                <img src="{{ i.foto.url }}" class="img-fluid rounded-start" alt="{{ i.nombre }}" style="width:100%; height: 130px;">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ i.nombre }}</h5>
-                                    <p class="card-text">{{ i.descripcion_servicio }}</p>
-                                    <button class="btn btn-primary btn-sm">Ver más</button>
-                                </div>  
-                            </div>
-                        </div>
-                        
-                
-                {% endfor %}
-            
-        </article>
-        <div class="text-center mb-4">
-            <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>
-        </div>
-        
-    </section>
-    <section id="section2">
-        <div class="tit">
-            <h1>Procesos automotrices</h1>
-        </div>
+    <section  id="section1" >
         <div id="carrusel">
             <div id="carouselExampleDark" class="carousel carousel-dark slide">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="{% static 'tienda/img/pintura.jpg' %}" class="d-block w-100" alt="..." height="400px">
+                    {% for p in Promociones %}
+                  
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <div class="d-flex align-items-center">
+                        <img src="{{ p.foto.url }}" class="d-block mx-auto" 
+                          alt="imagen descuentos">
+    
+                      </div>
                     </div>
-                    <div class="carousel-item" data-bs-interval="2000">
-                        <img src="{% static 'tienda/img/imgc2.jpg' %}" class="d-block w-100" alt="..." height="400px">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{% static 'tienda/img/imgc3.jpg' %}" class="d-block w-100" alt="..." height="400px">
-                    </div>
+                {% endfor %} 
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                     data-bs-slide="prev">
@@ -86,6 +46,72 @@
                 </button>
             </div>
         </div>
+    </section>
+    
+    <section id="section1">
+        <div class="tit">
+            <h1>Servicios</h1>
+        </div>
+        <article class="tarjetas">
+            {% for i in servicios|slice:":4" %}
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{ i.foto.url }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ i.nombre }}</h5>
+                                <p class="card-text">{{ i.descripcion_servicio }}</p>
+                                <p class="card-text">$ {{ i.precio|floatformat:0|intcomma }}</p>
+                            </div>
+                        </div>
+                
+                {% endfor %}
+            
+        </article>
+        <div class="text-center mb-4">
+            <a href="{% url 'servicios' %}" class="btn btn-danger" >Ver más servicios</a>
+        </div>
+        <section class="section3">
+            <div class="tit">
+                <h1>Calificaciones de nuestro servicios</h1>
+            </div>
+            <article class="tarjetas">
+                {% if data %}
+                {% for e in data %}
+                    {% if forloop.counter > 0 and forloop.counter <= 3 %}
+                        <div class="card align-items-center text-center p-10" style="width:20%; padding: 2%;">
+                            <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
+                            <div class="card-body">
+                            <strong>Calificaciones: </strong>
+                            <form id="form_calificaciones">
+            
+                                <p class="clasificacion">
+                                <input type="radio" name="estrellas" class="star" value="5" {% if e.cantidad_estrellas == 5 %}checked="true"{% endif%}>
+                                <label for="radio1">★</label>
+                                <input type="radio" name="estrellas" class="star" value="4" {% if e.cantidad_estrellas == 4 %}checked="true"{% endif%}>
+                                <label for="radio2">★</label>
+                                <input type="radio" name="estrellas" class="star" value="3" {% if e.cantidad_estrellas == 3 %}checked="true"{% endif%}>
+                                <label for="radio3">★</label>
+                                <input type="radio" name="estrellas" class="star" value="2" {% if e.cantidad_estrellas == 2 %}checked="true"{% endif%}>
+                                <label class="st">★</label>
+                                <input type="radio" name="estrellas" class="star" value="1" {% if e.cantidad_estrellas == 1 %}checked="true"{% endif%}>
+                                <label for="radio5">★</label>
+                                </p>
+                            </form>
+                            <p class="card-text">{{ e.nombre }} </p>
+                            <p class="text"><strong>Hecho por: </strong> {{ e.cliente }}</p>
+                            <p class="text"><strong>Servicio: </strong>{{ e.servicios }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %} 
+                {% else %}
+                        <h2>No hay calificaciones</h2>
+                {% endif %}             
+            </article><br>
+            <div class="text-center mb-4">
+                <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
+            </div>
+        </section>
+        
     </section>
     <section class="section3">
         <div class="tit">
@@ -118,46 +144,46 @@
             </div>
         </div>
     </section>
-    <section class="section3">
-        <div class="tit">
-            <h1>Calificaciones de nuestro servicios</h1>
+    
+</main>
+    <div class="modal" id="emergence">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">{{ q.nombre }}</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1>Envía tu Ubicación</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button id="send-location" type="button">Obtener Ubicación</button><br>
+                    <input type="text" name="longitude"><br>
+                    <input type="text" name="latitude"><br>
+                    <input type="text" name="address" style="width:400px;"><br>
+                    
+                    <button type="submit">Enviar</button>
+                </form>
+
+                <div id="map"></div>
+                    
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+      
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+      
+          </div>
         </div>
-        <article class="tarjetas">
-            {% if data %}
-            {% for e in data %}
-                {% if forloop.counter > 0 and forloop.counter <= 3 %}
-                    <div class="card align-items-center text-center p-10" style="width: 20rem; padding: 10px;">
-                        <img src="{{ e.foto.url }}" class="card-img-top" style="width:85%;">
-                        <div class="card-body">
-                        <strong>Calificaciones: </strong>
-                        <form id="form_calificaciones">
-        
-                            <p class="clasificacion">
-                            <input type="radio" name="estrellas" class="star" value="5" {% if e.cantidad_estrellas == 5 %}checked="true"{% endif%}>
-                            <label for="radio1">★</label>
-                            <input type="radio" name="estrellas" class="star" value="4" {% if e.cantidad_estrellas == 4 %}checked="true"{% endif%}>
-                            <label for="radio2">★</label>
-                            <input type="radio" name="estrellas" class="star" value="3" {% if e.cantidad_estrellas == 3 %}checked="true"{% endif%}>
-                            <label for="radio3">★</label>
-                            <input type="radio" name="estrellas" class="star" value="2" {% if e.cantidad_estrellas == 2 %}checked="true"{% endif%}>
-                            <label class="st">★</label>
-                            <input type="radio" name="estrellas" class="star" value="1" {% if e.cantidad_estrellas == 1 %}checked="true"{% endif%}>
-                            <label for="radio5">★</label>
-                            </p>
-                        </form>
-                        <p class="card-text">{{ e.nombre }} </p>
-                        <p class="text"><strong>Hecho por:</strong> {{ e.cliente }}</p>
-                        <p class="text"><strong>Servicio:</strong>{{ e.servicio }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %} 
-            {% else %}
-                    <h2>No hay calificaciones</h2>
-            {% endif %}           
-        </article><br>
-        <div class="text-center mb-4">
-            <a href="{% url 'calificaciones' %}" class="btn btn-danger" >Ver más</a>
-        </div>
-    </section>
+    </div>
+
+      
+   
     {% endblock %}

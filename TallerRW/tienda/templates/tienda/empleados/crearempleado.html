@@ -5,38 +5,41 @@
 
 {% block contenedor %}
 <main>
-    <form class="form1" action="{% url 'newempleados' %}" method="post">
+    <form class="form1" action="{% url 'newempleados' %}" method="post" enctype="multipart/form-data">
         <h1 style="text-align: center;">Formulario de empleados</h1>
         {% csrf_token %}
         <div class="form-row p-5">
-          <div class="form-group col-md-12">
-            <label for="inputEmail4">Cedula</label>
-            <input type="text" class="form-control" id="Cedula" name="cedula" placeholder="Cedula">
-          </div>
-          <br>
           <div class="form-group col-md-12">
             <label for="inputPassword4">Nombres y apellidos</label>
             <input type="Text" class="form-control" id="NombreC" name="nombre" placeholder="Nombre completo">
           </div>
           <br>
           <div class="form-group col-md-12">
-            <label for="inputAddress2">Fecha de contratacion</label>
-            <input type="date" class="form-control" id="inputAddress2" name="fecha" placeholder="Fecha">
-          </div>
-          <div class="form-group col-md-12">
             <label for="inputAddress2">Correo electronico</label>
             <input type="text" class="form-control" id="inputAddress2" name="correo" placeholder="Correo">
-          </div>
+          </div><br>
+
           <div class="form-group col-md-12">
-            <label for="inputAddress2">Telefono</label>
-            <input type="Text" class="form-control" id="inputAddress2" name="telefono" placeholder="Telefono">
+            <label for="inputPassword4">Clave</label>
+            <input type="password" class="form-control" id="NombreC" name="password" placeholder="Clave">
+          </div><br>
+          <div class="row">
+            <div class="col">
+              <label for="inputAddress2">Telefono</label>
+              <input type="number" class="form-control" id="inputAddress2" name="telefono" placeholder="Telefono">
+            </div><br>
+            <div class="col">
+              <label for="inputAddress2">Cargo</label>
+               <input type="Text" class="form-control" id="inputAddress2" name="cargo" placeholder="Cargo">
+            </div>
+            <div class="col">
+              <label for="inputAddress2">Cedula</label>
+               <input type="number" class="form-control" id="inputAddress2" name="cedula" placeholder="cedula">
+            </div>
           </div>
-          <div class="form-group col-md-12">
-            <label for="inputAddress2">Cargo</label>
-            <input type="Text" class="form-control" id="inputAddress2" name="cargo" placeholder="cargo">
-          </div>
+         
           <br>
-          <button type="submit" class="btn btn-success">Registrar</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
         </div>
       </form>
 </main>

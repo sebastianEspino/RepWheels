@@ -1,44 +1,82 @@
 {% extends 'tienda/base1.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block titulo %}Listar Productos{% endblock %}
 
 {% block contenedor %}
-<div class="container-fluid m-3" style="padding:50px;">
-    <h1>Productos</h1>
-        <table  class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Fecha de Creación</th>
-                    <th>Categoria</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for q in data %}
+<main>
+    <div class="container-fluid m-3" style="padding: 2%;">
+        <h1>Productos</h1>
+            <table  class="table table-bordered table-hover" id="tableR">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ q.id }}</td>
-                        <td>{{ q.nombre }}</td>
-                        <td>{{ q.Precio }}</td>
-                        <td>{{ q.descripcion_producto }}</td>
-                        <td>{{ q.cantidad }}</td>
-                        <td>{{ q.fecha_Creacion }}</td>
-                        <td>{{ q.categoria }}</td>
-                        
-                        
-                        <td>
-                            <a class="btn btn-info" href="{% url 'editarProductos' q.id %}">Editar</a>
-                            <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')">Eliminar</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Categoria</th>
+                        <th>Acciones</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div>
-
+                </thead>
+                <tbody>
+                    {% for q in data %}
+                        <tr>
+                            <td>{{ q.id }}</td>
+                            <td>{{ q.nombre }}</td>
+                            <td>$ {{ q.Precio|floatformat:0|intcomma }}</td>
+                            <td>{{ q.descripcion_producto }}</td>
+                            <td>{{ q.cantidad }}</td>
+                            <td>{{ q.categoria }}</td>
+                            
+                            
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#agg_{{ q.id }}"><i class="bi bi-eye"></i></button>
+                                <a class="btn btn-info" href="{% url 'editarProductos' q.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-danger" href="javascript:eliminar('{% url 'eliminarProductos' q.id %}')"><i class="bi bi-trash-fill"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="display: flex; justify-content: center; align-content: center;">
+                <a href="{% url 'crearProductoform' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
+            </div>
+            
+    </div>
+</main>
+{% for q in data %}
+<div class="modal" id="agg_{{ q.id }}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{ q.nombre }}</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div style="display: flex; flex-direction: column; justify-content: space-around;">
+                <img src="{{ q.foto.url }}" alt="">
+                <p class="text-center">Nombre: {{ q.nombre }} <br> Descripcion: {{ q.descripcion_producto }}<br> Precio: {{ q.Precio }}<br> Cantidad: {{ q.cantidad }}<br>Categoria: {{ q.categoria }}</p>
+               
+        
+            </div>
+            
+          
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  
 {% endblock %}

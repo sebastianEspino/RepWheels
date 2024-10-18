@@ -1,7 +1,16 @@
 main{
     display: flex;
-    justify-content: center;
-    height: 650px;
+    justify-content: space-around;
+    height: 100%; 
+    padding: 5%;
+}
+
+#sectionEmergence{
+    display: flex;
+    justify-content: space-evenly;
+    height: 100%; 
+    padding: 5%;
+    gap: 20px;
 }
 
 .form1{
@@ -59,7 +68,7 @@ footer{
 }
 
 #infer{
-    background-color:rgb(55, 191, 240);
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,8 +115,23 @@ li{
     
 }
 
+#emergence{
+    height: 300px;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+#map { height: 500px; width: 80% }
+
+
+
 
 nav li a:hover{
-    background-color: rgb(55, 191, 240);
+    background-color: grey;
+    border-radius: 30PX;
 
 }

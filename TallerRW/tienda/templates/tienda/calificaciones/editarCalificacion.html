@@ -10,12 +10,26 @@
   <h1 style="text-align: center;">Editar calificacion</h1>
   <div class="form-row">
     <input type="hidden" name="id" value="{{ data.id }}">
+    <label for="">Servicio</label>
+        <div class="col-md-12">
+            <select class="form-control" name="servicio">
+                <option value="">Seleccione</option>
+                {% for s in servicios %}
+                    <option value="{{ s.id }}" {% if data.servicios.id == s.id %}selected{% endif %}>{{ s.nombre }}</option>
+                {% endfor %}
+            </select>
+    </div><br>
     <div class="form-group col-md-12">
-      <label for="inputAddress2">¿Que servicio adquiriste?:</label>
-      <input type="text" class="form-control" id="tipoServicio" name="servicio" value="{{ data.servicio }}">
+      <label for="">Usuario</label>
+      <select class="form-control" name="usuario">
+        <option value="">Seleccione</option>
+        {% for c in usuarios %}
+             <option value="{{ c.id }}"{% if data.cliente.id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+        {% endfor %}
+      </select>
     </div>
     <br>
-    <div class="form-group col-md-12">
+    <div class="form-group col-md">
       <label for="inputAddress2">Cantidad estrellas</label>
       <select class="form-select" aria-label="Default select example" value="{{ data.cantidad_estrellas }}" name="cantidad_estrellas">
         <option value="1"><i class="bi bi-star-fill">1</i></option>
@@ -26,7 +40,7 @@
       </select>
     </div>
     <br>
-    <button type="submit" class="btn btn-primary">Registrar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
 </form>
 </main>
 {% endblock %}

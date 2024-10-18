@@ -4,6 +4,10 @@ section{
 
 }
 
+.mainly{
+    padding-top: 3%;
+}
+
 #art1{
     display: flex;
     justify-content: center;
@@ -11,8 +15,9 @@ section{
     
 }
 #section1{
-    height: 575px;
+    height: 100%;
     display: flex;
+    padding: 2%;
     flex-direction: column;
     
 }
@@ -24,7 +29,8 @@ a{
 
 #section2{
     border: 1px solid black;
-    height: 480px;
+    padding: 2%;
+    height: 100%;
 }
 
 h1{
@@ -191,7 +197,8 @@ i{
 }
 
 .section3{
-    height: 570px; 
+    height: 100%; 
+    padding: 2%;
 }
 
 #opciones{
@@ -245,13 +252,30 @@ i{
 #info_p{
     border: 1px solid black;
     border-radius: 5%;
-    width: 600px;
-    height: 450px;
+    width: 800px;
+    height: 400px;
     display: flex;
     flex-direction: row;
     padding: 30px;
     align-items: center;
+    justify-content: space-around;
 
+}
+
+#info_bill{
+    border: 1px solid black;
+    border-radius: 5%;
+    width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    align-items: center;
+    justify-content: space-around;
+
+}
+#body_modal{
+    height: 170px;
 }
 
 #info{
@@ -273,6 +297,11 @@ i{
     height:870px;
     color: black;
     padding-top: 80px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-around;
+    
 }
 
 .botones a{
@@ -282,6 +311,7 @@ i{
 p i{
     color: black;
 }
+
 
 
 #coti{
@@ -378,17 +408,13 @@ input[type="radio"] {
     display: none;
 }
 
-label {
-    color: grey;
-}
 
 .clasificacion {
     direction: rtl;
     unicode-bidi: bidi-override;
 }
 
-label:hover,
-label:hover~label {
+.st label:hover~label {
     color: orange;
 }
 

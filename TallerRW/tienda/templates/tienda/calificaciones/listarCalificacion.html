@@ -5,13 +5,14 @@
 
 {% block contenedor %}
     <div class="container-fluid m-3" style="padding: 90px;">
-        <h1>Calificaiones</h1>
-        <table class="table table-bordered">
+        <h1>Calificaciones</h1>
+        <table class="table table-bordered table-hover" id="tableR">
             <thead class="table-dark">
                 <tr>
                     <th>id</th>
                     <th>Nombre</th>
                     <th>Estrellas</th>
+                    <th>Servicio</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -19,26 +20,21 @@
                 {% for r in data %}
                 <tr>
                     <td>{{ r.id }}</td>
-                    <td>{{ r.cliente }}</td>
+                    <td>{{ r.cliente }}</td>    
                     <td>{{ r.cantidad_estrellas }}</td>
+                    <td>{{ r.servicios }}</td>
                     <td>
-                        <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}">Editar</a>
+                        <a class="btn btn-info" href="{% url 'calificacion_formulario_editar' r.id %}"><i class="bi bi-pencil-square"></i></a>
                         <a class="btn btn-danger"
-                            href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')">Eliminar</a>
+                            href="javascript:eliminar('{% url 'calificacion_eliminar' r.id %}')"><i class="bi bi-trash-fill"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
+        <div style="display: flex; justify-content: center; align-content: center;">
+            <a href="{% url 'registrarCalificacion' %}" class="btn btn-success btn-lg"><i class="bi bi-plus"></i></a>
+        </div>
 
     </div>
 {% endblock %}

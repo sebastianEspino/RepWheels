@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enviar Ubicación</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="{% static 'tienda/css/bootstrap.min.css' %}" />
+    <link rel="shortcut icon" href="{% static 'tienda/img/Logo.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'tienda/css/registrarPr.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src="{% static 'tienda/js/settings.js' %}"></script>
+    
+</head>
+<body>
+
+    <main id="sectionEmergence">
+        <div>
+            <form class="emergence" action="{% url 'emergencia' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="longitude" hidden><br>
+                <input type="text" name="latitude" hidden><br>
+                <h1 style="text-align: center;">Emergencia</h1>
+                <div class="form-row">
+                <div class="row">
+                    <div class="col">
+                    <label for="inputEmail4">Nombre de la persona</label>
+                    <input type="text" class="form-control" id="precio" placeholder="Nombre" name="nombre">
+                    </div><br>
+                    <div class="col">
+                    <label for="inputCantidad">Telefono</label>
+                    <input type="number" class="form-control" id="cantidad" placeholder="Telefono" name="telefono">
+                    </div>
+                </div>
+                <br>
+                <div class="form-group col-md-12">
+                    <label for="inputEmail4">Descripcion del problema</label>
+                    <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_problema">
+                </div>
+                <br>
+                <div class="form-group col-md-12"></div>
+                    <label for="inputEmail4">Ubicacion</label>
+                    <input type="text" class="form-control" name="address" style="width: 400px;">
+                </div>
+                
+                
+            
+                <button type="submit" class="btn btn-primary" id="send-location">Enviar</button>
+            
+                </div>
+            </form>
+        </div><br>
+        <div id="map"></div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var marker;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng]).addTo(map);
+                    }
+                    map.setView([lat, lng], 13);
+
+                    // Populate the form fields with current location
+                    document.querySelector('input[name="latitude"]').value = lat;
+                    document.querySelector('input[name="longitude"]').value = lng;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector('input[name="address"]').value = data.display_name;
+                            console.log(data)
+                        });
+                });
+            }
+
+            document.getElementById('send-location').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+                        
+
+                        document.querySelector('input[name="latitude"]').value = lat;
+                        document.querySelector('input[name="longitude"]').value = lng;
+
+                        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                            .then(response => response.json())
+                            .then(data => {
+                                document.querySelector('input[name="address"]').value = data.display_name;
+                                
+                            });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

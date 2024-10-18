@@ -5,7 +5,7 @@
 
 {% block contenedor %}
       <main>
-          <form class="form2" action="{% url 'crearProducto' %}" method="post">
+          <form class="form2" action="{% url 'crearProducto' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 style="text-align: center;">Formulario de Repuestos</h1>
             <div class="form-row">
@@ -14,14 +14,15 @@
                 <input type="text" class="form-control" id="Nombre" placeholder="Nombre" name="nombre">
               </div>
               <br>
-              <div class="form-group col-md-12">
-                <label for="inputEmail4">Precio</label>
-                <input type="number" class="form-control" id="precio" placeholder="precio" name="precio">
-              </div>
-              <br>
-              <div class="form-group col-md-12">
-                <label for="inputCantidad">Cantidad</label>
-                <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad">
+              <div class="row">
+                <div class="col">
+                  <label for="inputEmail4">Precio</label>
+                  <input type="number" class="form-control" id="precio" placeholder="precio" name="precio">
+                </div><br>
+                <div class="col">
+                  <label for="inputCantidad">Cantidad</label>
+                  <input type="number" class="form-control" id="cantidad" placeholder="Cantidad" name="cantidad">
+                </div>
               </div>
               <br>
               <div class="form-group col-md-12">
@@ -29,12 +30,12 @@
                 <input type="text" class="form-control" id="descripcion" placeholder="descripcion" name="descripcion_producto">
               </div>
               <br>
+              
               <div class="form-group col-md-12">
-                <label for="fecha">Fecha de registro</label>
-                <input type="date" class="form-control" id="fecha" placeholder="Fecha de registro" name="fecha_Creacion">
+                <label for="inputEmail4">Foto del producto</label>
+                <input class="form-control" type="file" name="foto_new" placeholder="foto">
               </div>
               <br>
-              
               <label for="">Categoria</label>
               <select class="form-control" name="categoria">
               <option value="">Seleccione</option>
