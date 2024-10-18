@@ -128,6 +128,7 @@ def productos(request):
 @login_requerido_admin
 def listarProductos(request):
     q = Productos.objects.all()
+    p = Promociones.objects.all()
     contexto = {"data":q,"Promociones":p}
     return render(request, "tienda/productos/listarProductos.html",contexto)
 
